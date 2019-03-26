@@ -10,6 +10,8 @@ author:
     email         : "my@email.com"
   - name          : "Asha Hinson"
     affiliation   : "1"
+  - name          : "Randi L. Garcia"
+    affiliation   : "1"    
 
 affiliation:
   - id            : "1"
