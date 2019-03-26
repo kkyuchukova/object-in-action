@@ -1,0 +1,832 @@
+---
+title: "Objectification Special Studies Analysis"
+author: "Kat Kyuchukova"
+date: "9/18/2018"
+output: html_document
+---
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Packages
+```{r}
+library(nlme)
+library(haven)
+library(devtools)
+#install_github("RandiLGarcia/dyadr")
+#library(dyadr)
+library(psych)
+library(mosaic)
+library(tidyr)
+library(dplyr)
+library(irr)
+library(lavaan)
+select <- dplyr::select
+```
+
+
+Load data
+```{r}
+#clark
+clark_measures <- read_spss("/Users/katerinakyuchukova/Downloads/kat/Clark College Relationships Data/College_Relationship_Measures_1.sav")
+clark_pairwise <- read_spss("/Users/katerinakyuchukova/Downloads/kat/Clark College Relationships Data/College_Relationship_Pairwise_1.sav")
+
+#smith
+smith <- read_spss("/Users/katerinakyuchukova/Downloads/kat/Smith College Relationships Data/College_Relationship_Dyadic_September_14_2018_12_17.sav")
+
+#sentence data
+#clark_sentence_long1 <- read_spss("/Users/katerinakyuchukova/Downloads/kat/Clark College Relationships Data/sexist sentences/sentences_long.sav")
+
+#clark_sentence_wide1 <- read_spss("/Users/katerinakyuchukova/Downloads/kat/Clark College Relationships Data/sexist sentences/sentences_wide.sav")
+
+#clark_sentences_long2 <- read_spss("/Users/katerinakyuchukova/Downloads/kat/Clark College Relationships Data/sexist sentences/sentences_long2.sav")
+
+#clark_sentence_wide2 <- read_spss("/Users/katerinakyuchukova/Downloads/kat/Clark College Relationships Data/sexist sentences/sentences_wide2.sav")
+
+clark_sentences <- read.csv("/Users/katerinakyuchukova/Downloads/kat/Clark College Relationships Data/sexist sentences/coded_sentences.csv")
+
+#trigrams
+trigram_check <- read.csv("/Users/katerinakyuchukova/Downloads/kat/Clark College Relationships Data/trigrams/AMELIA_check_trigram_grading.csv")
+```
+
+
+#looking at variables
+```{r}
+view <- variable_view(clark_measures)
+glimpse(clark_measures)
+glimpse(clark_pairwise)
+names(clark_measures)
+
+variable_view(clark_measures)
+
+```
+
+
+
+CLARK SCALE SCORES
+```{r}
+#Social Physique Anxiety
+clark_measures <- clark_measures %>%
+  mutate(physanx5.r = (min(physanx_5, na.rm = TRUE) + max(physanx_5, na.rm = TRUE) - physanx_5),
+         physanx = (physanx_1 +physanx_2 +physanx_3+physanx_4+physanx5.r+physanx_6)/6)
+
+#SOO
+clark_measures$extSOO <- rowMeans(dplyr::select(clark_measures, otherint_1, otherint_2, otherint_5, otherint_6, otherint_10), na.rm=TRUE)
+
+clark_measures$intSOO <- rowMeans(dplyr::select(clark_measures, otherint_3, otherint_4, otherint_7, otherint_8, otherint_9, otherint_11, otherint_12), na.rm=TRUE)
+
+clark_measures$a2pSOO <- clark_measures$extSOO - clark_measures$intSOO
+
+psych::alpha(select(clark_measures, otherint_1, otherint_2, otherint_5, otherint_6, otherint_10), na.rm=TRUE)
+
+psych::alpha(select(clark_measures, otherint_3, otherint_4, otherint_7, otherint_8, otherint_9, otherint_11, otherint_12), na.rm=TRUE)
+
+
+#Meta SOO
+clark_measures$extmetaSOO <- rowMeans(dplyr::select(clark_measures, metaint_1, metaint_2, metaint_5, metaint_6, metaint_10), na.rm=TRUE)
+
+clark_measures$intmetaSOO <- rowMeans(dplyr::select(clark_measures, metaint_3, metaint_4, metaint_7, metaint_8, metaint_9, metaint_11, metaint_12), na.rm=TRUE)
+
+clark_measures$metaSOO <- clark_measures$extmetaSOO - clark_measures$intmetaSOO
+
+#Interaction Authenticity
+clark_measures$authenticity <- rowMeans(dplyr::select(clark_measures, inter_1, inter_3, inter_5, inter_6, inter_7, inter_9, inter_10, interaux_5, interaux_6))
+
+psych::alpha(select(clark_measures, inter_1, inter_3, inter_5, inter_6, inter_7, inter_9, inter_10, interaux_5, interaux_6))
+
+#SSO
+clark_measures <- clark_measures %>%
+  mutate(howbody_avg = (howbody_1+howbody_2)/2)
+
+#Relationship Agency
+clark_measures$relag <- rowMeans(dplyr::select(clark_measures, relag_1, relag_2, relag_3, relag_4, relag_5, relag_6, relag_7, relag_8, relag_9))
+
+psych::alpha(select(clark_measures, relag_1, relag_2, relag_3, relag_4, relag_5, relag_6, relag_7, relag_8, relag_9))
+
+#Career Aspirations
+clark_measures <- clark_measures %>%
+  mutate(careerasp4.r = (min(careerasp_4, na.rm = TRUE) + max(careerasp_4, na.rm = TRUE) - careerasp_4),
+         careerasp7.r = (min(careerasp_7, na.rm = TRUE) + max(careerasp_7, na.rm = TRUE) - careerasp_7),
+         careerasp10.r = (min(careerasp_10, na.rm = TRUE) + max(careerasp_10, na.rm = TRUE) - careerasp_10))
+
+clark_measures$careerasp <- rowMeans(dplyr::select(clark_measures, careerasp_1, careerasp_2, careerasp_3, careerasp4.r, careerasp_5, careerasp_6, careerasp7.r, careerasp_8, careerasp_9, careerasp10.r))
+
+psych::alpha(select(clark_measures, careerasp_1, careerasp_2, careerasp_3, careerasp4.r, careerasp_5, careerasp_6, careerasp7.r, careerasp_8, careerasp_9, careerasp10.r))
+
+
+#TSO
+clark_measures$funcTSO <- rowMeans(dplyr::select(clark_measures,tso_1, tso_2, tso_4, tso_7, tso_9))
+clark_measures$physTSO <- rowMeans(dplyr::select(clark_measures, tso_3, tso_5, tso_6, tso_8, tso_10))
+
+clark_measures$TSO <- clark_measures$physTSO - clark_measures$funcTSO
+clark_measures$TSO <- clark_measures$TSO*(-1)
+
+#satisfaction--reverse code negative variables and then average with the rest
+clark_measures <- clark_measures %>%
+  mutate(anxious.r = (min(inter_2, na.rm = TRUE) + max(inter_2, na.rm = TRUE) - inter_2)) %>%
+  mutate(uncomfort.r = (min(inter_4, na.rm = TRUE) + max(inter_4, na.rm = TRUE) - inter_4)) %>%
+  mutate(hostile.r = (min(inter_8, na.rm = TRUE) + max(inter_8, na.rm = TRUE) - inter_8)) %>%
+  mutate(apprehen.r = (min(inter_11, na.rm = TRUE) + max(inter_11, na.rm = TRUE) - inter_11)) %>%
+  mutate(aggressive.r = (min(inter_13, na.rm = TRUE) + max(inter_13, na.rm = TRUE) - inter_13))
+
+
+clark_measures$satisfaction <- rowMeans(select(clark_measures, anxious.r, uncomfort.r, hostile.r, apprehen.r, aggressive.r, inter_1, inter_3, inter_5, inter_6, inter_7, inter_9, inter_10, interaux_6), na.rm=TRUE)
+```
+
+
+SMITH SCALE SCORES
+```{r}
+smith <- smith %>%
+  arrange(dyadID) %>%
+  filter(dyadID!=16, !is.na(dyadID), dyadID!=798797, dyadID!=999, dyadID!=999999, dyadID!=9999)
+
+#Social Physique Anxiety
+smith <- smith %>%
+  mutate(physanx5.r = (min(physanx_5, na.rm = TRUE) + max(physanx_5, na.rm = TRUE) - physanx_5),
+         physanx = (physanx_1 +physanx_2 +physanx_3+physanx_4+physanx5.r+physanx_6)/6)
+
+#SOO
+smith$extSOO <- rowMeans(dplyr::select(smith, otherint_1, otherint_2, otherint_5, otherint_6, otherint_10), na.rm=TRUE)
+
+psych::alpha(select(smith, otherint_1, otherint_2, otherint_5, otherint_6, otherint_10), na.rm=TRUE)
+smith$intSOO <- rowMeans(dplyr::select(smith, otherint_3, otherint_4, otherint_7, otherint_8, otherint_9, otherint_11, otherint_12), na.rm=TRUE)
+
+psych::alpha(select(smith, otherint_3, otherint_4, otherint_7, otherint_8, otherint_9, otherint_11, otherint_12), na.rm=TRUE)
+smith$a2pSOO <- smith$extSOO - smith$intSOO
+
+
+
+#Meta SOO
+smith$extmetaSOO <- rowMeans(dplyr::select(smith, metaint_1, metaint_2, metaint_5, metaint_6, metaint_10), na.rm=TRUE)
+
+smith$intmetaSOO <- rowMeans(dplyr::select(smith, metaint_3, metaint_4, metaint_7, metaint_8, metaint_9, metaint_11, metaint_12), na.rm=TRUE)
+
+smith$metaSOO <- smith$extmetaSOO - smith$intmetaSOO
+
+#Interaction Authenticity
+smith$authenticity <- rowMeans(dplyr::select(smith, inter_1, inter_3, inter_5, inter_6, inter_7, inter_9, inter_10, interaux_5, interaux_6))
+
+psych::alpha(select(smith, inter_1, inter_3, inter_5, inter_6, inter_7, inter_9, inter_10, interaux_5, interaux_6))
+
+#SSO
+smith <- smith %>%
+  mutate(howbody_avg = (howbody_1+howbody_2)/2)
+
+
+
+#Relationship Agency
+smith$relag <- rowMeans(dplyr::select(smith, relag_1, relag_2, relag_3, relag_4, relag_5, relag_6, relag_7, relag_8, relag_9))
+
+psych::alpha(select(smith, relag_1, relag_2, relag_3, relag_4, relag_5, relag_6, relag_7, relag_8, relag_9))
+
+#Career Aspirations
+smith <- smith %>%
+  mutate(careerasp4.r = (min(careerasp_4, na.rm = TRUE) + max(careerasp_4, na.rm = TRUE) - careerasp_4),
+         careerasp7.r = (min(careerasp_7, na.rm = TRUE) + max(careerasp_7, na.rm = TRUE) - careerasp_7),
+         careerasp10.r = (min(careerasp_10, na.rm = TRUE) + max(careerasp_10, na.rm = TRUE) - careerasp_10))
+
+smith$careerasp <- rowMeans(dplyr::select(smith, careerasp_1, careerasp_2, careerasp_3, careerasp4.r, careerasp_5, careerasp_6, careerasp7.r, careerasp_8, careerasp_9, careerasp10.r))
+
+psych::alpha(select(smith, careerasp_1, careerasp_2, careerasp_3, careerasp4.r, careerasp_5, careerasp_6, careerasp7.r, careerasp_8, careerasp_9, careerasp10.r))
+
+#TSO
+smith$funcTSO <- rowMeans(dplyr::select(smith,tso_1, tso_2, tso_4, tso_7, tso_9))
+smith$physTSO <- rowMeans(dplyr::select(smith, tso_3, tso_5, tso_6, tso_8, tso_10))
+
+smith$TSO <- smith$physTSO-smith$funcTSO
+smith$TSO <- smith$TSO*-1
+
+#satisfaction--reverse code negative variables and then average with the rest
+smith <- smith %>%
+  mutate(anxious.r = (min(inter_2, na.rm = TRUE) + max(inter_2, na.rm = TRUE) - inter_2)) %>%
+  mutate(uncomfort.r = (min(inter_4, na.rm = TRUE) + max(inter_4, na.rm = TRUE) - inter_4)) %>%
+  mutate(hostile.r = (min(inter_8, na.rm = TRUE) + max(inter_8, na.rm = TRUE) - inter_8)) %>%
+  mutate(apprehen.r = (min(inter_11, na.rm = TRUE) + max(inter_11, na.rm = TRUE) - inter_11)) %>%
+  mutate(aggressive.r = (min(inter_13, na.rm = TRUE) + max(inter_13, na.rm = TRUE) - inter_13))
+
+smith$satisfaction <- rowMeans(select(smith, anxious.r, uncomfort.r, hostile.r, apprehen.r, aggressive.r, inter_1, inter_3, inter_5, inter_6, inter_7, inter_9, inter_10, interaux_6), na.rm=TRUE)
+```
+
+
+
+TRIGRAMS
+```{r}
+
+###CLARK
+trigram_check <- trigram_check[,1:8]
+
+trigram_check <- trigram_check %>%
+  mutate(trigram_correct = ifelse(accurate.=="yes", Correct...1.0., 1))
+
+trigram_clark <- trigram_check %>%
+  group_by(partID) %>%
+  summarise(trigram_score = sum(trigram_correct)) %>%
+  dplyr::select(partID, trigram_score)
+
+#merging
+clark <- merge(x=clark_measures, y=trigram_clark, by="partID", all.x=TRUE)
+
+###SMITH
+smith_trigrams <- smith %>%
+  dplyr::select(partID, dyadID, rat1_1.0, rat2_1.0,rat3_1.0, rat4_1.0,rat5_1.0, rat6_1.0, rat7_1.0, rat8_1.0, rat9_1.0, rat10_1) %>%
+  arrange(dyadID, partID)
+
+smith_trigrams_long <- gather(smith_trigrams, trigram, response, rat1_1.0:rat10_1)
+
+smith_trigrams_long <- smith_trigrams_long %>%
+  mutate(trigram = ifelse(trigram=="rat1_1.0", "QUACK:POND:WADDLE",
+                          ifelse(trigram=="rat2_1.0", "ATHLETES:WEB:RABBIT",
+                                 ifelse(trigram=="rat3_1.0", "HONEY:SWARM:STING",
+                                        ifelse(trigram=="rat4_1.0", "MATCHES:SMOKE:BUSH",
+                                               ifelse(trigram=="rat5_1.0", "CHOCOLATE:FORTUNE:TIN",
+                                                      ifelse(trigram=="rat6_1.0", "CURIOSITY:NAP:WHISKERS",
+                                                             ifelse(trigram=="rat7_1.0", "STALK:TRAINER:KING",
+                                                                    ifelse(trigram=="rat8_1.0", "SURPRISE:LINE:BIRTHDAY",
+                                                                           ifelse(trigram=="rat9_1.0", "RED:GO:CAR", 
+                                                                                  ifelse(trigram=="rat10_1", "MOUSE : SHARP : BLUE", NA)))))))))))
+
+smith_trigrams_long <- smith_trigrams_long %>%
+  mutate(correct_response=ifelse(trigram=="QUACK:POND:WADDLE", "Duck",
+                          ifelse(trigram=="ATHLETES:WEB:RABBIT", "Foot",
+                                 ifelse(trigram=="HONEY:SWARM:STING","Bee",
+                                        ifelse(trigram=="MATCHES:SMOKE:BUSH", "Fire", 
+                                               ifelse(trigram=="CHOCOLATE:FORTUNE:TIN", "Cookie",
+                                                      ifelse(trigram=="CURIOSITY:NAP:WHISKERS","Cat",
+                                                             ifelse(trigram=="STALK:TRAINER:KING","Lion",
+                                                                    ifelse(trigram=="SURPRISE:LINE:BIRTHDAY", "Party",
+                                                                           ifelse(trigram=="RED:GO:CAR", "Stop",
+                                                                                  ifelse(trigram=="MOUSE : SHARP : BLUE", "Cheese", NA))))))))))) %>%
+  arrange(partID, dyadID)
+
+smith_trigrams_long <- smith_trigrams_long[,c(1,2,3,5,4)]
+
+#write.csv(smith_trigrams_long, "/Users/katerinakyuchukova/Downloads/kat/Smith College Relationships Data/trigrams_to_grade.csv", row.names=FALSE)
+  
+smith_trigrams_graded <- read.csv("/Users/katerinakyuchukova/Downloads/kat/Smith College Relationships Data/trigrams_graded.csv")
+
+smith_triscore <- smith_trigrams_graded %>%
+  group_by(partID, dyadID) %>%
+  summarise(trigram_score=sum(final_correct))%>%
+  dplyr::select(partID, dyadID, trigram_score)
+
+smith <- merge(x=smith, y=smith_triscore, x.all=TRUE)
+```
+sexist sentences
+```{r}
+#ICC
+clark_sentences <- clark_sentences[,1:8]
+
+clark_sentences <- clark_sentences %>%
+  filter(!is.na(dyadID))
+
+clark_sentences <- na.omit(clark_sentences)
+clark_icc <- clark_sentences %>%
+  select(Hannah, Jennie, Amelia)
+
+icc(clark_icc, model="twoway", unit="average")
+
+#per sentence
+clark_icc1 <- clark_sentences %>%
+  filter(Sentence==1) %>%
+  select(Hannah, Jennie, Amelia)
+
+clark_icc2 <- clark_sentences %>%
+  filter(Sentence==2) %>%
+  select(Hannah, Jennie, Amelia)
+
+clark_icc3 <- clark_sentences %>%
+  filter(Sentence==3) %>%
+  select(Hannah, Jennie, Amelia)
+
+clark_icc4 <- clark_sentences %>%
+  filter(Sentence==4) %>%
+  select(Hannah, Jennie, Amelia)
+
+clark_icc5 <- clark_sentences %>%
+  filter(Sentence==5) %>%
+  select(Hannah, Jennie, Amelia)
+
+clark_icc6 <- clark_sentences %>%
+  filter(Sentence==6) %>%
+  select(Hannah, Jennie, Amelia)
+
+clark_icc7 <- clark_sentences %>%
+  filter(Sentence==7) %>%
+  select(Hannah, Jennie, Amelia)
+
+clark_icc8 <- clark_sentences %>%
+  filter(Sentence==8) %>%
+  select(Hannah, Jennie, Amelia)
+
+icc(clark_icc1, model="twoway", unit="average")
+icc(clark_icc2, model="twoway", unit="average")
+icc(clark_icc3, model="twoway", unit="average")
+icc(clark_icc4, model="twoway", unit="average")
+icc(clark_icc5, model="twoway", unit="average")
+icc(clark_icc6, model="twoway", unit="average")
+icc(clark_icc7, model="twoway", unit="average")
+icc(clark_icc8, model="twoway", unit="average")
+
+clark_test <- clark_sentences %>%
+  filter(Sentence!=4) %>%
+  select(Hannah, Jennie, Amelia)
+
+
+
+
+icc(clark_test, model="twoway", unit="average")
+
+clark_sentences <- clark_sentences %>%
+  filter(Sentence!=4)
+
+#good enough to get an average??
+
+clark_sentence_avg <- clark_sentences %>%
+  mutate(sexism=(Hannah+Jennie+Amelia)/3) %>%
+  group_by(partID) %>%
+  summarise(avg_sexism = mean(sexism)) %>%
+  select(partID, avg_sexism)
+
+clark_logel <- clark_sentences %>%
+  filter(Sentence==3|Sentence==5|Sentence==6) %>%
+  mutate(sexism=(Hannah+Jennie+Amelia)/3) %>%
+  group_by(partID) %>%
+  summarise(sexism_logel = mean(sexism)) %>%
+  select(partID, sexism_logel)
+  
+
+clark_sexism <- merge(x=clark, y=clark_sentence_avg, by="partID", all.x=TRUE)
+clark_final <- merge (x=clark_sexism, y=clark_logel, by="partID", all.x=TRUE)
+  
+
+#Smith
+
+#Creating sexist sentence file
+smith$dyadID <- as.numeric(smith$dyadID)
+smith$partID <- as.numeric(smith$partID)
+smith_sentences_long <- smith %>%
+  filter(dyadID!=16, !is.na(dyadID), dyadID!=798797, dyadID!=999, dyadID!=999999, dyadID!=9999) %>%
+  select(partID, dyadID, sexismpre_1:sexismpre_8) %>%
+  arrange(dyadID)
+
+smith_sentences_long <- gather(smith_sentences_long, sentence, target, sexismpre_1:sexismpre_8)
+
+smith_sentences_long <- smith_sentences_long %>%
+  mutate(stem=ifelse(sentence=="sexismpre_1", "Linda swatted at the flies", 
+                     ifelse(sentence=="sexismpre_2", "Helen crammed for the test",
+                            ifelse(sentence=="sexismpre_3", "Shirley asked for help getting home",
+                                   ifelse(sentence=="sexismpre_4", "Sam read the newspaper",
+                                          ifelse(sentence=="sexismpre_5", "Jenny went home to cook dinner",
+                                                 ifelse(sentence=="sexismpre_6", "Katherine baby-sat the neighbor's kids",
+                                                        ifelse(sentence=="sexismpre_7", "Tom bottle fed the baby",
+                                                               ifelse(sentence=="sexismpre_8", "Bert changed the oil", NA))))))))) %>%
+    mutate(sentence=ifelse(sentence=="sexismpre_1", 1, 
+                     ifelse(sentence=="sexismpre_2", 2,
+                            ifelse(sentence=="sexismpre_3", 3,
+                                   ifelse(sentence=="sexismpre_4", 4,
+                                          ifelse(sentence=="sexismpre_5", 5,
+                                                 ifelse(sentence=="sexismpre_6", 6,
+                                                        ifelse(sentence=="sexismpre_7", 7,
+                                                               ifelse(sentence=="sexismpre_8", 8, NA)))))))))
+
+
+smith_sentences_long <- smith_sentences_long[,c(1,2,3,5,4)]
+
+smith_sentences_long <- smith_sentences_long %>%
+  filter(target!="") %>%
+  arrange(dyadID, partID)
+
+#write.csv(smith_sentences_long, "/Users/katerinakyuchukova/Downloads/kat/Smith College Relationships Data/sexist_sentences_for_coding.csv", row.names = FALSE) 
+
+#coding correlations
+kat_codes <- read.csv("/Users/katerinakyuchukova/Downloads/kat/Smith College Relationships Data/kat_sentences_coded.csv")
+
+xinyu_codes <- read.csv("/Users/katerinakyuchukova/Downloads/kat/Smith College Relationships Data/xinyu_sentences.csv")
+
+coded_sentences <- merge(x=kat_codes, y=xinyu_codes, all.x = TRUE)
+
+smith_icc <- coded_sentences %>%
+  select(kat_score, Xinyu)
+
+icc(smith_icc, model="twoway", unit="average")  
+
+
+##TAKE TWOOOO
+kat_codes2 <- read.csv("/Users/katerinakyuchukova/Downloads/kat/Smith College Relationships Data/kat_recode.csv")
+
+xinyu_codes2 <- read.csv("/Users/katerinakyuchukova/Downloads/kat/Smith College Relationships Data/xinyu_recode.csv")
+
+coded_sentences2 <- merge(x=kat_codes2, y=xinyu_codes2, all.x = TRUE)
+
+
+smith_icc2 <- coded_sentences2 %>%
+  filter(sentence!=4)
+
+icc(smith_icc2, model="twoway", unit="average")  
+
+#making average file
+smith_sentence_avg <- coded_sentences2 %>%
+  mutate(sexism=(katscore2+Xinyu)/2) %>%
+  group_by(partID) %>%
+  summarise(avg_sexism = mean(sexism)) %>%
+  select(partID, avg_sexism)
+
+smith_logel <- coded_sentences2 %>%
+  filter(sentence==3|sentence==5|sentence==6) %>%
+  mutate(sexism=(katscore2+Xinyu)/2) %>%
+  group_by(partID) %>%
+  summarise(sexism_logel = mean(sexism)) %>%
+  select(partID, sexism_logel)
+  
+
+smith_sexism <- merge(x=smith, y=smith_sentence_avg, by="partID", all.x=TRUE)
+smith_final <- merge (x=smith_sexism, y=smith_logel, by="partID", all.x=TRUE)
+
+
+```
+
+
+
+Making Pairwise
+```{r}
+
+#Clark
+
+
+clark<- clark_final %>%
+  filter(dyadID!=4, dyadID!=14, dyadID!=19) %>%
+  arrange(dyadID) %>%
+  mutate(person=rep(1:2, times=22)) %>%
+  select(dyadID, person, partID, gender, age, race, sexor, physanx, a2pSOO, metaSOO, trigram_score, authenticity, howbody_avg, relag, careerasp, TSO, avg_sexism, sexism_logel, satisfaction) %>%
+  arrange(person)
+
+
+
+tempA <- clark %>% 
+  mutate(personE = ifelse(person == 1, -1, 1), 
+         partnum = 1,
+         person = ifelse(person == 1, "A", "P")) %>%
+  gather(variable, value, partID:partnum)%>%
+  unite(var_person, variable, person)%>%
+  spread(var_person, value)
+
+tempB <- clark %>% 
+  mutate(personE = ifelse(person == 1, -1, 1), 
+         partnum = 2,
+         person = ifelse(person == 1, "P", "A")) %>%
+  gather(variable, value, partID:partnum) %>%
+  unite(var_person, variable, person) %>%
+  spread(var_person, value)
+
+clark_pair <- bind_rows(tempA, tempB) %>%
+  arrange(dyadID)
+
+rm(tempA, tempB)
+
+head(clark_pair)
+
+
+#Smith
+
+#making these numeric
+smith_final$dyadID <- as.numeric(smith_final$dyadID)
+smith_final$partID <- as.numeric(smith_final$partID)
+
+
+
+#checking weird dyads to see if there is post interaction information
+smith_checK <- smith %>%
+  filter(dyadID==16|is.na(dyadID)|dyadID==798797|dyadID==999|dyadID==999999|dyadID==9999)%>%
+  arrange(dyadID) %>%
+  select(dyadID, partID, otherint_1:otherint_12)
+
+smith <- smith_final %>%
+  filter(dyadID!=16, !is.na(dyadID), dyadID!=798797, dyadID!=999, dyadID!=999999, dyadID!=9999, dyadID!=7) %>%
+  arrange(dyadID) %>%
+  mutate(person=rep(1:2, times=23),
+         partID= ifelse(dyadID==31 & person==2, 83, partID),
+         dyadID= ifelse(dyadID==2 & partID==4|partID==5, 1, dyadID)) %>%
+  select(dyadID, person, partID, gender, age, race, sexor, physanx, a2pSOO, metaSOO, trigram_score, authenticity, howbody_avg, relag, careerasp, TSO, avg_sexism, sexism_logel, satisfaction)  %>%
+  arrange(person)
+
+tempA <- smith %>% 
+  mutate(personE = ifelse(person == 1, -1, 1), 
+         partnum = 1,
+         person = ifelse(person == 1, "A", "P")) %>%
+  gather(variable, value, partID:partnum)%>%
+  unite(var_person, variable, person) %>%
+  spread(var_person, value)
+
+tempB <- smith %>% 
+  mutate(personE = ifelse(person == 1, -1, 1), 
+         partnum = 2,
+         person = ifelse(person == 1, "P", "A")) %>%
+  gather(variable, value, partID:partnum) %>%
+  unite(var_person, variable, person) %>%
+  spread(var_person, value)
+
+smith_pair <- bind_rows(tempA, tempB)
+
+rm(tempA, tempB)
+
+head(smith_pair)
+```
+
+
+
+Next steps: correlations, matrices etc
+```{r}
+
+#making shit numeric
+ix <- 1:39
+smith_pair[,ix] <- lapply(smith_pair[,ix], as.numeric)
+clark_pair[,ix] <-lapply(clark_pair[,ix], as.numeric)
+
+
+#same gender
+samegender_clark <- clark_pair %>%
+  filter(gender_A==gender_P)
+
+samegender_smith <- smith_pair %>%
+  filter(gender_A==gender_P)
+
+
+samegender_smith[,ix] <- lapply(samegender_smith[,ix], as.numeric)
+samegender_clark[,ix] <-lapply(samegender_clark[,ix], as.numeric)
+
+
+corr.test(select(samegender_smith, physanx_A, a2pSOO_A, metaSOO_A, authenticity_A, howbody_avg_A, relag_A, careerasp_A, TSO_A, avg_sexism_A, sexism_logel_A))
+corr.test(select(samegender_clark, physanx, a2pSOO, metaSOO, authenticity, howbody_avg, relag, careerasp, TSO, avg_sexism, sexism_logel))
+
+corr.test(select(samegender_clark, a2pSOO_A, a2pSOO_P, metaSOO_A, metaSOO_P, howbody_avg_A))
+corr.test(select(diffgender_clark, a2pSOO_A, a2pSOO_P, metaSOO_A, metaSOO_P, howbody_avg_A))
+corr.test(select(samegender_clark, authenticity_A, careerasp_A, relag_A))
+
+diffgender_clark <- clark_pair %>%
+  filter(gender_A!=gender_P)
+
+#smith
+corr.test(select(smith_final, physanx, a2pSOO, metaSOO, authenticity, howbody_avg, relag, careerasp, TSO, avg_sexism, sexism_logel, howbody_1, howbody_2))
+
+corr.test(select(smith_pair, physanx_A, a2pSOO_A, metaSOO_A, authenticity_A, howbody_avg_A, relag_A, careerasp_A, TSO_A, avg_sexism_A, sexism_logel_A))
+
+corr.test(select(samegender_smith, a2pSOO_A, a2pSOO_P, metaSOO_A, metaSOO_P, howbody_avg_A))
+
+
+corr.test(select(smith_pair, a2pSOO_A, a2pSOO_P, metaSOO_A, metaSOO_P, howbody_avg_A))
+corr.test(select(smith_pair, authenticity_A, careerasp_A, relag_A))
+
+#clark
+corr.test(select(clark_final, physanx, a2pSOO, metaSOO, authenticity, howbody_avg, relag, careerasp, TSO, avg_sexism, sexism_logel, howbody_1, howbody_2))
+
+corr.test(select(clark_pair, a2pSOO_A, a2pSOO_P, metaSOO_A, metaSOO_P, howbody_avg_A))
+corr.test(select(clark_pair, authenticity_A, careerasp_A, relag_A))
+
+
+#sexism histogram
+#all gender
+#ggplot(smith_final, aes(x=avg_sexism)) + geom_histogram(bins = 15)
+#ggplot(clark_final, aes(x=avg_sexism)) + geom_histogram(bins=15)
+
+#same
+
+#A2p soo
+#ggplot(smith_pair, aes(x=a2pSOO_A)) + geom_histogram(bins=15)
+#ggplot(clark_pair, aes(x=a2pSOO_A)) + geom_histogram(bins=15)
+#ggplot(samegender_smith, aes(x=a2pSOO_A)) + geom_histogram(bins=15)
+#ggplot(samegender_clark, aes(x=a2pSOO_A)) + geom_histogram(bins=15)
+
+#meta SOO
+#ggplot(smith_pair, aes(x=metaSOO_A)) + geom_histogram(bins=15)
+#ggplot(clark_pair, aes(x=metaSOO_A)) + geom_histogram(bins=15)
+#ggplot(samegender_smith, aes(x=metaSOO_A)) + geom_histogram(bins=15)
+#ggplot(samegender_clark, aes(x=metaSOO_A)) + geom_histogram(bins=15)
+
+#TSO
+# ggplot(smith_pair, aes(x=TSO_A)) + geom_histogram(bins=15)
+# ggplot(clark_pair, aes(x=TSO_A)) + geom_histogram(bins=15)
+# ggplot(samegender_smith, aes(x=TSO_A)) + geom_histogram(bins=15)
+# ggplot(samegender_clark, aes(x=TSO_A)) + geom_histogram(bins=15)
+# 
+# #authenticity
+# ggplot(smith_pair, aes(x=authenticity_A)) + geom_histogram(bins=10)
+# ggplot(clark_pair, aes(x=authenticity_A)) + geom_histogram(bins=10)
+# ggplot(samegender_smith, aes(x=TSO_A)) + geom_histogram(bins=15)
+# ggplot(samegender_clark, aes(x=TSO_A)) + geom_histogram(bins=15)
+
+#boxplots
+smith_howbody <- smith_final %>%
+  select(howbody_1, howbody_2, howbody_3, howbody_avg) %>%
+  gather(variable, value, howbody_1:howbody_avg)
+
+clark_howbody <- clark_final %>%
+  select(howbody_1, howbody_2, howbody_3, howbody_avg) %>%
+  gather(variable, value, howbody_1:howbody_avg)
+
+smith_howbody$value <- as.numeric(smith_howbody$value)
+clark_howbody$value <- as.numeric(clark_howbody$value)
+
+# ggplot(smith_howbody, aes(x=variable, y=value)) + geom_boxplot()
+# ggplot(clark_howbody, aes(x=variable, y=value)) + geom_boxplot()
+# 
+# ggplot(samegender_clark, aes(x=gender_A, y=a2pSOO_A)) + geom_boxplot()
+# ggplot(samegender_clark, aes(x=gender_A, y=TSO_A)) + geom_boxplot()
+# ggplot(clark_pair, aes(x=gender_A, y=TSO_A)) + geom_boxplot()
+
+#howbody
+corr.test(select(smith_final, howbody_1, howbody_2, howbody_3))
+corr.test(select(clark_final, howbody_1, howbody_2, howbody_3))
+psych::alpha(select(smith_final, howbody_1, howbody_2, howbody_3))
+psych::alpha(select(clark_final, howbody_1, howbody_2, howbody_3))
+
+
+# ggplot(smith_pair, aes(x=howbody_avg_A)) + geom_histogram(bins=15)
+# ggplot(clark_pair, aes(x=howbody_avg_A)) + geom_histogram(bins=15)
+# ggplot(samegender_smith, aes(x=howbody_avg_A)) + geom_histogram(bins=15) 
+# ggplot(samegender_clark, aes(x=howbody_avg_A)) + geom_histogram(bins=15)
+
+psych::alpha(select(smith_final, howbody_1, howbody_2, howbody_3))
+
+test <- clark_measures[,140:150]
+```
+
+
+MODELING THE APIM
+```{r}
+#merging clark and smith same sex data
+samegender_smith <- samegender_smith %>%
+  mutate(smith_or_clark = "Smith",
+         dyadID = dyadID + 100)
+
+samegender_clark <- samegender_clark %>%
+  mutate(smith_or_clark = "Clark")
+
+clarksmith_same <- merge(x=samegender_smith, y=samegender_clark, all.x=TRUE, all.y=TRUE)
+
+clarksmith_women <- clarksmith_same %>%
+  filter(gender_A==2)
+
+#indistinguishable dyads
+
+
+
+apim <- gls(howbody_avg_A ~ a2pSOO_A + a2pSOO_P + TSO_A + TSO_A*a2pSOO_P,
+            data=clarksmith_same,
+            correlation=corCompSymm(form=~1|dyadID),
+            na.action = na.omit)
+summary(apim)
+
+apim_in_empty <- gls(satisfaction_A ~ 1,
+                     data = clarksmith_same,
+                     correlation = corCompSymm(form=~1|dyadID),
+                     na.action = na.omit)
+summary(apim_in_empty)
+
+r2 <- 1-(apim$sigma^2/apim_in_empty$sigma^2)
+r2
+```
+
+
+##Descriptive stats
+```{r}
+favstats(~TSO_A, data=clarksmith_women)
+favstats(~a2pSOO_A, data=clarksmith_women)
+favstats(~howbody_avg_A, data=clarksmith_women)
+favstats(~relag_A, data=clarksmith_women)
+favstats(~careerasp_A, data=clarksmith_women)
+favstats(~authenticity_A, data=clarksmith_women)
+favstats(~trigram_score_A, data=clarksmith_women)
+
+corr.test(select(clarksmith_women, TSO_A, authenticity_A, a2pSOO_A, howbody_avg_A, relag_A, careerasp_A,  trigram_score_A, TSO_P, authenticity_P, a2pSOO_P, howbody_avg_P, relag_P, careerasp_P, trigram_score_P))
+```
+
+
+##Participant info
+```{r}
+clark_final$age <- as.numeric(clark_final$age)
+smith_final$age <- as.numeric(smith_final$age)
+favstats(~age, data=clark_final)
+favstats(~age, data=smith_final)
+
+favstats(~age_A, data=clarksmith_women)
+tally(clarksmith_women$race_A==clarksmith_women$race_P)
+
+psych::alpha(select(clarksmith_women, a2pSOO_A, a2pSOO_P))
+
+tally(~race_A, data=clarksmith_women)
+tally(~sexor_A, data=clarksmith_women)
+tally(~gender_A, data=clarksmith_women)
+
+table(clarksmith_women$race_A, clarksmith_women$race_P)
+
+test <- clarksmith_women %>%
+  filter(race_A==3, race_A!=race_P)
+
+tally(~gender, data=clark)
+tally(~gender, data=smith)
+
+```
+
+
+
+```{r}
+#Running direct correlations
+SSO_authenticity <- gls(howbody_avg_A~authenticity_A, data=clarksmith_women)
+auth_RAT <- gls(authenticity_A~trigram_score_A, data=clarksmith_women, na.action=na.omit)
+auth_ASP <- gls(authenticity_A ~ careerasp_A, data=clarksmith_women)
+auth_relag <- gls(authenticity_A ~ relag_A, data=clarksmith_women)
+
+SSO_RAT <- gls(howbody_avg_A~trigram_score_A, data=clarksmith_women, na.action=na.omit)
+
+summary(SSO_authenticity)
+summary(auth_ASP)
+summary(auth_relag)
+summary(auth_RAT)
+summary(SSO_RAT)
+```
+
+
+PATH model
+```{r}
+dyad_cswomen <- clarksmith_women %>%
+  mutate(TSO_P_SOO_A = TSO_P*a2pSOO_A,
+         TSO_A_SOO_P = TSO_A*a2pSOO_P) %>%
+  filter(partnum_A==1)
+```
+
+```{r}
+model <- '#####regressions 
+howbody_avg_A ~ t*TSO_A + a*a2pSOO_A + b*a2pSOO_P
+howbody_avg_P ~ t*TSO_P + a*a2pSOO_P + b*a2pSOO_A
+authenticity_A ~ d*howbody_avg_A
+authenticity_P ~ d*howbody_avg_P
+trigram_score_A ~ e1*authenticity_A
+careerasp_A ~ e2*authenticity_A
+relag_A ~ e3*authenticity_A
+trigram_score_P ~ e1*authenticity_P
+careerasp_P ~ e2*authenticity_P
+relag_P ~ e3*authenticity_P
+######covariances
+#endogenous
+howbody_avg_A ~~ howbody_avg_P
+authenticity_A ~~ authenticity_P
+trigram_score_A ~~ trigram_score_P
+careerasp_A ~~ careerasp_P
+relag_A ~~ relag_P
+trigram_score_A ~~ 0*careerasp_A
+trigram_score_A ~~ 0*relag_A
+trigram_score_A ~~ 0*careerasp_P
+trigram_score_A ~~ 0*relag_P
+careerasp_A ~~ 0*relag_A
+careerasp_A ~~ 0*trigram_score_P
+careerasp_A ~~ 0*relag_P
+relag_A ~~ 0*trigram_score_P
+relag_A ~~ 0*careerasp_P
+trigram_score_P ~~ 0*careerasp_P
+trigram_score_P ~~ 0*relag_P
+careerasp_P ~~ 0*relag_P
+#####variances
+howbody_avg_A ~~ v1*howbody_avg_A
+howbody_avg_P ~~ v1*howbody_avg_P
+TSO_A ~~ v2*TSO_A
+TSO_P ~~ v2*TSO_P
+a2pSOO_A ~~ v3*a2pSOO_A
+a2pSOO_P ~~ v3*a2pSOO_P
+authenticity_A ~~ v4*authenticity_A
+authenticity_P ~~ v4*authenticity_P
+##endogenous intercepts
+howbody_avg_A ~ i*1
+howbody_avg_P ~ i*1
+authenticity_A ~ i2*1
+authenticity_P ~ i2*1
+trigram_score_A ~ i3*1
+trigram_score_P ~ i4*1
+careerasp_A ~ i5*1
+careerasp_P ~ i5*1
+relag_A ~ i6*1
+relag_P ~ i6*1
+##exogenous means
+TSO_A ~ m*1
+TSO_P ~ m*1
+a2pSOO_A ~ m2*1
+a2pSOO_P ~ m2*1
+TSO_P_SOO_A ~ m3*1
+TSO_A_SOO_P ~ m3*1
+## exogenous covariances
+TSO_A_SOO_P ~~ c1*TSO_A
+TSO_P_SOO_A ~~ c1*TSO_P
+TSO_A_SOO_P ~~ c2*a2pSOO_P
+TSO_P_SOO_A ~~ c2*a2pSOO_A
+TSO_A ~~ c3*a2pSOO_P
+TSO_P ~~ c3*a2pSOO_A
+TSO_A ~~ c4*a2pSOO_A
+TSO_P ~~ c4*a2pSOO_P
+'
+#hi
+fit <- sem(model, data=dyad_cswomen)
+summary(fit)
+```
+
+
+
+
