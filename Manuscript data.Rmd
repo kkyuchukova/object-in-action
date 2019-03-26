@@ -1,0 +1,171 @@
+---
+title: "ObjectInAction Manuscript Data"
+author: "Kat Kyuchukova"
+date: "11/15/2018"
+output: html_document
+---
+#Read in cleaned data
+```{r}
+smith_final <- read.csv("/Users/katerinakyuchukova/Desktop/ObjectInAction/Cleaned data/smith_final.csv")
+clark_final <- read.csv("/Users/katerinakyuchukova/Desktop/ObjectInAction/Cleaned data/clark_final.csv")
+```
+
+
+
+#Making Pairwise
+```{r}
+#Clark
+clark<- clark_final %>%
+  #remove dyads w no data
+  filter(dyadID!=4, dyadID!=14, dyadID!=19) %>%
+  arrange(dyadID) %>%
+  #create person key
+  mutate(person=rep(1:2, times=22)) %>%
+  #selecting only necessary variables
+  select(dyadID, person, partID, gender, age, race, sexor, physanx, a2pSOO, metaSOO, trigram_score, authenticity, howbody_avg, relag, careerasp, TSO, avg_sexism, sexism_logel, satisfaction) %>%
+  arrange(person)
+
+tempA <- clark %>% 
+  mutate(personE = ifelse(person == 1, -1, 1), 
+         partnum = 1,
+         person = ifelse(person == 1, "A", "P")) %>%
+  gather(variable, value, partID:partnum)%>%
+  unite(var_person, variable, person)%>%
+  spread(var_person, value)
+
+tempB <- clark %>% 
+  mutate(personE = ifelse(person == 1, -1, 1), 
+         partnum = 2,
+         person = ifelse(person == 1, "P", "A")) %>%
+  gather(variable, value, partID:partnum) %>%
+  unite(var_person, variable, person) %>%
+  spread(var_person, value)
+
+clark_pair <- bind_rows(tempA, tempB) %>%
+  arrange(dyadID)
+
+rm(tempA, tempB)
+
+head(clark_pair)
+
+
+#Smith
+
+#making necessary variables numeric
+smith_final$dyadID <- as.numeric(smith_final$dyadID)
+smith_final$partID <- as.numeric(smith_final$partID)
+
+
+smith <- smith_final %>%
+  #removing dyads w no data
+  filter(dyadID!=16, !is.na(dyadID), dyadID!=798797, dyadID!=999, dyadID!=999999, dyadID!=9999, dyadID!=7) %>%
+  arrange(dyadID) %>%
+  mutate(person=rep(1:2, times=23),
+         #fixing repeating partIDs
+         partID= ifelse(dyadID==31 & person==2, 83, partID),
+         dyadID= ifelse(dyadID==2 & partID==4|partID==5, 1, dyadID)) %>%
+  #selecting necessary variables
+  select(dyadID, person, partID, gender, age, race, sexor, physanx, a2pSOO, metaSOO, authenticity, howbody_avg, relag, careerasp, TSO, avg_sexism, sexism_logel, satisfaction)  %>%
+  arrange(person)
+
+tempA <- smith %>% 
+  mutate(personE = ifelse(person == 1, -1, 1), 
+         partnum = 1,
+         person = ifelse(person == 1, "A", "P")) %>%
+  gather(variable, value, partID:partnum)%>%
+  unite(var_person, variable, person) %>%
+  spread(var_person, value)
+
+tempB <- smith %>% 
+  mutate(personE = ifelse(person == 1, -1, 1), 
+         partnum = 2,
+         person = ifelse(person == 1, "P", "A")) %>%
+  gather(variable, value, partID:partnum) %>%
+  unite(var_person, variable, person) %>%
+  spread(var_person, value)
+
+smith_pair <- bind_rows(tempA, tempB)
+
+rm(tempA, tempB)
+
+head(smith_pair)
+```
+
+
+
+Next steps: correlations, matrices etc
+```{r}
+#Make pairwise data numeric
+x <- 1:39
+smith_pair[,x] <- lapply(smith_pair[,x], as.numeric)
+clark_pair[,x] <-lapply(clark_pair[,x], as.numeric)
+
+
+###Making same gender and mixed gender pair datasets
+#same
+samegender_clark <- clark_pair %>%
+  filter(gender_A==gender_P)
+
+samegender_smith <- smith_pair %>%
+  filter(gender_A==gender_P)
+
+#making numeric
+samegender_smith[,x] <- lapply(samegender_smith[,x], as.numeric)
+samegender_clark[,x] <-lapply(samegender_clark[,x], as.numeric)
+
+#mixed
+diffgender_clark <- clark_pair %>%
+  filter(gender_A!=gender_P)
+
+diffgender_smith <- smith_pair %>%
+  filter(gender_A!=gender_P)
+
+##Correlations
+corr.test(select(samegender_clark, a2pSOO_A, a2pSOO_P, metaSOO_A, metaSOO_P, howbody_avg_A))
+corr.test(select(clark_pair, a2pSOO_A, a2pSOO_P, metaSOO_A, metaSOO_P, howbody_avg_A))
+corr.test(select(samegender_clark, authenticity_A, careerasp_A, relag_A))
+corr.test(select(clark_pair, authenticity_A, careerasp_A, relag_A))
+
+corr.test(select(samegender_smith, a2pSOO_A, a2pSOO_P, metaSOO_A, metaSOO_P, howbody_avg_A))
+corr.test(select(smith_pair, a2pSOO_A, a2pSOO_P, metaSOO_A, metaSOO_P, howbody_avg_A))
+corr.test(select(samegender_smith, authenticity_A, careerasp_A, relag_A))
+corr.test(select(smith_pair, authenticity_A, careerasp_A, relag_A))
+```
+
+
+MODELING THE APIM
+```{r}
+#merging clark and smith same sex data
+samegender_smith <- samegender_smith %>%
+  mutate(smith_or_clark = "Smith",
+         dyadID = dyadID + 100)
+
+samegender_clark <- samegender_clark %>%
+  mutate(smith_or_clark = "Clark")
+
+clarksmith_same <- merge(x=samegender_smith, y=samegender_clark, all.x=TRUE, all.y=TRUE)
+
+clarksmith_women <- clarksmith_same %>%
+  filter(gender_A==2)
+
+
+#running the apim
+
+apim_women <- gls(howbody_avg_A ~ a2pSOO_A + a2pSOO_P + TSO_A + TSO_A*a2pSOO_P,
+            data=clarksmith_women,
+            correlation=corCompSymm(form=~1|dyadID),
+            na.action = na.omit)
+summary(apim_women)
+
+```
+
+
+
+
+
+
+
+
+
+
+

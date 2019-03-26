@@ -1,0 +1,370 @@
+---
+title: "Variable creation ObjectInAction"
+author: "Kat Kyuchukova"
+date: "11/15/2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+#Load packages
+```{r}
+library(nlme)
+library(haven)
+library(devtools)
+library(psych)
+library(mosaic)
+library(tidyr)
+library(dplyr)
+library(irr)
+select <- dplyr::select
+
+#set working directory
+setwd("/Users/katerinakyuchukova/Downloads/kat/")
+```
+
+Load data
+```{r}
+#clark
+clark_measures <- read_spss("Clark College Relationships Data/College_Relationship_Measures_1.sav")
+clark_pairwise <- read_spss("Clark College Relationships Data/College_Relationship_Pairwise_1.sav")
+
+#smith
+smith <- read_spss("College_Relationship_Dyadic_September_14_2018_12_17.sav")
+
+clark_sentences <- read.csv("sexist sentences/coded_sentences.csv")
+
+#trigrams
+trigram_check <- read.csv("Clark College Relationships Data/trigrams/AMELIA_check_trigram_grading.csv")
+```
+
+
+Clark Scale Scores--creating scale scores for the Clark data.
+```{r}
+#Social Physique Anxiety
+clark_measures <- clark_measures %>%
+  #reverse code physical anxiety variable
+  mutate(physanx5.r = (min(physanx_5, na.rm = TRUE) + max(physanx_5, na.rm = TRUE) - physanx_5),
+         #get average for scale score
+         physanx = (physanx_1 +physanx_2 +physanx_3+physanx_4+physanx5.r+physanx_6)/6)
+
+#SOO -- subtract internal SOO from external SOO
+clark_measures$extSOO <- rowMeans(dplyr::select(clark_measures, otherint_1, otherint_2, otherint_5, otherint_6, otherint_10), na.rm=TRUE) #get average
+
+clark_measures$intSOO <- rowMeans(dplyr::select(clark_measures, otherint_3, otherint_4, otherint_7, otherint_8, otherint_9, otherint_11, otherint_12), na.rm=TRUE) #get average
+
+clark_measures$a2pSOO <- clark_measures$extSOO - clark_measures$intSOO #subtract internal from external
+
+#Meta SOO--subtract internal from external
+clark_measures$extmetaSOO <- rowMeans(dplyr::select(clark_measures, metaint_1, metaint_2, metaint_5, metaint_6, metaint_10), na.rm=TRUE)
+
+clark_measures$intmetaSOO <- rowMeans(dplyr::select(clark_measures, metaint_3, metaint_4, metaint_7, metaint_8, metaint_9, metaint_11, metaint_12), na.rm=TRUE)
+
+clark_measures$metaSOO <- clark_measures$extmetaSOO - clark_measures$intmetaSOO
+
+#Interaction Authenticity
+clark_measures$authenticity <- rowMeans(dplyr::select(clark_measures, inter_1, inter_3, inter_5, inter_6, inter_7, inter_9, inter_10, interaux_5, interaux_6))
+
+#SSO--average of how body 1 and how body 2
+clark_measures <- clark_measures %>%
+  mutate(howbody_avg = (howbody_1+howbody_2)/2)
+
+#Relationship Agency
+clark_measures$relag <- rowMeans(dplyr::select(clark_measures, relag_1, relag_2, relag_3, relag_4, relag_5, relag_6, relag_7, relag_8, relag_9))
+
+#Career Aspirations--reverse code 4, 7, and 10 and average with the rest
+clark_measures <- clark_measures %>% #reverse code certain career aspiration variables
+  mutate(careerasp4.r = (min(careerasp_4, na.rm = TRUE) + max(careerasp_4, na.rm = TRUE) - careerasp_4),
+         careerasp7.r = (min(careerasp_7, na.rm = TRUE) + max(careerasp_7, na.rm = TRUE) - careerasp_7),
+         careerasp10.r = (min(careerasp_10, na.rm = TRUE) + max(careerasp_10, na.rm = TRUE) - careerasp_10))
+
+clark_measures$careerasp <- rowMeans(dplyr::select(clark_measures, careerasp_1, careerasp_2, careerasp_3, careerasp4.r, careerasp_5, careerasp_6, careerasp7.r, careerasp_8, careerasp_9, careerasp10.r))
+
+#TSO--subtract internal from external, multiply by -1
+clark_measures$funcTSO <- rowMeans(dplyr::select(clark_measures,tso_1, tso_2, tso_4, tso_7, tso_9))
+clark_measures$physTSO <- rowMeans(dplyr::select(clark_measures, tso_3, tso_5, tso_6, tso_8, tso_10))
+
+clark_measures$TSO <- clark_measures$physTSO - clark_measures$funcTSO
+clark_measures$TSO <- clark_measures$TSO*(-1)
+
+#satisfaction--reverse code negative variables and then average with the rest
+clark_measures <- clark_measures %>%
+  mutate(anxious.r = (min(inter_2, na.rm = TRUE) + max(inter_2, na.rm = TRUE) - inter_2)) %>%
+  mutate(uncomfort.r = (min(inter_4, na.rm = TRUE) + max(inter_4, na.rm = TRUE) - inter_4)) %>%
+  mutate(hostile.r = (min(inter_8, na.rm = TRUE) + max(inter_8, na.rm = TRUE) - inter_8)) %>%
+  mutate(apprehen.r = (min(inter_11, na.rm = TRUE) + max(inter_11, na.rm = TRUE) - inter_11)) %>%
+  mutate(aggressive.r = (min(inter_13, na.rm = TRUE) + max(inter_13, na.rm = TRUE) - inter_13))
+
+clark_measures$satisfaction <- rowMeans(select(clark_measures, anxious.r, uncomfort.r, hostile.r, apprehen.r, aggressive.r, inter_1, inter_3, inter_5, inter_6, inter_7, inter_9, inter_10, interaux_6), na.rm=TRUE)
+```
+
+
+SMITH SCALE SCORES
+```{r}
+smith <- smith %>%
+  arrange(dyadID) %>%
+  filter(dyadID!=16, !is.na(dyadID), dyadID!=798797, dyadID!=999, dyadID!=999999, dyadID!=9999) #filter out dyads with no data
+
+#Social Physique Anxiety
+smith <- smith %>%
+  mutate(physanx5.r = (min(physanx_5, na.rm = TRUE) + max(physanx_5, na.rm = TRUE) - physanx_5),
+         physanx = (physanx_1 +physanx_2 +physanx_3+physanx_4+physanx5.r+physanx_6)/6) #reverse code physical anxiety variable
+
+#SOO
+smith$extSOO <- rowMeans(dplyr::select(smith, otherint_1, otherint_2, otherint_5, otherint_6, otherint_10), na.rm=TRUE)
+
+smith$intSOO <- rowMeans(dplyr::select(smith, otherint_3, otherint_4, otherint_7, otherint_8, otherint_9, otherint_11, otherint_12), na.rm=TRUE)
+
+smith$a2pSOO <- smith$extSOO - smith$intSOO
+
+#Meta SOO
+smith$extmetaSOO <- rowMeans(dplyr::select(smith, metaint_1, metaint_2, metaint_5, metaint_6, metaint_10), na.rm=TRUE)
+
+smith$intmetaSOO <- rowMeans(dplyr::select(smith, metaint_3, metaint_4, metaint_7, metaint_8, metaint_9, metaint_11, metaint_12), na.rm=TRUE)
+
+smith$metaSOO <- smith$extmetaSOO - smith$intmetaSOO
+
+#Interaction Authenticity
+smith$authenticity <- rowMeans(dplyr::select(smith, inter_1, inter_3, inter_5, inter_6, inter_7, inter_9, inter_10, interaux_5, interaux_6))
+
+#SSO
+smith <- smith %>%
+  mutate(howbody_avg = (howbody_1+howbody_2)/2)
+
+
+#Relationship Agency
+smith$relag <- rowMeans(dplyr::select(smith, relag_1, relag_2, relag_3, relag_4, relag_5, relag_6, relag_7, relag_8, relag_9))
+
+#Career Aspirations
+smith <- smith %>%
+  mutate(careerasp4.r = (min(careerasp_4, na.rm = TRUE) + max(careerasp_4, na.rm = TRUE) - careerasp_4),
+         careerasp7.r = (min(careerasp_7, na.rm = TRUE) + max(careerasp_7, na.rm = TRUE) - careerasp_7),
+         careerasp10.r = (min(careerasp_10, na.rm = TRUE) + max(careerasp_10, na.rm = TRUE) - careerasp_10))
+
+smith$careerasp <- rowMeans(dplyr::select(smith, careerasp_1, careerasp_2, careerasp_3, careerasp4.r, careerasp_5, careerasp_6, careerasp7.r, careerasp_8, careerasp_9, careerasp10.r))
+
+#TSO
+smith$funcTSO <- rowMeans(dplyr::select(smith,tso_1, tso_2, tso_4, tso_7, tso_9))
+smith$physTSO <- rowMeans(dplyr::select(smith, tso_3, tso_5, tso_6, tso_8, tso_10))
+
+smith$TSO <- smith$physTSO-smith$funcTSO
+smith$TSO <- smith$TSO*-1
+
+#satisfaction--reverse code negative variables and then average with the rest
+smith <- smith %>%
+  mutate(anxious.r = (min(inter_2, na.rm = TRUE) + max(inter_2, na.rm = TRUE) - inter_2)) %>%
+  mutate(uncomfort.r = (min(inter_4, na.rm = TRUE) + max(inter_4, na.rm = TRUE) - inter_4)) %>%
+  mutate(hostile.r = (min(inter_8, na.rm = TRUE) + max(inter_8, na.rm = TRUE) - inter_8)) %>%
+  mutate(apprehen.r = (min(inter_11, na.rm = TRUE) + max(inter_11, na.rm = TRUE) - inter_11)) %>%
+  mutate(aggressive.r = (min(inter_13, na.rm = TRUE) + max(inter_13, na.rm = TRUE) - inter_13))
+
+smith$satisfaction <- rowMeans(select(smith, anxious.r, uncomfort.r, hostile.r, apprehen.r, aggressive.r, inter_1, inter_3, inter_5, inter_6, inter_7, inter_9, inter_10, interaux_6), na.rm=TRUE)
+```
+
+
+
+Trigrams
+```{r}
+###Clark
+#Eliminate unnecessary columns
+trigram_check <- trigram_check[,1:8]
+
+#correct dummy variable to account for the correct trigrams that excel missed
+trigram_check <- trigram_check %>%
+  mutate(trigram_correct = ifelse(accurate.=="yes", Correct...1.0., 1))
+
+#create a correct trigram score for each participant
+trigram_clark <- trigram_check %>%
+  group_by(partID) %>%
+  summarise(trigram_score = sum(trigram_correct)) %>%
+  dplyr::select(partID, trigram_score)
+
+#merge trigram data with big clark data file
+clark <- merge(x=clark_measures, y=trigram_clark, by="partID", all.x=TRUE)
+```
+
+```{r}
+###SMITH
+#select only trigram related variables
+smith_trigrams <- smith %>%
+  dplyr::select(partID, dyadID, rat1_1.0, rat2_1.0,rat3_1.0, rat4_1.0,rat5_1.0, rat6_1.0, rat7_1.0, rat8_1.0, rat9_1.0, rat10_1) %>%
+  arrange(dyadID, partID)
+
+smith_trigrams_long <- gather(smith_trigrams, trigram, response, rat1_1.0:rat10_1)
+
+#change trigram from generic name to the specific trigram
+smith_trigrams_long <- smith_trigrams_long %>%
+  mutate(trigram = ifelse(trigram=="rat1_1.0", "QUACK:POND:WADDLE",
+                          ifelse(trigram=="rat2_1.0", "ATHLETES:WEB:RABBIT",
+                                 ifelse(trigram=="rat3_1.0", "HONEY:SWARM:STING",
+                                        ifelse(trigram=="rat4_1.0", "MATCHES:SMOKE:BUSH",
+                                               ifelse(trigram=="rat5_1.0", "CHOCOLATE:FORTUNE:TIN",
+                                                      ifelse(trigram=="rat6_1.0", "CURIOSITY:NAP:WHISKERS",
+                                                             ifelse(trigram=="rat7_1.0", "STALK:TRAINER:KING",
+                                                                    ifelse(trigram=="rat8_1.0", "SURPRISE:LINE:BIRTHDAY",
+                                                                           ifelse(trigram=="rat9_1.0", "RED:GO:CAR", 
+                                                                                  ifelse(trigram=="rat10_1", "MOUSE : SHARP : BLUE", NA)))))))))))
+
+#create a correct response column
+smith_trigrams_long <- smith_trigrams_long %>%
+  mutate(correct_response=ifelse(trigram=="QUACK:POND:WADDLE", "Duck",
+                          ifelse(trigram=="ATHLETES:WEB:RABBIT", "Foot",
+                                 ifelse(trigram=="HONEY:SWARM:STING","Bee",
+                                        ifelse(trigram=="MATCHES:SMOKE:BUSH", "Fire", 
+                                               ifelse(trigram=="CHOCOLATE:FORTUNE:TIN", "Cookie",
+                                                      ifelse(trigram=="CURIOSITY:NAP:WHISKERS","Cat",
+                                                             ifelse(trigram=="STALK:TRAINER:KING","Lion",
+                                                                    ifelse(trigram=="SURPRISE:LINE:BIRTHDAY", "Party",
+                                                                           ifelse(trigram=="RED:GO:CAR", "Stop",
+                                                                                  ifelse(trigram=="MOUSE : SHARP : BLUE", "Cheese", NA))))))))))) %>%
+  arrange(partID, dyadID)
+
+smith_trigrams_long <- smith_trigrams_long[,c(1,2,3,5,4)]
+
+##Write out file to grade
+#write.csv(smith_trigrams_long, "/Users/katerinakyuchukova/Downloads/kat/Smith College Relationships Data/trigrams_to_grade.csv", row.names=FALSE)
+  
+#Read in graded trigram file
+smith_trigrams_graded <- read.csv("Smith College Relationships Data/trigrams_graded.csv")
+
+#Summarize a final correct trigram
+smith_triscore <- smith_trigrams_graded %>%
+  group_by(partID, dyadID) %>%
+  summarise(trigram_score=sum(final_correct))%>%
+  dplyr::select(partID, dyadID, trigram_score)
+
+#Merge with big smith data
+smith <- merge(x=smith, y=smith_triscore, x.all=TRUE)
+```
+
+
+
+sexist sentences
+```{r}
+#Calculate ICC score to see if we can average
+clark_sentences <- clark_sentences[,1:8]
+
+clark_sentences <- clark_sentences %>%
+  filter(!is.na(dyadID))
+
+clark_sentences <- na.omit(clark_sentences)
+clark_icc <- clark_sentences %>%
+  select(Hannah, Jennie, Amelia)
+
+icc(clark_icc, model="twoway", unit="average")
+
+#Remove sentence 4
+clark_sentences <- clark_sentences %>%
+  filter(Sentence!=4)
+
+#ICC is good enough to get an average
+
+#Total sentence average
+clark_sentence_avg <- clark_sentences %>%
+  mutate(sexism=(Hannah+Jennie+Amelia)/3) %>%
+  group_by(partID) %>%
+  summarise(avg_sexism = mean(sexism)) %>%
+  select(partID, avg_sexism)
+
+#sentence average with just the logel sentences
+clark_logel <- clark_sentences %>%
+  filter(Sentence==3|Sentence==5|Sentence==6) %>%
+  mutate(sexism=(Hannah+Jennie+Amelia)/3) %>%
+  group_by(partID) %>%
+  summarise(sexism_logel = mean(sexism)) %>%
+  select(partID, sexism_logel)
+  
+#Merge together 
+clark_sexism <- merge(x=clark, y=clark_sentence_avg, by="partID", all.x=TRUE)
+clark_final <- merge (x=clark_sexism, y=clark_logel, by="partID", all.x=TRUE)
+```
+
+```{r}
+#Smith
+
+#Creating sexist sentence file
+smith$dyadID <- as.numeric(smith$dyadID)
+smith$partID <- as.numeric(smith$partID)
+smith_sentences_long <- smith %>%
+  #remove dyads with no data
+  filter(dyadID!=16, !is.na(dyadID), dyadID!=798797, dyadID!=999, dyadID!=999999, dyadID!=9999) %>%
+  #select just sexism related variables
+  select(partID, dyadID, sexismpre_1:sexismpre_8) %>%
+  arrange(dyadID)
+
+#make data long
+smith_sentences_long <- gather(smith_sentences_long, sentence, target, sexismpre_1:sexismpre_8)
+
+#create a column with the actual sentence as well as a sentence number column
+smith_sentences_long <- smith_sentences_long %>%
+  mutate(stem=ifelse(sentence=="sexismpre_1", "Linda swatted at the flies", 
+                     ifelse(sentence=="sexismpre_2", "Helen crammed for the test",
+                            ifelse(sentence=="sexismpre_3", "Shirley asked for help getting home",
+                                   ifelse(sentence=="sexismpre_4", "Sam read the newspaper",
+                                          ifelse(sentence=="sexismpre_5", "Jenny went home to cook dinner",
+                                                 ifelse(sentence=="sexismpre_6", "Katherine baby-sat the neighbor's kids",
+                                                        ifelse(sentence=="sexismpre_7", "Tom bottle fed the baby",
+                                                               ifelse(sentence=="sexismpre_8", "Bert changed the oil", NA))))))))) %>%
+    mutate(sentence=ifelse(sentence=="sexismpre_1", 1, 
+                     ifelse(sentence=="sexismpre_2", 2,
+                            ifelse(sentence=="sexismpre_3", 3,
+                                   ifelse(sentence=="sexismpre_4", 4,
+                                          ifelse(sentence=="sexismpre_5", 5,
+                                                 ifelse(sentence=="sexismpre_6", 6,
+                                                        ifelse(sentence=="sexismpre_7", 7,
+                                                               ifelse(sentence=="sexismpre_8", 8, NA)))))))))
+
+#change order of sentences
+smith_sentences_long <- smith_sentences_long[,c(1,2,3,5,4)]
+
+#remove rows with no target data
+smith_sentences_long <- smith_sentences_long %>%
+  filter(target!="") %>%
+  arrange(dyadID, partID)
+
+#Write out csv
+#write.csv(smith_sentences_long, "/Users/katerinakyuchukova/Downloads/kat/Smith College Relationships Data/sexist_sentences_for_coding.csv", row.names = FALSE) 
+
+#Read in coded sentences, code correlations
+kat_codes <- read.csv("/Users/katerinakyuchukova/Downloads/kat/Smith College Relationships Data/kat_recode.csv")
+
+xinyu_codes <- read.csv("/Users/katerinakyuchukova/Downloads/kat/Smith College Relationships Data/xinyu_recode.csv")
+
+coded_sentences <- merge(x=kat_codes, y=xinyu_codes, all.x = TRUE)
+
+
+smith_icc <- coded_sentences %>%
+  #remove sentence 4
+  filter(sentence!=4)
+
+icc(smith_icc, model="twoway", unit="average")  
+
+#making average file
+#all sentenes (minus 4)
+smith_sentence_avg <- coded_sentences %>%
+  mutate(sexism=(katscore2+Xinyu)/2) %>%
+  group_by(partID) %>%
+  summarise(avg_sexism = mean(sexism)) %>%
+  select(partID, avg_sexism)
+
+#just logel sentences
+smith_logel <- coded_sentences %>%
+  filter(sentence==3|sentence==5|sentence==6) %>%
+  mutate(sexism=(katscore2+Xinyu)/2) %>%
+  group_by(partID) %>%
+  summarise(sexism_logel = mean(sexism)) %>%
+  select(partID, sexism_logel)
+  
+#merge data
+smith_sexism <- merge(x=smith, y=smith_sentence_avg, by="partID", all.x=TRUE)
+smith_final <- merge (x=smith_sexism, y=smith_logel, by="partID", all.x=TRUE)
+```
+
+Write out cleaned data!
+```{r}
+write.csv(smith_final, "/Users/katerinakyuchukova/Desktop/ObjectInAction/Cleaned data/smith_final.csv" )
+write.csv(clark_final, "/Users/katerinakyuchukova/Desktop/ObjectInAction/Cleaned data/clark_final.csv")
+```
+
