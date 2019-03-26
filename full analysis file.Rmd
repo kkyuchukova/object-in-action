@@ -45,13 +45,9 @@ trigram_check <- read.csv("Raw data/Clark College Relationships Data/trigrams/AM
 
 #looking at variables
 ```{r}
-view <- variable_view(clark_measures)
 glimpse(clark_measures)
 glimpse(clark_pairwise)
 names(clark_measures)
-
-variable_view(clark_measures)
-
 ```
 
 
@@ -530,7 +526,7 @@ head(smith_pair)
 Next steps: correlations, matrices etc
 ```{r}
 
-#making shit numeric
+#making variables numeric
 ix <- 1:39
 smith_pair[,ix] <- lapply(smith_pair[,ix], as.numeric)
 clark_pair[,ix] <-lapply(clark_pair[,ix], as.numeric)
@@ -548,12 +544,12 @@ samegender_smith[,ix] <- lapply(samegender_smith[,ix], as.numeric)
 samegender_clark[,ix] <-lapply(samegender_clark[,ix], as.numeric)
 
 
-corr.test(select(samegender_smith, physanx_A, a2pSOO_A, metaSOO_A, authenticity_A, howbody_avg_A, relag_A, careerasp_A, TSO_A, avg_sexism_A, sexism_logel_A))
-corr.test(select(samegender_clark, physanx, a2pSOO, metaSOO, authenticity, howbody_avg, relag, careerasp, TSO, avg_sexism, sexism_logel))
+#corr.test(select(samegender_smith, physanx_A, a2pSOO_A, metaSOO_A, authenticity_A, howbody_avg_A, relag_A, careerasp_A, TSO_A, avg_sexism_A, sexism_logel_A))
+#corr.test(select(samegender_clark, physanx, a2pSOO, metaSOO, authenticity, howbody_avg, relag, careerasp, TSO, avg_sexism, sexism_logel))
 
-corr.test(select(samegender_clark, a2pSOO_A, a2pSOO_P, metaSOO_A, metaSOO_P, howbody_avg_A))
-corr.test(select(diffgender_clark, a2pSOO_A, a2pSOO_P, metaSOO_A, metaSOO_P, howbody_avg_A))
-corr.test(select(samegender_clark, authenticity_A, careerasp_A, relag_A))
+#corr.test(select(samegender_clark, a2pSOO_A, a2pSOO_P, metaSOO_A, metaSOO_P, howbody_avg_A))
+#corr.test(select(diffgender_clark, a2pSOO_A, a2pSOO_P, metaSOO_A, metaSOO_P, howbody_avg_A))
+#corr.test(select(samegender_clark, authenticity_A, careerasp_A, relag_A))
 
 diffgender_clark <- clark_pair %>%
   filter(gender_A!=gender_P)
@@ -608,16 +604,16 @@ corr.test(select(clark_pair, authenticity_A, careerasp_A, relag_A))
 # ggplot(samegender_clark, aes(x=TSO_A)) + geom_histogram(bins=15)
 
 #boxplots
-smith_howbody <- smith_final %>%
-  select(howbody_1, howbody_2, howbody_3, howbody_avg) %>%
-  gather(variable, value, howbody_1:howbody_avg)
+#smith_howbody <- smith_final %>%
+  #select(howbody_1, howbody_2, howbody_3, howbody_avg) %>%
+  #gather(variable, value, howbody_1:howbody_avg)
 
-clark_howbody <- clark_final %>%
-  select(howbody_1, howbody_2, howbody_3, howbody_avg) %>%
-  gather(variable, value, howbody_1:howbody_avg)
+#clark_howbody <- clark_final %>%
+  #select(howbody_1, howbody_2, howbody_3, howbody_avg) %>%
+  #gather(variable, value, howbody_1:howbody_avg)
 
-smith_howbody$value <- as.numeric(smith_howbody$value)
-clark_howbody$value <- as.numeric(clark_howbody$value)
+#smith_howbody$value <- as.numeric(smith_howbody$value)
+#clark_howbody$value <- as.numeric(clark_howbody$value)
 
 # ggplot(smith_howbody, aes(x=variable, y=value)) + geom_boxplot()
 # ggplot(clark_howbody, aes(x=variable, y=value)) + geom_boxplot()

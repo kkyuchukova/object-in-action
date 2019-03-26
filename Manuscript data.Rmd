@@ -6,8 +6,8 @@ output: html_document
 ---
 #Read in cleaned data
 ```{r}
-smith_final <- read.csv("/Users/katerinakyuchukova/Desktop/ObjectInAction/Cleaned data/smith_final.csv")
-clark_final <- read.csv("/Users/katerinakyuchukova/Desktop/ObjectInAction/Cleaned data/clark_final.csv")
+smith_final <- read.csv("Cleaned data/smith_final.csv")
+clark_final <- read.csv("Cleaned data/clark_final.csv")
 ```
 
 
@@ -159,6 +159,146 @@ summary(apim_women)
 
 ```
 
+
+##Descriptive stats
+```{r}
+favstats(~TSO_A, data=clarksmith_women)
+favstats(~a2pSOO_A, data=clarksmith_women)
+favstats(~howbody_avg_A, data=clarksmith_women)
+favstats(~relag_A, data=clarksmith_women)
+favstats(~careerasp_A, data=clarksmith_women)
+favstats(~authenticity_A, data=clarksmith_women)
+favstats(~trigram_score_A, data=clarksmith_women)
+
+corr.test(select(clarksmith_women, TSO_A, authenticity_A, a2pSOO_A, howbody_avg_A, relag_A, careerasp_A,  trigram_score_A, TSO_P, authenticity_P, a2pSOO_P, howbody_avg_P, relag_P, careerasp_P, trigram_score_P))
+```
+
+
+##Participant info
+```{r}
+clark_final$age <- as.numeric(clark_final$age)
+smith_final$age <- as.numeric(smith_final$age)
+favstats(~age, data=clark_final)
+favstats(~age, data=smith_final)
+
+favstats(~age_A, data=clarksmith_women)
+tally(clarksmith_women$race_A==clarksmith_women$race_P)
+
+psych::alpha(select(clarksmith_women, a2pSOO_A, a2pSOO_P))
+
+tally(~race_A, data=clarksmith_women)
+tally(~sexor_A, data=clarksmith_women)
+tally(~gender_A, data=clarksmith_women)
+
+table(clarksmith_women$race_A, clarksmith_women$race_P)
+
+tally(~gender, data=clark)
+tally(~gender, data=smith)
+
+```
+
+
+
+```{r}
+#Running direct correlations
+SSO_authenticity <- gls(howbody_avg_A~authenticity_A, data=clarksmith_women)
+auth_RAT <- gls(authenticity_A~trigram_score_A, data=clarksmith_women, na.action=na.omit)
+auth_ASP <- gls(authenticity_A ~ careerasp_A, data=clarksmith_women)
+auth_relag <- gls(authenticity_A ~ relag_A, data=clarksmith_women)
+
+SSO_RAT <- gls(howbody_avg_A~trigram_score_A, data=clarksmith_women, na.action=na.omit)
+
+summary(SSO_authenticity)
+summary(auth_ASP)
+summary(auth_relag)
+summary(auth_RAT)
+summary(SSO_RAT)
+```
+
+
+##PATH model
+
+```{r}
+#Filtering for just one partnum and creating TSO * objectification interaction
+dyad_cswomen <- clarksmith_women %>%
+  mutate(TSO_P_SOO_A = TSO_P*a2pSOO_A,
+         TSO_A_SOO_P = TSO_A*a2pSOO_P) %>%
+  filter(partnum_A==1)
+```
+
+
+```{r}
+model <- '#####regressions 
+howbody_avg_A ~ t*TSO_A + a*a2pSOO_A + b*a2pSOO_P
+howbody_avg_P ~ t*TSO_P + a*a2pSOO_P + b*a2pSOO_A
+authenticity_A ~ d*howbody_avg_A
+authenticity_P ~ d*howbody_avg_P
+trigram_score_A ~ e1*authenticity_A
+careerasp_A ~ e2*authenticity_A
+relag_A ~ e3*authenticity_A
+trigram_score_P ~ e1*authenticity_P
+careerasp_P ~ e2*authenticity_P
+relag_P ~ e3*authenticity_P
+######covariances
+#endogenous
+howbody_avg_A ~~ howbody_avg_P
+authenticity_A ~~ authenticity_P
+trigram_score_A ~~ trigram_score_P
+careerasp_A ~~ careerasp_P
+relag_A ~~ relag_P
+trigram_score_A ~~ 0*careerasp_A
+trigram_score_A ~~ 0*relag_A
+trigram_score_A ~~ 0*careerasp_P
+trigram_score_A ~~ 0*relag_P
+careerasp_A ~~ 0*relag_A
+careerasp_A ~~ 0*trigram_score_P
+careerasp_A ~~ 0*relag_P
+relag_A ~~ 0*trigram_score_P
+relag_A ~~ 0*careerasp_P
+trigram_score_P ~~ 0*careerasp_P
+trigram_score_P ~~ 0*relag_P
+careerasp_P ~~ 0*relag_P
+#####variances
+howbody_avg_A ~~ v1*howbody_avg_A
+howbody_avg_P ~~ v1*howbody_avg_P
+TSO_A ~~ v2*TSO_A
+TSO_P ~~ v2*TSO_P
+a2pSOO_A ~~ v3*a2pSOO_A
+a2pSOO_P ~~ v3*a2pSOO_P
+authenticity_A ~~ v4*authenticity_A
+authenticity_P ~~ v4*authenticity_P
+##endogenous intercepts
+howbody_avg_A ~ i*1
+howbody_avg_P ~ i*1
+authenticity_A ~ i2*1
+authenticity_P ~ i2*1
+trigram_score_A ~ i3*1
+trigram_score_P ~ i4*1
+careerasp_A ~ i5*1
+careerasp_P ~ i5*1
+relag_A ~ i6*1
+relag_P ~ i6*1
+##exogenous means
+TSO_A ~ m*1
+TSO_P ~ m*1
+a2pSOO_A ~ m2*1
+a2pSOO_P ~ m2*1
+TSO_P_SOO_A ~ m3*1
+TSO_A_SOO_P ~ m3*1
+## exogenous covariances
+TSO_A_SOO_P ~~ c1*TSO_A
+TSO_P_SOO_A ~~ c1*TSO_P
+TSO_A_SOO_P ~~ c2*a2pSOO_P
+TSO_P_SOO_A ~~ c2*a2pSOO_A
+TSO_A ~~ c3*a2pSOO_P
+TSO_P ~~ c3*a2pSOO_A
+TSO_A ~~ c4*a2pSOO_A
+TSO_P ~~ c4*a2pSOO_P
+'
+
+fit <- sem(model, data=dyad_cswomen)
+summary(fit)
+```
 
 
 

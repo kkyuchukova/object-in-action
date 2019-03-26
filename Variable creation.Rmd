@@ -20,24 +20,21 @@ library(tidyr)
 library(dplyr)
 library(irr)
 select <- dplyr::select
-
-#set working directory
-setwd("/Users/katerinakyuchukova/Downloads/kat/")
 ```
 
 Load data
 ```{r}
 #clark
-clark_measures <- read_spss("Clark College Relationships Data/College_Relationship_Measures_1.sav")
-clark_pairwise <- read_spss("Clark College Relationships Data/College_Relationship_Pairwise_1.sav")
+clark_measures <- read_spss("Raw data/Clark College Relationships Data/College_Relationship_Measures_1.sav")
+clark_pairwise <- read_spss("Raw data/Clark College Relationships Data/College_Relationship_Pairwise_1.sav")
 
 #smith
-smith <- read_spss("College_Relationship_Dyadic_September_14_2018_12_17.sav")
+smith <- read_spss("Raw data/Smith College Relationships Data/College_Relationship_Dyadic_September_14_2018_12_17.sav")
 
-clark_sentences <- read.csv("sexist sentences/coded_sentences.csv")
+clark_sentences <- read.csv("Raw data/Clark College Relationships Data/sexist sentences/coded_sentences.csv")
 
 #trigrams
-trigram_check <- read.csv("Clark College Relationships Data/trigrams/AMELIA_check_trigram_grading.csv")
+trigram_check <- read.csv("Raw data/Clark College Relationships Data/trigrams/AMELIA_check_trigram_grading.csv")
 ```
 
 
@@ -224,7 +221,7 @@ smith_trigrams_long <- smith_trigrams_long %>%
 smith_trigrams_long <- smith_trigrams_long[,c(1,2,3,5,4)]
 
 ##Write out file to grade
-#write.csv(smith_trigrams_long, "/Users/katerinakyuchukova/Downloads/kat/Smith College Relationships Data/trigrams_to_grade.csv", row.names=FALSE)
+#write.csv(smith_trigrams_long, "Raw data/Smith College Relationships Data/trigrams_to_grade.csv", row.names=FALSE)
   
 #Read in graded trigram file
 smith_trigrams_graded <- read.csv("Smith College Relationships Data/trigrams_graded.csv")
@@ -325,12 +322,12 @@ smith_sentences_long <- smith_sentences_long %>%
   arrange(dyadID, partID)
 
 #Write out csv
-#write.csv(smith_sentences_long, "/Users/katerinakyuchukova/Downloads/kat/Smith College Relationships Data/sexist_sentences_for_coding.csv", row.names = FALSE) 
+#write.csv(smith_sentences_long, "Raw data/Smith College Relationships Data/sexist_sentences_for_coding.csv", row.names = FALSE) 
 
 #Read in coded sentences, code correlations
-kat_codes <- read.csv("/Users/katerinakyuchukova/Downloads/kat/Smith College Relationships Data/kat_recode.csv")
+kat_codes <- read.csv("Raw data/Smith College Relationships Data/kat_recode.csv")
 
-xinyu_codes <- read.csv("/Users/katerinakyuchukova/Downloads/kat/Smith College Relationships Data/xinyu_recode.csv")
+xinyu_codes <- read.csv("Raw data/Smith College Relationships Data/xinyu_recode.csv")
 
 coded_sentences <- merge(x=kat_codes, y=xinyu_codes, all.x = TRUE)
 
@@ -364,7 +361,7 @@ smith_final <- merge (x=smith_sexism, y=smith_logel, by="partID", all.x=TRUE)
 
 Write out cleaned data!
 ```{r}
-write.csv(smith_final, "/Users/katerinakyuchukova/Desktop/ObjectInAction/Cleaned data/smith_final.csv" )
-write.csv(clark_final, "/Users/katerinakyuchukova/Desktop/ObjectInAction/Cleaned data/clark_final.csv")
+write.csv(smith_final, "ObjectInAction/Cleaned data/smith_final.csv" )
+write.csv(clark_final, "ObjectInAction/Cleaned data/clark_final.csv")
 ```
 
