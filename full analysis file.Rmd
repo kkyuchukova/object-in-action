@@ -822,7 +822,7 @@ TSO_P ~~ c3*a2pSOO_A
 TSO_A ~~ c4*a2pSOO_A
 TSO_P ~~ c4*a2pSOO_P
 '
-#hi
+
 fit <- sem(model, data=dyad_cswomen)
 summary(fit)
 ```
