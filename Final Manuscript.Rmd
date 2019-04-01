@@ -60,6 +60,17 @@ output            : papaja::apa6_word
 
 ```{r setup, include = FALSE}
 library("papaja")
+library(nlme)
+library(haven)
+library(devtools)
+library(psych)
+library(mosaic)
+library(tidyr)
+library(dplyr)
+library(irr)
+
+clark_measures <- read_spss("Raw data/Clark College Relationships Data/College_Relationship_Measures_1.sav")
+smith <- read_spss("Raw data/Smith College Relationships Data/College_Relationship_Dyadic_September_14_2018_12_17.sav")
 ```
 
 ```{r analysis-preferences}
@@ -70,16 +81,68 @@ knitr::opts_chunk$set(cache.extra = knitr::rand_seed)
 
 
 ```{r, include=FALSE}
-x <- 7
+#######Alphas
+
+###SOO
+
+#Clark
+#SOO
+clark_extsoo_alpha <- psych::alpha(select(clark_measures, otherint_1, otherint_2, otherint_5, otherint_6, otherint_10))$total[2]
+clark_intsoo_alpha <- psych::alpha(select(clark_measures, otherint_3, otherint_4, otherint_7, otherint_8, otherint_9, otherint_11, otherint_12))
+#Smith
+smith_extsoo_alpha <- psych::alpha(select(smith, otherint_1, otherint_2, otherint_5, otherint_6, otherint_10))$total[2]
+smith_intsoo_alpha <- psych::alpha(select(smith, otherint_3, otherint_4, otherint_7, otherint_8, otherint_9, otherint_11, otherint_12))$total[2]
+
+##Interaction Authenticity
+#Clark
+clark_intauth_alpha <- psych::alpha(select(clark_measures, inter_1, inter_3, inter_5, inter_6, inter_7, inter_9, inter_10, interaux_5, interaux_6))$total[2]
+#Smith
+smith_intauth_alpha <- psych::alpha(select(smith, inter_1, inter_3, inter_5, inter_6, inter_7, inter_9, inter_10, interaux_5, interaux_6))$total[2]
+
+##SSO
+#Clark
+clark_howbody_alpha <- psych::alpha(select(clark_measures, howbody_1, howbody_2))$total[2]
+#Smith
+smith_howbody_alpha <- psych::alpha(select(smith, howbody_1, howbody_2))$total[2]
+
+##Relationship Agency
+#Clark
+clark_relag_alpha <- psych::alpha(select(clark_measures, relag_1, relag_2, relag_3, relag_4, relag_5, relag_6, relag_7, relag_8, relag_9))$total[2]
+smith_relag_alpha <- psych::alpha(select(smith, relag_1, relag_2, relag_3, relag_4, relag_5, relag_6, relag_7, relag_8, relag_9))$total[2]
+
+##Career Aspirations
+#Clark
+clark_measures <- clark_measures %>% #reverse code certain career aspiration variables
+  mutate(careerasp4.r = (min(careerasp_4, na.rm = TRUE) + max(careerasp_4, na.rm = TRUE) - careerasp_4),
+         careerasp7.r = (min(careerasp_7, na.rm = TRUE) + max(careerasp_7, na.rm = TRUE) - careerasp_7),
+         careerasp10.r = (min(careerasp_10, na.rm = TRUE) + max(careerasp_10, na.rm = TRUE) - careerasp_10))
+
+clark_careerasp_alpha <- psych::alpha(select(clark_measures, careerasp_1, careerasp_2, careerasp_3, careerasp4.r, careerasp_5, careerasp_6, careerasp7.r, careerasp_8, careerasp_9, careerasp10.r))$total[2]
+
+#Smith
+smith <- smith %>% #reverse code certain career aspiration variables
+  mutate(careerasp4.r = (min(careerasp_4, na.rm = TRUE) + max(careerasp_4, na.rm = TRUE) - careerasp_4),
+         careerasp7.r = (min(careerasp_7, na.rm = TRUE) + max(careerasp_7, na.rm = TRUE) - careerasp_7),
+         careerasp10.r = (min(careerasp_10, na.rm = TRUE) + max(careerasp_10, na.rm = TRUE) - careerasp_10))
+
+smith_careerasp_alpha <- psych::alpha(select(smith, careerasp_1, careerasp_2, careerasp_3, careerasp4.r, careerasp_5, careerasp_6, careerasp7.r, careerasp_8, careerasp_9, careerasp10.r))$total[2]
+
+###TSO
+#Clark--external and internal
+clark_funcTSO_alpha <- psych::alpha(select(clark_measures,tso_1, tso_2, tso_4, tso_7, tso_9))$total[2]
+clark_physTSO_alpha <- psych::alpha(select(clark_measures,tso_3, tso_5, tso_6, tso_8, tso_10))$total[2]
+#Smith--external and internal
+smith_funcTSO_alpha <- psych::alpha(select(smith,tso_1, tso_2, tso_4, tso_7, tso_9))$total[2]
+smith_physTSO_alpha <- psych::alpha(select(smith,tso_3, tso_5, tso_6, tso_8, tso_10))$total[2]
 ```
 
 
-hi I'm the number `r x`. this is a change.
 
 # Methods
 We report how we determined our sample size, all data exclusions (if any), all manipulations, and all measures in the study. <!-- 21-word solution (Simmons, Nelson & Simonsohn, 2012; retrieved from http://ssrn.com/abstract=2160588) -->
 
 ## Participants
+The data collected in this study sought to replicate Garcia et al. (2016), which sought to measure objectification in previously unacquainted male-female pairs. This data was given to us by Dr. Garcia, who collected data from both Smith College and Clark University. The data was ultimately merged and filtered to only include only self-identified female same-sex pairs from both schools. The two samples are often referred to below as Sample 1 (data from Clark University) and Sample 2 (data from Smith College). These participants were mostly first-year college students, with an average age of 18.85 years (SD=1.04). The sample was 48% White/European American, 9% Black/African-American, 28% Asian/Pacific Islander, 9% Latinx, and 5% mixed-race. There were eight White/White pairs and four same race racial minority pairs, for a total of twelve same-race pairs. The remaining twenty were mixed race pairs, of which fifteen were White/racial minority pairings and five were cross-racial minority group pairs. 64% of the sample identified as heterosexual, and 23% identified as gay, lesbian or bisexual. The data is organized in a pairwise fashion such that each row corresponds to one participant in the study, and includes data for themselves and their partner. We would want to generalize these findings to general interactions between women.
 
 ## Material
 

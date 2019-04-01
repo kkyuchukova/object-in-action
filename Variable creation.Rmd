@@ -40,13 +40,6 @@ trigram_check <- read.csv("Raw data/Clark College Relationships Data/trigrams/AM
 
 Clark Scale Scores--creating scale scores for the Clark data.
 ```{r}
-#Social Physique Anxiety
-clark_measures <- clark_measures %>%
-  #reverse code physical anxiety variable
-  mutate(physanx5.r = (min(physanx_5, na.rm = TRUE) + max(physanx_5, na.rm = TRUE) - physanx_5),
-         #get average for scale score
-         physanx = (physanx_1 +physanx_2 +physanx_3+physanx_4+physanx5.r+physanx_6)/6)
-
 #SOO -- subtract internal SOO from external SOO
 clark_measures$extSOO <- rowMeans(dplyr::select(clark_measures, otherint_1, otherint_2, otherint_5, otherint_6, otherint_10), na.rm=TRUE) #get average
 
@@ -85,16 +78,6 @@ clark_measures$physTSO <- rowMeans(dplyr::select(clark_measures, tso_3, tso_5, t
 
 clark_measures$TSO <- clark_measures$physTSO - clark_measures$funcTSO
 clark_measures$TSO <- clark_measures$TSO*(-1)
-
-#satisfaction--reverse code negative variables and then average with the rest
-clark_measures <- clark_measures %>%
-  mutate(anxious.r = (min(inter_2, na.rm = TRUE) + max(inter_2, na.rm = TRUE) - inter_2)) %>%
-  mutate(uncomfort.r = (min(inter_4, na.rm = TRUE) + max(inter_4, na.rm = TRUE) - inter_4)) %>%
-  mutate(hostile.r = (min(inter_8, na.rm = TRUE) + max(inter_8, na.rm = TRUE) - inter_8)) %>%
-  mutate(apprehen.r = (min(inter_11, na.rm = TRUE) + max(inter_11, na.rm = TRUE) - inter_11)) %>%
-  mutate(aggressive.r = (min(inter_13, na.rm = TRUE) + max(inter_13, na.rm = TRUE) - inter_13))
-
-clark_measures$satisfaction <- rowMeans(select(clark_measures, anxious.r, uncomfort.r, hostile.r, apprehen.r, aggressive.r, inter_1, inter_3, inter_5, inter_6, inter_7, inter_9, inter_10, interaux_6), na.rm=TRUE)
 ```
 
 
@@ -104,10 +87,6 @@ smith <- smith %>%
   arrange(dyadID) %>%
   filter(dyadID!=16, !is.na(dyadID), dyadID!=798797, dyadID!=999, dyadID!=999999, dyadID!=9999) #filter out dyads with no data
 
-#Social Physique Anxiety
-smith <- smith %>%
-  mutate(physanx5.r = (min(physanx_5, na.rm = TRUE) + max(physanx_5, na.rm = TRUE) - physanx_5),
-         physanx = (physanx_1 +physanx_2 +physanx_3+physanx_4+physanx5.r+physanx_6)/6) #reverse code physical anxiety variable
 
 #SOO
 smith$extSOO <- rowMeans(dplyr::select(smith, otherint_1, otherint_2, otherint_5, otherint_6, otherint_10), na.rm=TRUE)
@@ -148,16 +127,6 @@ smith$physTSO <- rowMeans(dplyr::select(smith, tso_3, tso_5, tso_6, tso_8, tso_1
 
 smith$TSO <- smith$physTSO-smith$funcTSO
 smith$TSO <- smith$TSO*-1
-
-#satisfaction--reverse code negative variables and then average with the rest
-smith <- smith %>%
-  mutate(anxious.r = (min(inter_2, na.rm = TRUE) + max(inter_2, na.rm = TRUE) - inter_2)) %>%
-  mutate(uncomfort.r = (min(inter_4, na.rm = TRUE) + max(inter_4, na.rm = TRUE) - inter_4)) %>%
-  mutate(hostile.r = (min(inter_8, na.rm = TRUE) + max(inter_8, na.rm = TRUE) - inter_8)) %>%
-  mutate(apprehen.r = (min(inter_11, na.rm = TRUE) + max(inter_11, na.rm = TRUE) - inter_11)) %>%
-  mutate(aggressive.r = (min(inter_13, na.rm = TRUE) + max(inter_13, na.rm = TRUE) - inter_13))
-
-smith$satisfaction <- rowMeans(select(smith, anxious.r, uncomfort.r, hostile.r, apprehen.r, aggressive.r, inter_1, inter_3, inter_5, inter_6, inter_7, inter_9, inter_10, interaux_6), na.rm=TRUE)
 ```
 
 
@@ -224,7 +193,7 @@ smith_trigrams_long <- smith_trigrams_long[,c(1,2,3,5,4)]
 #write.csv(smith_trigrams_long, "Raw data/Smith College Relationships Data/trigrams_to_grade.csv", row.names=FALSE)
   
 #Read in graded trigram file
-smith_trigrams_graded <- read.csv("Smith College Relationships Data/trigrams_graded.csv")
+smith_trigrams_graded <- read.csv("Raw data/Smith College Relationships Data/trigrams_graded.csv")
 
 #Summarize a final correct trigram
 smith_triscore <- smith_trigrams_graded %>%

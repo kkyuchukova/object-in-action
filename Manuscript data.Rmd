@@ -4,26 +4,40 @@ author: "Kat Kyuchukova"
 date: "11/15/2018"
 output: html_document
 ---
+
+#packages
+```{r}
+library(nlme)
+library(haven)
+library(devtools)
+library(psych)
+library(mosaic)
+library(tidyr)
+library(dplyr)
+library(irr)
+select <- dplyr::select
+```
+
 #Read in cleaned data
 ```{r}
 smith_final <- read.csv("Cleaned data/smith_final.csv")
 clark_final <- read.csv("Cleaned data/clark_final.csv")
 ```
 
-
-
-#Making Pairwise
+Making Pairwise
 ```{r}
+
 #Clark
+
+
 clark<- clark_final %>%
-  #remove dyads w no data
   filter(dyadID!=4, dyadID!=14, dyadID!=19) %>%
   arrange(dyadID) %>%
-  #create person key
   mutate(person=rep(1:2, times=22)) %>%
-  #selecting only necessary variables
   select(dyadID, person, partID, gender, age, race, sexor, physanx, a2pSOO, metaSOO, trigram_score, authenticity, howbody_avg, relag, careerasp, TSO, avg_sexism, sexism_logel, satisfaction) %>%
   arrange(person)
+
+
 
 tempA <- clark %>% 
   mutate(personE = ifelse(person == 1, -1, 1), 
@@ -51,21 +65,25 @@ head(clark_pair)
 
 #Smith
 
-#making necessary variables numeric
+#making these numeric
 smith_final$dyadID <- as.numeric(smith_final$dyadID)
 smith_final$partID <- as.numeric(smith_final$partID)
 
 
+
+#checking weird dyads to see if there is post interaction information
+smith_checK <- smith %>%
+  filter(dyadID==16|is.na(dyadID)|dyadID==798797|dyadID==999|dyadID==999999|dyadID==9999)%>%
+  arrange(dyadID) %>%
+  select(dyadID, partID, otherint_1:otherint_12)
+
 smith <- smith_final %>%
-  #removing dyads w no data
   filter(dyadID!=16, !is.na(dyadID), dyadID!=798797, dyadID!=999, dyadID!=999999, dyadID!=9999, dyadID!=7) %>%
   arrange(dyadID) %>%
   mutate(person=rep(1:2, times=23),
-         #fixing repeating partIDs
          partID= ifelse(dyadID==31 & person==2, 83, partID),
          dyadID= ifelse(dyadID==2 & partID==4|partID==5, 1, dyadID)) %>%
-  #selecting necessary variables
-  select(dyadID, person, partID, gender, age, race, sexor, physanx, a2pSOO, metaSOO, authenticity, howbody_avg, relag, careerasp, TSO, avg_sexism, sexism_logel, satisfaction)  %>%
+  select(dyadID, person, partID, gender, age, race, sexor, physanx, a2pSOO, metaSOO, trigram_score, authenticity, howbody_avg, relag, careerasp, TSO, avg_sexism, sexism_logel, satisfaction)  %>%
   arrange(person)
 
 tempA <- smith %>% 
@@ -90,7 +108,6 @@ rm(tempA, tempB)
 
 head(smith_pair)
 ```
-
 
 
 Next steps: correlations, matrices etc
