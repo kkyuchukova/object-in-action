@@ -107,8 +107,13 @@ smith_howbody_alpha <- psych::alpha(select(smith, howbody_1, howbody_2))$total[2
 
 ##Relationship Agency
 #Clark
-clark_relag_alpha <- psych::alpha(select(clark_measures, relag_1, relag_2, relag_3, relag_4, relag_5, relag_6, relag_7, relag_8, relag_9))$total[2]
-smith_relag_alpha <- psych::alpha(select(smith, relag_1, relag_2, relag_3, relag_4, relag_5, relag_6, relag_7, relag_8, relag_9))$total[2]
+clark_relag_alpha <- psych::alpha(select(clark_measures, relag_1, relag_2, relag_3, relag_4, relag_5, relag_6, relag_7, relag_8, relag_9.r))$total[2]
+#Smith
+smith_relag_alpha <- psych::alpha(select(smith, relag_1, relag_2, relag_3, relag_4, relag_5, relag_6, relag_7, relag_8, relag_9.r))$total[2]
+##DROPPING ITEM 9
+clark_relag_alpha <- psych::alpha(select(clark_measures, relag_1, relag_2, relag_3, relag_4, relag_5, relag_6, relag_7, relag_8))$total[2]
+smith_relag_alpha <- psych::alpha(select(smith, relag_1, relag_2, relag_3, relag_4, relag_5, relag_6, relag_7, relag_8))$total[2]
+
 
 ##Career Aspirations
 #Clark
@@ -136,13 +141,85 @@ smith_funcTSO_alpha <- psych::alpha(select(smith,tso_1, tso_2, tso_4, tso_7, tso
 smith_physTSO_alpha <- psych::alpha(select(smith,tso_3, tso_5, tso_6, tso_8, tso_10))$total[2]
 ```
 
+```{r, include=FALSE}
+favstats(~TSO_A, data=clarksmith_women)
+favstats(~a2pSOO_A, data=clarksmith_women)
+favstats(~howbody_avg_A, data=clarksmith_women)
+favstats(~relag_A, data=clarksmith_women)
+favstats(~careerasp_A, data=clarksmith_women)
+favstats(~authenticity_A, data=clarksmith_women)
+favstats(~trigram_score_A, data=clarksmith_women)
+
+clark_final$age <- as.numeric(clark_final$age)
+smith_final$age <- as.numeric(smith_final$age)
+favstats(~age, data=clark_final)
+favstats(~age, data=smith_final)
+
+clarkmeanage <- favstats(~age, data=clark_final)$mean
+smithmeanage <- favstats(~age, data=smith_final)$mean
+
+favstats(~age_A, data=clarksmith_women)
+tally(clarksmith_women$race_A==clarksmith_women$race_P)
+
+psych::alpha(select(clarksmith_women, a2pSOO_A, a2pSOO_P))
+
+tally(~race_A, data=clarksmith_women)
+tally(~sexor_A, data=clarksmith_women)
+tally(~gender_A, data=clarksmith_women)
+
+table(clarksmith_women$race_A, clarksmith_women$race_P)
+
+test <- clarksmith_women %>%
+  filter(race_A==3, race_A!=race_P)
+
+tally(~gender, data=clark)
+tally(~gender, data=smith)
+
+```
 
 
 # Methods
 We report how we determined our sample size, all data exclusions (if any), all manipulations, and all measures in the study. <!-- 21-word solution (Simmons, Nelson & Simonsohn, 2012; retrieved from http://ssrn.com/abstract=2160588) -->
+Method
 
-## Participants
-The data collected in this study sought to replicate Garcia et al. (2016), which sought to measure objectification in previously unacquainted male-female pairs. This data was given to us by Dr. Garcia, who collected data from both Smith College and Clark University. The data was ultimately merged and filtered to only include only self-identified female same-sex pairs from both schools. The two samples are often referred to below as Sample 1 (data from Clark University) and Sample 2 (data from Smith College). These participants were mostly first-year college students, with an average age of 18.85 years (SD=1.04). The sample was 48% White/European American, 9% Black/African-American, 28% Asian/Pacific Islander, 9% Latinx, and 5% mixed-race. There were eight White/White pairs and four same race racial minority pairs, for a total of twelve same-race pairs. The remaining twenty were mixed race pairs, of which fifteen were White/racial minority pairings and five were cross-racial minority group pairs. 64% of the sample identified as heterosexual, and 23% identified as gay, lesbian or bisexual. The data is organized in a pairwise fashion such that each row corresponds to one participant in the study, and includes data for themselves and their partner. We would want to generalize these findings to general interactions between women.
+##Procedure
+The procedure used was identical to that in Garcia, Earnshaw & Quinn (2016), except for the instructions that the participants were given. In brief, that methodology is that each participant arrived at the laboratory and were then led into separate cubicles to preventa ny communication between the participants before the interaction. In addition, each participant was screened for prior acquaintance to confirm that they had not met prior to the study. They were asked to sign the consent form to participate, and the study was described as follows: “This is a study looking at how students form different types of relationships at college.” A prompt on the computer screen told the participants that they were assigned to the “College Relationships” condition and gave the following instructions:
+
+There are many types of relationships people form in college. During the interaction, please think about your partner's potential as a romantic partner. Even if they are not the gender you are attracted to, you can still judge their potential as a romantic partner. After the interaction you will be asked to evaluate how dateable your partner is. In other words, we would like to know if you think someone would date your interaction partner. Also, your interaction partner will be evaluating you in the same manner. 
+Two participants were then brought into a larger interaction room where they sat on stools prearranged to be 36 inches apart. The experimenter instructed the participants to “get to know each other” for 10 minutes and then left the room. After 10 minutes, the experimenter came back into the room and stopped the interaction. The participants then went back to their individual cubicles and completed a set of post-interaction measures. Participants were then thanked for their participation and debriefed (Garcia et al., 2016). The full methodology used is found in Garcia et al. (2016)’s study.
+
+##Combining Samples
+Data from two different samples was used for this study. They are discussed below. In the measures section that follows we refer to them as Sample 1 and Sample 2. Sample 1 is from a co-ed liberal arts college in the northeast and Sample 2 is from a women’s liberal arts college in the northeast.
+
+
+##Post interaction Measures
+
+The following measures were collected in the order they are presented following the interaction. Correlations appear in Table 1, and descriptive statistics appear in Table 2. 
+
+###Cognitive performance. 
+Cognitive performance was assessed using trigrams from the Remote Associates Task (McFarlin & Blascovich, 1984). Ten items were selected and presented to participants. For example, the correct answer for the trigram “Quack: Pond: Waddle” would be “Duck”. Participants are limited to 30 seconds. For every correct answer, 1 point is given. The mean score was 5.03. Cognitive performance was measured first in order to measure potential immediate detriments to performance (Garcia et al., 2016).
+
+###SOO.
+To measure the participant’s objectification of their partner in the interaction, participants were asked a series of questions about the frequency of thoughts of several aspects of their partner (Garcia et al., 2016). Questions included aspects of their partner’s internal traits such as personality, friends, family, and extracurricular interests, as well as external traits such as body, appearance, clothing, and body parts. All questions were to be rated on a scale from 1 (not at all) to 7 (constantly). Objectification was measured by getting the difference between the average frequency of thought about their partner’s external traits (α=.78 for Sample 1, α=.74 for Sample 2) and frequency of thought about their partner’s internal traits (α=.70 for Sample 1, α=.78 for Sample 2). A positive score in this scale would indicate that the participant thought about their partner’s external traits more than the partner’s internal traits, and a negative score would indicate the opposite.
+
+###Interaction Authenticity.
+Just like Garcia et al. (2016), we assessed the extent to which participants felt comfortable in the interaction and felt it was authentic. We did this by asking them to rate the extent to which they felt the interaction was comfortable, happy, friendly, warm, easygoing, sincere, and authentic on a scale from 1 (not at all) to 7 (very much). Participants were also asked whether they thought their partner was authentic in the interaction, and if they felt they were authentic in the interaction. These questions were ranked on a scale from 1 (not authentic at all). These were combined to form the authenticity scale (α=.91). 
+
+###SSO.
+To assess state self-objectification, we used an average of two items from Saguy et al. (2010) that was also used in Garcia et al. (2016). Participants were asked to rank how much they agreed with the following statements: “During the interaction I felt more like a body than a full self” and “I felt more like a body than as a real person in the interaction”. Saguy et al. (2010) originally used 3 items, but the 3rd item had a low reliability score (r=*), so we chose to only use the first two for our measure of SSO.
+
+###Relationship Agency. 
+To assess how much relationship agency participants felt they would have in future relationships, we used the scale from Garcia et al. (2016), asking how likely it was that they would do the following: ‘‘ask someone out on a date,’’ ‘‘open the door for your date,’’ ‘‘pay for a date,’’ ‘‘ask your boyfriend/girlfriend to marry you,’’ ‘‘initiate sex with your girlfriend/boyfriend,’’ ‘‘initiate condom use during sex,’’ ‘‘surprise your boyfriend/ girlfriend with a gift,’’ and ‘‘ask your girlfriend/boyfriend to move with you to a new place.’’ Responses were measured on a scale ranging from 1 (not at all likely) to 7 (extremely likely). This item had high reliability for Sample 1 (α=0.73) but low reliability for Sample 2 (α=0.58).
+
+###Career Aspirations.
+To measure career aspirations, we used the 10-item adaptation of Gray & O’Brien (2007)’s Career Aspiration Scale used in Garcia et al. (2016). This asked participants how true statements were about their future careers on a scale from 0 (not at all true of me) to 4 (very true of me). Items include ‘‘I hope to become a leader in my career field’’ and ‘‘I hope to move up through any organization or business I work in.’’ Items were fairly reliable (α=0.72 for Sample 1, α=0.81 for Sample 2).
+
+###TSO. 
+TSO was assessed using the Self-Objectification Questionnaire (Fredrickson et al., 1998; Noll & Fredrickson, 1998). This asks participants to rank order functional aspects of their bodies as well as physical self-concepts. The average rank of the functional aspects is then subtracted from the rank of the physical self-concepts. As was done in Garcia et al. (2016), all measures are multiplied by -1 so that positive scores correspond to more TSO.
+
+###Description of the Samples
+Participants consisted of thirty-two previously unacquainted female-identifying pairs from two liberal arts colleges in the northeast, for a total of sixty-four participants. Twelve of the pairs came from Sample 1, a co-ed liberal arts college, and twenty pairs came from Sample 2, a women’s liberal arts college. Data was originally collected from multiple genders in both same sex and mixed sex pairs. Sample 1 originally consisted of twenty-two pairs consisting of twelve men and thirty-two women. Sample 2 originally consisted of twenty-three pairs made up of forty-three women and one man, as well as two participants who did not identify with either category. Because the pattern of correlations between important study variables were similar across samples, the two datasets were then combined. For the purpose of consistency when combining data from the two schools, we limited the participants to same sex female pairs at the two colleges. These participants were mostly first-year college students, with an average age of 18.85 years (SD=1.04). The sample was 48% White/European American, 9% Black/African-American, 28% Asian/Pacific Islander, 9% Latinx, and 5% mixed-race. There were eight White/White pairs and four same race racial minority pairs, for a total of twelve same-race pairs. The remaining twenty were mixed race pairs, of which fifteen were White/racial minority pairings and five were cross-racial minority group pairs. 64% of the sample identified as heterosexual, and 23% identified as gay, lesbian or bisexual. 
+  
 
 ## Material
 
