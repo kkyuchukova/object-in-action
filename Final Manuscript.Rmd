@@ -150,20 +150,20 @@ favstats(~careerasp_A, data=clarksmith_women)
 favstats(~authenticity_A, data=clarksmith_women)
 favstats(~trigram_score_A, data=clarksmith_women)
 
-clark_final$age <- as.numeric(clark_final$age)
-smith_final$age <- as.numeric(smith_final$age)
-favstats(~age, data=clark_final)
-favstats(~age, data=smith_final)
 
-clarkmeanage <- favstats(~age, data=clark_final)$mean
-smithmeanage <- favstats(~age, data=smith_final)$mean
 
-favstats(~age_A, data=clarksmith_women)
+mean_age <- favstats(~age_A, data=clarksmith_women)$mean
+sd_age <- favstats(~age_A, data=clarksmith_women)$sd
 tally(clarksmith_women$race_A==clarksmith_women$race_P)
 
 psych::alpha(select(clarksmith_women, a2pSOO_A, a2pSOO_P))
 
 tally(~race_A, data=clarksmith_women)
+percentage_black <- 6/(6+18+31+6+3)*100
+percent_asian <- 18/(6+18+31+6+3)*100
+percent_white <- 31/(6+18+31+6+3)*100
+percent_latinx <- 6/(6+18+31+6+3)*100
+percent_other <- 3/(6+18+31+6+3)*100
 tally(~sexor_A, data=clarksmith_women)
 tally(~gender_A, data=clarksmith_women)
 
@@ -218,7 +218,7 @@ To measure career aspirations, we used the 10-item adaptation of Gray & O’Brie
 TSO was assessed using the Self-Objectification Questionnaire (Fredrickson et al., 1998; Noll & Fredrickson, 1998). This asks participants to rank order functional aspects of their bodies as well as physical self-concepts. The average rank of the functional aspects is then subtracted from the rank of the physical self-concepts. As was done in Garcia et al. (2016), all measures are multiplied by -1 so that positive scores correspond to more TSO.
 
 ###Description of the Samples
-Participants consisted of thirty-two previously unacquainted female-identifying pairs from two liberal arts colleges in the northeast, for a total of sixty-four participants. Twelve of the pairs came from Sample 1, a co-ed liberal arts college, and twenty pairs came from Sample 2, a women’s liberal arts college. Data was originally collected from multiple genders in both same sex and mixed sex pairs. Sample 1 originally consisted of twenty-two pairs consisting of twelve men and thirty-two women. Sample 2 originally consisted of twenty-three pairs made up of forty-three women and one man, as well as two participants who did not identify with either category. Because the pattern of correlations between important study variables were similar across samples, the two datasets were then combined. For the purpose of consistency when combining data from the two schools, we limited the participants to same sex female pairs at the two colleges. These participants were mostly first-year college students, with an average age of 18.85 years (SD=1.04). The sample was 48% White/European American, 9% Black/African-American, 28% Asian/Pacific Islander, 9% Latinx, and 5% mixed-race. There were eight White/White pairs and four same race racial minority pairs, for a total of twelve same-race pairs. The remaining twenty were mixed race pairs, of which fifteen were White/racial minority pairings and five were cross-racial minority group pairs. 64% of the sample identified as heterosexual, and 23% identified as gay, lesbian or bisexual. 
+Participants consisted of thirty-two previously unacquainted female-identifying pairs from two liberal arts colleges in the northeast, for a total of sixty-four participants. Twelve of the pairs came from Sample 1, a co-ed liberal arts college, and twenty pairs came from Sample 2, a women’s liberal arts college. Data was originally collected from multiple genders in both same sex and mixed sex pairs. Sample 1 originally consisted of twenty-two pairs consisting of twelve men and thirty-two women. Sample 2 originally consisted of twenty-three pairs made up of forty-three women and one man, as well as two participants who did not identify with either category. Because the pattern of correlations between important study variables were similar across samples, the two datasets were then combined. For the purpose of consistency when combining data from the two schools, we limited the participants to same sex female pairs at the two colleges. These participants were mostly first-year college students, with an average age of `mean_age` (SD=`sd_age`). The sample was `percent_white`% White/European American, `percentage_black`% Black/African-American, `percent_asian`% Asian/Pacific Islander, `percent_latinx`% Latinx, and 5% mixed-race. There were eight White/White pairs and four same race racial minority pairs, for a total of twelve same-race pairs. The remaining twenty were mixed race pairs, of which fifteen were White/racial minority pairings and five were cross-racial minority group pairs. 64% of the sample identified as heterosexual, and 23% identified as gay, lesbian or bisexual. 
   
 
 ## Material
