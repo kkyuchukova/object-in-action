@@ -59,7 +59,7 @@ output            : papaja::apa6_word
 ---
 
 ```{r setup, include = FALSE}
-library("papaja")
+library(papaja)
 library(nlme)
 library(haven)
 library(devtools)
@@ -68,9 +68,11 @@ library(mosaic)
 library(tidyr)
 library(dplyr)
 library(irr)
+library(apaTables)
 
-clark_measures <- read_spss("Raw data/Clark College Relationships Data/College_Relationship_Measures_1.sav")
-smith <- read_spss("Raw data/Smith College Relationships Data/College_Relationship_Dyadic_September_14_2018_12_17.sav")
+clark_measures <- read.csv("Cleaned data/clark_measures.csv")
+smith <- read.csv("Cleaned data/smith.csv")
+clarksmith_women <- read.csv("Cleaned data/clarksmith_women.csv")
 ```
 
 ```{r analysis-preferences}
@@ -151,13 +153,12 @@ favstats(~authenticity_A, data=clarksmith_women)
 favstats(~trigram_score_A, data=clarksmith_women)
 
 
-
+#Mean and SD of age of sample
 mean_age <- favstats(~age_A, data=clarksmith_women)$mean
 sd_age <- favstats(~age_A, data=clarksmith_women)$sd
 tally(clarksmith_women$race_A==clarksmith_women$race_P)
 
-psych::alpha(select(clarksmith_women, a2pSOO_A, a2pSOO_P))
-
+#Calculating race percentages
 tally(~race_A, data=clarksmith_women)
 percentage_black <- 6/(6+18+31+6+3)*100
 percent_asian <- 18/(6+18+31+6+3)*100
@@ -172,10 +173,17 @@ table(clarksmith_women$race_A, clarksmith_women$race_P)
 test <- clarksmith_women %>%
   filter(race_A==3, race_A!=race_P)
 
-tally(~gender, data=clark)
+tally(~gender, data=clark_measures)
 tally(~gender, data=smith)
 
+clarksmith_correlations <- clarksmith_women %>%
+  select(TSO_A, authenticity_A, a2pSOO_A, howbody_avg_A, relag_A, careerasp_A,  trigram_score_A, TSO_P, authenticity_P, a2pSOO_P, howbody_avg_P, relag_P, careerasp_P, trigram_score_P)
+
+#Correlation tables
+correlations <- apa.cor.table(clarksmith_correlations, table.number=1)
+
 ```
+
 
 
 # Methods
@@ -218,7 +226,7 @@ To measure career aspirations, we used the 10-item adaptation of Gray & O’Brie
 TSO was assessed using the Self-Objectification Questionnaire (Fredrickson et al., 1998; Noll & Fredrickson, 1998). This asks participants to rank order functional aspects of their bodies as well as physical self-concepts. The average rank of the functional aspects is then subtracted from the rank of the physical self-concepts. As was done in Garcia et al. (2016), all measures are multiplied by -1 so that positive scores correspond to more TSO.
 
 ###Description of the Samples
-Participants consisted of thirty-two previously unacquainted female-identifying pairs from two liberal arts colleges in the northeast, for a total of sixty-four participants. Twelve of the pairs came from Sample 1, a co-ed liberal arts college, and twenty pairs came from Sample 2, a women’s liberal arts college. Data was originally collected from multiple genders in both same sex and mixed sex pairs. Sample 1 originally consisted of twenty-two pairs consisting of twelve men and thirty-two women. Sample 2 originally consisted of twenty-three pairs made up of forty-three women and one man, as well as two participants who did not identify with either category. Because the pattern of correlations between important study variables were similar across samples, the two datasets were then combined. For the purpose of consistency when combining data from the two schools, we limited the participants to same sex female pairs at the two colleges. These participants were mostly first-year college students, with an average age of `mean_age` (SD=`sd_age`). The sample was `percent_white`% White/European American, `percentage_black`% Black/African-American, `percent_asian`% Asian/Pacific Islander, `percent_latinx`% Latinx, and 5% mixed-race. There were eight White/White pairs and four same race racial minority pairs, for a total of twelve same-race pairs. The remaining twenty were mixed race pairs, of which fifteen were White/racial minority pairings and five were cross-racial minority group pairs. 64% of the sample identified as heterosexual, and 23% identified as gay, lesbian or bisexual. 
+Participants consisted of thirty-two previously unacquainted female-identifying pairs from two liberal arts colleges in the northeast, for a total of sixty-four participants. Twelve of the pairs came from Sample 1, a co-ed liberal arts college, and twenty pairs came from Sample 2, a women’s liberal arts college. Data was originally collected from multiple genders in both same sex and mixed sex pairs. Sample 1 originally consisted of twenty-two pairs consisting of twelve men and thirty-two women. Sample 2 originally consisted of twenty-three pairs made up of forty-three women and one man, as well as two participants who did not identify with either category. Because the pattern of correlations between important study variables were similar across samples, the two datasets were then combined. For the purpose of consistency when combining data from the two schools, we limited the participants to same sex female pairs at the two colleges. These participants were mostly first-year college students, with an average age of `r mean_age` ($SD = `r sd_age`$). The sample was `r percent_white`% White/European American, `r percentage_black`% Black/African-American, `r percent_asian`% Asian/Pacific Islander, `r percent_latinx` % Latinx, and 5% mixed-race. There were eight White/White pairs and four same race racial minority pairs, for a total of twelve same-race pairs. The remaining twenty were mixed race pairs, of which fifteen were White/racial minority pairings and five were cross-racial minority group pairs. 64% of the sample identified as heterosexual, and 23% identified as gay, lesbian or bisexual. 
   
 
 ## Material
@@ -232,6 +240,82 @@ We used `r cite_r("r-references.bib")` for all our analyses.
 # Results
 
 # Discussion
+
+\newpage
+#Tables
+```{r}
+# descriptives <- clarksmith_women %>%
+#   summarize(
+#     Mean = mean(Recall)
+#     , Median = median(Recall)
+#     , SD = sd(Recall)
+#     , Min = min(Recall)
+#     , Max = max(Recall)
+#   )
+# descriptives[, -1] <- printnum(descriptives[, -1])
+# 
+# apa_table(
+#   descriptives
+#   , caption = "(ref:mixed-table-caption)"
+#   , note = "(ref:mixed-table-note)"
+#   , escape = TRUE
+# )
+
+```
+
+```{r}
+glrstab<- function(x, export=FALSE) {
+ 
+ r <-corr.test(x)$r	#taking just the correlation matrix; no N, or p
+ p <-corr.test(x)$p	#taking the p*s
+ 
+#define notions for significance levels
+ mystars <- ifelse(p < .001, "**"
+                   , ifelse(p < .01, "**"
+                            , ifelse(p < .05, "*"
+                                     , ifelse(p < .10, "+", " "))))
+ 
+ #round r, define new matrix Rnew with the correlations from rnd and paste mystars
+ rnd  <- papaja::printnum(r, gt1 = FALSE, digits = 2)  #round, drop leading 0 - Thanks CRSH!								                     
+ Rnew <- matrix(paste(rnd, mystars, sep=""), ncol=ncol(rnd)) 
+ 
+  #remove 1.0 correlations from diagonal  and set the strings
+ diag(Rnew) <- ''		
+ Rnew[upper.tri(Rnew)] <- ''								                	
+ 
+ rownames(Rnew) <- paste(1:ncol(rnd), colnames(rnd), sep=" ")         #define number and name
+ colnames(Rnew) <- paste(1:ncol(rnd), "", sep="") 			       #define number
+ 
+#fun-part: we trim the top half 
+ Rnew[upper.tri(Rnew)] <- ''			
+ Rnew
+ 
+ Rnew <- cbind(round(describe(x)[,3:4],2), Rnew)		     #describe x, M sD - put them in the matrix
+ colnames(Rnew)[1:2] <- c("M","SD")					      		#Beschriftung der neuen Spalten
+ Rnew <- Rnew[,1:(ncol(Rnew)-1)]							        	#delete the last column (ugly)
+ 
+ #export to clipboard
+ 
+   if (export==TRUE){
+   result<-write.table(Rnew
+                       , "clipboard"
+                       , sep=";"
+                       , row.names=FALSE)
+ }
+ else result <- Rnew
+ return(result)
+ 
+}
+
+corr_cswomen <- clarksmith_women %>%
+  select(TSO_A, authenticity_A, a2pSOO_A, howbody_avg_A, relag_A, trigram_score_A)
+
+corr.table <- glrstab(corr_cswomen)
+rownames(corr.table) <- c("Actor's trait self objectification (TSO)", "Actor's authenticity of interaction", "Actor's objectification of partner", "Actor's state self-objectification", "Actor's future relationship agency", "Actor's cognitive performance")
+colnames(corr.table)   <- c("$M$", "$SD$", "1", "2", "3", "4", "5")
+
+apa_table(corr.table, escape=FALSE)
+```
 
 
 \newpage
