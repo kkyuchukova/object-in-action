@@ -106,6 +106,9 @@ smith_intauth_alpha <- psych::alpha(select(smith, inter_1, inter_3, inter_5, int
 clark_howbody_alpha <- psych::alpha(select(clark_measures, howbody_1, howbody_2))$total[2]
 #Smith
 smith_howbody_alpha <- psych::alpha(select(smith, howbody_1, howbody_2))$total[2]
+#with 3
+clark_howbody3 <- psych::alpha(select(clark_measures, howbody_1, howbody_2, howbody_3))
+smith_howbody3 <- psych::alpha(select(smith, howbody_1, howbody_2, howbody_3))
 
 ##Relationship Agency
 #Clark
@@ -141,6 +144,10 @@ clark_physTSO_alpha <- psych::alpha(select(clark_measures,tso_3, tso_5, tso_6, t
 #Smith--external and internal
 smith_funcTSO_alpha <- psych::alpha(select(smith,tso_1, tso_2, tso_4, tso_7, tso_9))$total[2]
 smith_physTSO_alpha <- psych::alpha(select(smith,tso_3, tso_5, tso_6, tso_8, tso_10))$total[2]
+
+#Cognitive performance
+mean_trigram <- favstats(~trigram_score_A, data=clarksmith_women)$mean
+sd_trigram <- favstats(~trigram_score_A, data=clarksmith_women)$sd
 ```
 
 ```{r, include=FALSE}
@@ -151,7 +158,6 @@ favstats(~relag_A, data=clarksmith_women)
 favstats(~careerasp_A, data=clarksmith_women)
 favstats(~authenticity_A, data=clarksmith_women)
 favstats(~trigram_score_A, data=clarksmith_women)
-
 
 #Mean and SD of age of sample
 mean_age <- favstats(~age_A, data=clarksmith_women)$mean
@@ -166,9 +172,15 @@ percent_white <- 31/(6+18+31+6+3)*100
 percent_latinx <- 6/(6+18+31+6+3)*100
 percent_other <- 3/(6+18+31+6+3)*100
 tally(~sexor_A, data=clarksmith_women)
+percent_straight <-(41/64)*100
+percent_queer <- (3+8+5)/64*100
 tally(~gender_A, data=clarksmith_women)
 
 table(clarksmith_women$race_A, clarksmith_women$race_P)
+samerace_white <- 16/2 #divide by 2 since table is people, not pairs
+samerace_minority <- (6+2)/2
+mixedrace_white <- 2+10+2+1
+mixedrace_minority <- 1+2+1+1
 
 test <- clarksmith_women %>%
   filter(race_A==3, race_A!=race_P)
@@ -205,28 +217,28 @@ Data from two different samples was used for this study. They are discussed belo
 The following measures were collected in the order they are presented following the interaction. Correlations appear in Table 1, and descriptive statistics appear in Table 2. 
 
 ###Cognitive performance. 
-Cognitive performance was assessed using trigrams from the Remote Associates Task (McFarlin & Blascovich, 1984). Ten items were selected and presented to participants. For example, the correct answer for the trigram “Quack: Pond: Waddle” would be “Duck”. Participants are limited to 30 seconds. For every correct answer, 1 point is given. The mean score was 5.03. Cognitive performance was measured first in order to measure potential immediate detriments to performance (Garcia et al., 2016).
+Cognitive performance was assessed using trigrams from the Remote Associates Task (McFarlin & Blascovich, 1984). Ten items were selected and presented to participants. For example, the correct answer for the trigram “Quack: Pond: Waddle” would be “Duck”. Participants are limited to 30 seconds. For every correct answer, 1 point is given. The mean score was `r mean_trigram` (SD = `r sd_trigram`). Cognitive performance was measured first in order to measure potential immediate detriments to performance (Garcia et al., 2016).
 
 ###SOO.
-To measure the participant’s objectification of their partner in the interaction, participants were asked a series of questions about the frequency of thoughts of several aspects of their partner (Garcia et al., 2016). Questions included aspects of their partner’s internal traits such as personality, friends, family, and extracurricular interests, as well as external traits such as body, appearance, clothing, and body parts. All questions were to be rated on a scale from 1 (not at all) to 7 (constantly). Objectification was measured by getting the difference between the average frequency of thought about their partner’s external traits (α=.78 for Sample 1, α=.74 for Sample 2) and frequency of thought about their partner’s internal traits (α=.70 for Sample 1, α=.78 for Sample 2). A positive score in this scale would indicate that the participant thought about their partner’s external traits more than the partner’s internal traits, and a negative score would indicate the opposite.
+To measure the participant’s objectification of their partner in the interaction, participants were asked a series of questions about the frequency of thoughts of several aspects of their partner (Garcia et al., 2016). Questions included aspects of their partner’s internal traits such as personality, friends, family, and extracurricular interests, as well as external traits such as body, appearance, clothing, and body parts. All questions were to be rated on a scale from 1 (not at all) to 7 (constantly). Objectification was measured by getting the difference between the average frequency of thought about their partner’s external traits (α = `r printnum(clark_physTSO_alpha)[1,1]` for Sample 1, α = `r printnum(smith_physTSO_alpha)[1,1]` for Sample 2) and frequency of thought about their partner’s internal traits ($\alpha$ = `r printnum(clark_funcTSO_alpha)[1,1]` for Sample 1, α = `r printnum(smith_funcTSO_alpha)[1,1]` for Sample 2). A positive score in this scale would indicate that the participant thought about their partner’s external traits more than the partner’s internal traits, and a negative score would indicate the opposite.
 
 ###Interaction Authenticity.
-Just like Garcia et al. (2016), we assessed the extent to which participants felt comfortable in the interaction and felt it was authentic. We did this by asking them to rate the extent to which they felt the interaction was comfortable, happy, friendly, warm, easygoing, sincere, and authentic on a scale from 1 (not at all) to 7 (very much). Participants were also asked whether they thought their partner was authentic in the interaction, and if they felt they were authentic in the interaction. These questions were ranked on a scale from 1 (not authentic at all). These were combined to form the authenticity scale (α=.91). 
+Just like Garcia et al. (2016), we assessed the extent to which participants felt comfortable in the interaction and felt it was authentic. We did this by asking them to rate the extent to which they felt the interaction was comfortable, happy, friendly, warm, easygoing, sincere, and authentic on a scale from 1 (not at all) to 7 (very much). Participants were also asked whether they thought their partner was authentic in the interaction, and if they felt they were authentic in the interaction. These questions were ranked on a scale from 1 (not authentic at all). These were combined to form the authenticity scale (α = `r printnum(clark_intauth_alpha)[1,1]` for Sample 1, α = `r printnum(smith_intauth_alpha)[1,1]` for Sample 2). 
 
 ###SSO.
-To assess state self-objectification, we used an average of two items from Saguy et al. (2010) that was also used in Garcia et al. (2016). Participants were asked to rank how much they agreed with the following statements: “During the interaction I felt more like a body than a full self” and “I felt more like a body than as a real person in the interaction”. Saguy et al. (2010) originally used 3 items, but the 3rd item had a low reliability score (r=*), so we chose to only use the first two for our measure of SSO.
+To assess state self-objectification, we used an average of two items from Saguy et al. (2010) that was also used in Garcia et al. (2016). Participants were asked to rank how much they agreed with the following statements: “During the interaction I felt more like a body than a full self” and “I felt more like a body than as a real person in the interaction”. Saguy et al. (2010) originally used 3 items, but in both samples the reliability of the scale was higher if we removed the third item, so we chose to only use the first two for our measure of SSO, leaving us with a reliable scale (α = `r printnum(clark_howbody_alpha)[1,1]` for Sample 1, and α = `r printnum(smith_howbody_alpha)[1,1]` for Sample 2.)
 
 ###Relationship Agency. 
-To assess how much relationship agency participants felt they would have in future relationships, we used the scale from Garcia et al. (2016), asking how likely it was that they would do the following: ‘‘ask someone out on a date,’’ ‘‘open the door for your date,’’ ‘‘pay for a date,’’ ‘‘ask your boyfriend/girlfriend to marry you,’’ ‘‘initiate sex with your girlfriend/boyfriend,’’ ‘‘initiate condom use during sex,’’ ‘‘surprise your boyfriend/ girlfriend with a gift,’’ and ‘‘ask your girlfriend/boyfriend to move with you to a new place.’’ Responses were measured on a scale ranging from 1 (not at all likely) to 7 (extremely likely). This item had high reliability for Sample 1 (α=0.73) but low reliability for Sample 2 (α=0.58).
+To assess how much relationship agency participants felt they would have in future relationships, we used the scale from Garcia et al. (2016), asking how likely it was that they would do the following: "ask someone out on a date," "open the door for your date," "pay for a date," "ask your boyfriend/girlfriend to marry you," "initiate sex with your girlfriend/boyfriend," "initiate condom use during sex," "surprise your boyfriend/ girlfriend with a gift," and "ask your girlfriend/boyfriend to move with you to a new place." Responses were measured on a scale ranging from 1 (not at all likely) to 7 (extremely likely). * talk about removing item 9.  Once this item was removed, the scale had moderately high reliability for both samples (α = `r printnum(clark_relag_alpha)[1,1]` for Sample 1, (α = `r printnum(smith_relag_alpha)[1,1]` for Sample 2).
 
 ###Career Aspirations.
-To measure career aspirations, we used the 10-item adaptation of Gray & O’Brien (2007)’s Career Aspiration Scale used in Garcia et al. (2016). This asked participants how true statements were about their future careers on a scale from 0 (not at all true of me) to 4 (very true of me). Items include ‘‘I hope to become a leader in my career field’’ and ‘‘I hope to move up through any organization or business I work in.’’ Items were fairly reliable (α=0.72 for Sample 1, α=0.81 for Sample 2).
+To measure career aspirations, we used the 10-item adaptation of Gray & O’Brien (2007)’s Career Aspiration Scale used in Garcia et al. (2016). This asked participants how true statements were about their future careers on a scale from 0 (not at all true of me) to 4 (very true of me). Items include "I hope to become a leader in my career field" and "I hope to move up through any organization or business I work in." Items were fairly reliable (α = `r printnum(clark_careerasp_alpha)[1,1]` for Sample 1, α = `r printnum(smith_careerasp_alpha)[1,1]` for Sample 2).
 
 ###TSO. 
-TSO was assessed using the Self-Objectification Questionnaire (Fredrickson et al., 1998; Noll & Fredrickson, 1998). This asks participants to rank order functional aspects of their bodies as well as physical self-concepts. The average rank of the functional aspects is then subtracted from the rank of the physical self-concepts. As was done in Garcia et al. (2016), all measures are multiplied by -1 so that positive scores correspond to more TSO.
+TSO was assessed using the Self-Objectification Questionnaire (Fredrickson et al., 1998; Noll & Fredrickson, 1998). This asks participants to rank order functional aspects of their bodies as well as physical self-concepts. The average rank of the functional aspects is then subtracted from the rank of the physical self-concepts. As was done in Garcia et al. (2016), all measures are multiplied by -1 so that positive scores correspond to more TSO. 
 
 ###Description of the Samples
-Participants consisted of thirty-two previously unacquainted female-identifying pairs from two liberal arts colleges in the northeast, for a total of sixty-four participants. Twelve of the pairs came from Sample 1, a co-ed liberal arts college, and twenty pairs came from Sample 2, a women’s liberal arts college. Data was originally collected from multiple genders in both same sex and mixed sex pairs. Sample 1 originally consisted of twenty-two pairs consisting of twelve men and thirty-two women. Sample 2 originally consisted of twenty-three pairs made up of forty-three women and one man, as well as two participants who did not identify with either category. Because the pattern of correlations between important study variables were similar across samples, the two datasets were then combined. For the purpose of consistency when combining data from the two schools, we limited the participants to same sex female pairs at the two colleges. These participants were mostly first-year college students, with an average age of `r mean_age` ($SD = `r sd_age`$). The sample was `r percent_white`% White/European American, `r percentage_black`% Black/African-American, `r percent_asian`% Asian/Pacific Islander, `r percent_latinx` % Latinx, and 5% mixed-race. There were eight White/White pairs and four same race racial minority pairs, for a total of twelve same-race pairs. The remaining twenty were mixed race pairs, of which fifteen were White/racial minority pairings and five were cross-racial minority group pairs. 64% of the sample identified as heterosexual, and 23% identified as gay, lesbian or bisexual. 
+Participants consisted of thirty-two previously unacquainted female-identifying pairs from two liberal arts colleges in the northeast, for a total of sixty-four participants. Twelve of the pairs came from Sample 1, a co-ed liberal arts college, and twenty pairs came from Sample 2, a women’s liberal arts college. Data was originally collected from multiple genders in both same sex and mixed sex pairs. Sample 1 originally consisted of twenty-two pairs consisting of twelve men and thirty-two women. Sample 2 originally consisted of twenty-three pairs made up of forty-three women and one man, as well as two participants who did not identify with either category. Because the pattern of correlations between important study variables were similar across samples, the two datasets were then combined. For the purpose of consistency when combining data from the two schools, we limited the participants to same sex female pairs at the two colleges. These participants were mostly first-year college students, with an average age of `r mean_age` (SD = `r sd_age`). The sample was `r percent_white`% White/European American, `r percentage_black`% Black/African-American, `r percent_asian`% Asian/Pacific Islander, `r percent_latinx`% Latinx, and `r percent_other`% mixed-race. There were `r samerace_white` White/White pairs and `r samerace_minority` same race racial minority pairs, for a total of `r samerace_white + samerace_minority` same-race pairs. The remaining `r mixedrace_white + mixedrace_minority` were mixed race pairs, of which `r mixedrace_white` were White/racial minority pairings and `r mixedrace_minority` were cross-racial minority group pairs. `r percent_straight`% of the sample identified as heterosexual, and `r percent_queer`% identified as gay, lesbian or bisexual. 
   
 
 ## Material
@@ -243,27 +255,9 @@ We used `r cite_r("r-references.bib")` for all our analyses.
 
 \newpage
 #Tables
-```{r}
-# descriptives <- clarksmith_women %>%
-#   summarize(
-#     Mean = mean(Recall)
-#     , Median = median(Recall)
-#     , SD = sd(Recall)
-#     , Min = min(Recall)
-#     , Max = max(Recall)
-#   )
-# descriptives[, -1] <- printnum(descriptives[, -1])
-# 
-# apa_table(
-#   descriptives
-#   , caption = "(ref:mixed-table-caption)"
-#   , note = "(ref:mixed-table-note)"
-#   , escape = TRUE
-# )
 
-```
-
-```{r}
+```{r, results='asis'}
+#Table 1
 glrstab<- function(x, export=FALSE) {
  
  r <-corr.test(x)$r	#taking just the correlation matrix; no N, or p
@@ -314,7 +308,27 @@ corr.table <- glrstab(corr_cswomen)
 rownames(corr.table) <- c("Actor's trait self objectification (TSO)", "Actor's authenticity of interaction", "Actor's objectification of partner", "Actor's state self-objectification", "Actor's future relationship agency", "Actor's cognitive performance")
 colnames(corr.table)   <- c("$M$", "$SD$", "1", "2", "3", "4", "5")
 
-apa_table(corr.table, escape=FALSE)
+apa_table(corr.table, caption="Correlations among study variables.", escape=FALSE)
+```
+
+
+
+
+
+```{r, results='asis'}
+#table 2
+descriptives_cswomen <- clarksmith_women %>%
+  select(TSO_A, authenticity_A, a2pSOO_A, howbody_avg_A, relag_A, trigram_score_A)
+descriptives <- describe(descriptives_cswomen)
+
+descriptives <- descriptives %>%
+  select(mean, sd)
+
+rownames(descriptives) <- c("Actor's trait self objectification (TSO)", "Actor's authenticity of interaction", "Actor's objectification of partner", "Actor's state self-objectification", "Actor's future relationship agency", "Actor's cognitive performance")
+
+colnames(descriptives) <- c("M", "SD")
+
+apa_table(descriptives, caption = "Descriptive Statistics for Study Variables")
 ```
 
 
