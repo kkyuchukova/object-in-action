@@ -1,5 +1,5 @@
 ---
-title             : "The title"
+title             : "Objectification in Action"
 shorttitle        : "Title"
 
 author: 
@@ -43,19 +43,19 @@ abstract: |
 keywords          : "keywords"
 wordcount         : "X"
 
-bibliography      : ["r-references.bib"]
+bibliography      : ["r-references.bib", "references.bib"]
 
 floatsintext      : no
 figurelist        : no
 tablelist         : no
 footnotelist      : no
-linenumbers       : yes
+linenumbers       : no
 mask              : no
 draft             : no
 
 documentclass     : "apa6"
 classoption       : "man"
-output            : papaja::apa6_word
+output            : papaja::apa6_pdf
 ---
 
 ```{r setup, include = FALSE}
@@ -119,6 +119,8 @@ smith_relag_alpha <- psych::alpha(select(smith, relag_1, relag_2, relag_3, relag
 clark_relag_alpha <- psych::alpha(select(clark_measures, relag_1, relag_2, relag_3, relag_4, relag_5, relag_6, relag_7, relag_8))$total[2]
 smith_relag_alpha <- psych::alpha(select(smith, relag_1, relag_2, relag_3, relag_4, relag_5, relag_6, relag_7, relag_8))$total[2]
 
+corr.test(select(clark_measures, relag_1, relag_2, relag_3, relag_4, relag_5, relag_6, relag_7, relag_8, relag_9.r))
+corr.test(select(smith, relag_1, relag_2, relag_3, relag_4, relag_5, relag_6, relag_7, relag_8, relag_9.r))
 
 ##Career Aspirations
 #Clark
@@ -200,12 +202,12 @@ correlations <- apa.cor.table(clarksmith_correlations, table.number=1)
 
 # Methods
 We report how we determined our sample size, all data exclusions (if any), all manipulations, and all measures in the study. <!-- 21-word solution (Simmons, Nelson & Simonsohn, 2012; retrieved from http://ssrn.com/abstract=2160588) -->
-Method
 
 ##Procedure
-The procedure used was identical to that in @garcia2016objectification, except for the instructions that the participants were given. In brief, that methodology is that each participant arrived at the laboratory and were then led into separate cubicles to preventa ny communication between the participants before the interaction. In addition, each participant was screened for prior acquaintance to confirm that they had not met prior to the study. They were asked to sign the consent form to participate, and the study was described as follows: “This is a study looking at how students form different types of relationships at college.” A prompt on the computer screen told the participants that they were assigned to the “College Relationships” condition and gave the following instructions:
+The procedure used was identical to that in @garcia2016objectification, except for the instructions that the participants were given. In brief, that methodology is that each participant arrived at the laboratory and were then led into separate cubicles to prevent any communication between the participants before the interaction. In addition, each participant was screened for prior acquaintance to confirm that they had not met prior to the study. They were asked to sign the consent form to participate, and the study was described as follows: “This is a study looking at how students form different types of relationships at college.” A prompt on the computer screen told the participants that they were assigned to the “College Relationships” condition and gave the following instructions:
 
 There are many types of relationships people form in college. During the interaction, please think about your partner's potential as a romantic partner. Even if they are not the gender you are attracted to, you can still judge their potential as a romantic partner. After the interaction you will be asked to evaluate how dateable your partner is. In other words, we would like to know if you think someone would date your interaction partner. Also, your interaction partner will be evaluating you in the same manner. 
+
 Two participants were then brought into a larger interaction room where they sat on stools prearranged to be 36 inches apart. The experimenter instructed the participants to “get to know each other” for 10 minutes and then left the room. After 10 minutes, the experimenter came back into the room and stopped the interaction. The participants then went back to their individual cubicles and completed a set of post-interaction measures. Participants were then thanked for their participation and debriefed @garcia2016objectification. The full methodology used is found in @garcia2016objectification’s study.
 
 ##Combining Samples
@@ -213,27 +215,27 @@ Data from two different samples were used for this study and are discussed below
 
 
 ##Post interaction Measures
-The following measures were collected in the order they are presented following the interaction. Correlations appear in Table 1, and descriptive statistics appear in Table 2. 
+The following measures were collected in the order they are presented following the interaction. Correlations appear in Table\ \@ref(tab:corrtable), and descriptive statistics appear in Table\ \@ref(tab:descriptives). 
 
-###Cognitive performance. 
-Trigrams from the Remote Associates Task @mcfarlinblascovich1984 were utilized to assess cognitive performance after the interaction. Ten items were selected and presented to participants. For example, the correct answer for the trigram “Quack: Pond: Waddle” would be “Duck”. Participants are limited to 30 seconds. For every correct answer, 1 point is given. The mean score was `r mean_trigram` (SD = `r sd_trigram`). Cognitive performance was measured first in order to measure potential immediate detriments to performance @garcia2016objectification.
+###Cognitive performance
+Trigrams from the Remote Associates Task @mcfarlin1984remote were utilized to assess cognitive performance after the interaction. Ten items were selected and presented to participants. For example, the correct answer for the trigram “Quack: Pond: Waddle” would be “Duck”. Participants are limited to 30 seconds. For every correct answer, 1 point is given. The mean score was `r mean_trigram` (SD = `r sd_trigram`). Cognitive performance was measured first in order to measure potential immediate detriments to performance @garcia2016objectification.
 
-###SOO.
-To measure the participant’s objectification of their partner in the interaction, participants were asked a series of questions about the frequency of thoughts in relation to  multiple characteristics of their partner @garcia2016objectification. Questions included aspects of their partner’s internal traits such as personality, friends, family, and extracurricular interests, as well as external traits such as body, appearance, clothing, and body parts. All questions were to be rated on a scale from 1 (not at all) to 7 (constantly). Objectification was measured by getting the difference between the average frequency of thought about their partner’s external traits (α = `r printnum(clark_physTSO_alpha)[1,1]` for Sample 1, α = `r printnum(smith_physTSO_alpha)[1,1]` for Sample 2) and frequency of thought about their partner’s internal traits ($\alpha$ = `r printnum(clark_funcTSO_alpha)[1,1]` for Sample 1, α = `r printnum(smith_funcTSO_alpha)[1,1]` for Sample 2). A positive score in this scale would indicate that the participant thought about their partner’s external traits more than the partner’s internal traits, and a negative score would indicate the opposite.
+###SOO
+To measure the participant’s objectification of their partner in the interaction, participants were asked a series of questions about the frequency of thoughts in relation to  multiple characteristics of their partner @garcia2016objectification. Questions included aspects of their partner’s internal traits such as personality, friends, family, and extracurricular interests, as well as external traits such as body, appearance, clothing, and body parts. All questions were to be rated on a scale from 1 (not at all) to 7 (constantly). Objectification was measured by getting the difference between the average frequency of thought about their partner’s external traits ($\alpha$ = `r printnum(clark_physTSO_alpha)[1,1]` for Sample 1, $\alpha$ = `r printnum(smith_physTSO_alpha)[1,1]` for Sample 2) and frequency of thought about their partner’s internal traits ($\alpha$ = `r printnum(clark_funcTSO_alpha)[1,1]` for Sample 1, $\alpha$ = `r printnum(smith_funcTSO_alpha)[1,1]` for Sample 2). A positive score in this scale would indicate that the participant thought about their partner’s external traits more than the partner’s internal traits, and a negative score would indicate the opposite.
 
-###Interaction Authenticity.
-To assess the magnitude to which individuals felt comfortable in the interaction and perceived the interaction to be authentic, we asked participants to rate the extent to which they felt comfortable, happy, friendly, warm, easygoing, sincere, and authentic on a scale ranging from 1 (not at all) to 7 (very much), much alike @garcia2016objectification. Participants were additionally asked to rate their interaction partner’s authenticity as well as their own: ‘‘Do you think your partner was authentic during your interaction?’’ and ‘‘Were you authentic during your interaction?’’ These questions were ranked on a scale from 1 (not authentic at all). These were combined to form the authenticity scale (α = `r printnum(clark_intauth_alpha)[1,1]` for Sample 1, α = `r printnum(smith_intauth_alpha)[1,1]` for Sample 2). 	
+###Interaction Authenticity
+To assess the magnitude to which individuals felt comfortable in the interaction and perceived the interaction to be authentic, we asked participants to rate the extent to which they felt comfortable, happy, friendly, warm, easygoing, sincere, and authentic on a scale ranging from 1 (not at all) to 7 (very much), much alike @garcia2016objectification. Participants were additionally asked to rate their interaction partner’s authenticity as well as their own: ‘‘Do you think your partner was authentic during your interaction?’’ and ‘‘Were you authentic during your interaction?’’ These questions were ranked on a scale from 1 (not authentic at all). These were combined to form the authenticity scale ($\alpha$ = `r printnum(clark_intauth_alpha)[1,1]` for Sample 1, $\alpha$ = `r printnum(smith_intauth_alpha)[1,1]` for Sample 2). 	
 
-###SSO.
-To assess state self-objectification, we used an average of two items from @saguyetal2010 that were also used in @garcia2016objectification. Participants were asked to rank how much they agreed with the following statements: “During the interaction I felt more like a body than a full self” and “I felt more like a body than as a real person in the interaction”. Originally, @saguyetal2010 used 3 items, but in both samples the reliability of the scale was higher once the third item was removed, so we chose to only use the first two for our measure of SSO, leaving us with a reliable scale (α = `r printnum(clark_howbody_alpha)[1,1]` for Sample 1, and α = `r printnum(smith_howbody_alpha)[1,1]` for Sample 2.)
+###SSO
+To assess state self-objectification, we used an average of two items from @saguyetal2010 that were also used in @garcia2016objectification. Participants were asked to rank how much they agreed with the following statements: “During the interaction I felt more like a body than a full self” and “I felt more like a body than as a real person in the interaction”. Originally, @saguyetal2010 used 3 items, but in both samples the reliability of the scale was higher once the third item was removed, so we chose to only use the first two for our measure of SSO, leaving us with a reliable scale ($\alpha$ = `r printnum(clark_howbody_alpha)[1,1]` for Sample 1, and $\alpha$ = `r printnum(smith_howbody_alpha)[1,1]` for Sample 2.)
 
-###Relationship Agency. 
-A scale was used from @garcia2016objectification to assess how much agency an individual believes they would possess in future romantic relationships. Participants were asked how likely it was that they would do the following: ‘‘ask someone out on a date,’’ ‘‘open the door for your date,’’ ‘‘pay for a date,’’ ‘‘ask your boyfriend/girlfriend to marry you,’’ ‘‘initiate sex with your girlfriend/boyfriend,’’ ‘‘initiate condom use during sex,’’ ‘‘surprise your boyfriend/ girlfriend with a gift,’’ and ‘‘ask your girlfriend/boyfriend to move with you to a new place.’’ Responses were measured on a scale ranging from 1 (not at all likely) to 7 (extremely likely). Item 9 was removed, and as a result, the scale had moderately high reliability for both samples (α = `r printnum(clark_relag_alpha)[1,1]` for Sample 1, (α = `r printnum(smith_relag_alpha)[1,1]` for Sample 2).
+###Relationship Agency
+A scale was used from @garcia2016objectification to assess how much agency an individual believes they would possess in future romantic relationships. Participants were asked how likely it was that they would do the following: ‘‘ask someone out on a date,’’ ‘‘open the door for your date,’’ ‘‘pay for a date,’’ ‘‘ask your boyfriend/girlfriend to marry you,’’ ‘‘initiate sex with your girlfriend/boyfriend,’’ ‘‘initiate condom use during sex,’’ ‘‘surprise your boyfriend/ girlfriend with a gift,’’ and ‘‘ask your girlfriend/boyfriend to move with you to a new place.’’ Responses were measured on a scale ranging from 1 (not at all likely) to 7 (extremely likely). The scale originally had 9 items, but the 9th item had low correlations with the remaining items, ranging from .02 to .30 for the first sample, and .04 to .30 for the second sample. The item was intended to be reverse coded, but correlations were still low enough to make the scale unreliable. Therefore, the ninth item was removed. As a result, the scale had moderately high reliability for both samples ($\alpha$ = `r printnum(clark_relag_alpha)[1,1]` for Sample 1, ($\alpha$ = `r printnum(smith_relag_alpha)[1,1]` for Sample 2).
 
-###Career Aspirations.
-To conceptualize participants’ career aspirations after the interaction, we used the 10-item adaptation of @grayobrien2007’s Career Aspiration Scale employed in @garcia2016objectification, which asked participants to consider how true 10 statements were in regard to their future careers on a scale from 0 (not at all true of me) to 4 (very true of me). Items include "I hope to become a leader in my career field" and "I hope to move up through any organization or business I work in." Items were fairly reliable (α = `r printnum(clark_careerasp_alpha)[1,1]` for Sample 1, α = `r printnum(smith_careerasp_alpha)[1,1]` for Sample 2).
+###Career Aspirations
+To conceptualize participants’ career aspirations after the interaction, we used the 10-item adaptation of @grayobrien2007’s Career Aspiration Scale employed in @garcia2016objectification, which asked participants to consider how true 10 statements were in regard to their future careers on a scale from 0 (not at all true of me) to 4 (very true of me). Items include "I hope to become a leader in my career field" and "I hope to move up through any organization or business I work in." Items were fairly reliable ($\alpha$ = `r printnum(clark_careerasp_alpha)[1,1]` for Sample 1, $\alpha$ = `r printnum(smith_careerasp_alpha)[1,1]` for Sample 2).
 
-###TSO. 
+###TSO
 Trait self-objectification (TSO) was assessed using the Self-Objectification Questionnaire (@fredricksonetal1998; @nollfredrickson1998), which evaluates the extent to which individuals view their bodies in observable versus nonobservable ways. The questionnaire asked participants to rank order both appearance and functional aspects of their bodies, from 1 (least important) to 10 (most important), with respect to physical self-concepts. Of the ten body attributes, five of the items were appearance-based (weight, sex appeal, physical attractiveness, firm/sculpted muscles and body measurements), and five of the items were competence-based (strength, physical coordination, energy level, health and physical fitness). Difference scores were computed by subtracting the sum of the 5 functional aspects/competence attributes (e.g., health, strength) from the sum of the 5 physical self-concepts/appearance attributes (e.g., physical attractiveness, weight), and all measures were multiplied by -1, as was done in @garcia2016objectification, so that positive scores indicated greater TSO. 
 
 ###Description of the Samples
@@ -253,10 +255,8 @@ We used `r cite_r("r-references.bib")` for all our analyses.
 
 # Discussion
 
-\newpage
-#Tables
 
-```{r, results='asis'}
+```{r corrtable, include=TRUE, echo=FALSE, results='asis'}
 #Table 1
 glrstab<- function(x, export=FALSE) {
  
@@ -312,7 +312,11 @@ apa_table(corr.table, caption="Correlations among study variables.", escape=FALS
 ```
 
 
-```{r, results='asis'}
+
+
+
+
+```{r descriptives, include=TRUE, echo=FALSE, results='asis'}
 #table 2
 descriptives_cswomen <- clarksmith_women %>%
   select(TSO_A, authenticity_A, a2pSOO_A, howbody_avg_A, relag_A, trigram_score_A)
@@ -333,6 +337,7 @@ apa_table(descriptives, caption = "Descriptive Statistics for Study Variables")
 
 # References
 ```{r create_r-references}
+cite_r(file = "references.bib")
 r_refs(file = "r-references.bib")
 ```
 
