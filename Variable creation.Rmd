@@ -62,7 +62,11 @@ clark_measures <- clark_measures %>%
   mutate(howbody_avg = (howbody_1+howbody_2)/2)
 
 #Relationship Agency
-clark_measures$relag <- rowMeans(dplyr::select(clark_measures, relag_1, relag_2, relag_3, relag_4, relag_5, relag_6, relag_7, relag_8, relag_9))
+#Reverse code relationship agency 9
+clark_measures <- clark_measures %>%
+  mutate(relag_9.r=(min(relag_9, na.rm=TRUE) + max(relag_9, na.rm=TRUE) - relag_9))
+
+clark_measures$relag <- rowMeans(dplyr::select(clark_measures, relag_1, relag_2, relag_3, relag_4, relag_5, relag_6, relag_7, relag_8, relag_9.r))
 
 #Career Aspirations--reverse code 4, 7, and 10 and average with the rest
 clark_measures <- clark_measures %>% #reverse code certain career aspiration variables
@@ -111,7 +115,11 @@ smith <- smith %>%
 
 
 #Relationship Agency
-smith$relag <- rowMeans(dplyr::select(smith, relag_1, relag_2, relag_3, relag_4, relag_5, relag_6, relag_7, relag_8, relag_9))
+
+smith <- smith %>%
+  mutate(relag_9.r=(min(relag_9, na.rm=TRUE) + max(relag_9, na.rm=TRUE) - relag_9))
+
+smith$relag <- rowMeans(dplyr::select(smith, relag_1, relag_2, relag_3, relag_4, relag_5, relag_6, relag_7, relag_8, relag_9.r))
 
 #Career Aspirations
 smith <- smith %>%
@@ -127,6 +135,10 @@ smith$physTSO <- rowMeans(dplyr::select(smith, tso_3, tso_5, tso_6, tso_8, tso_1
 
 smith$TSO <- smith$physTSO-smith$funcTSO
 smith$TSO <- smith$TSO*-1
+
+#Write out csv with created variables
+write.csv(clark_measures, "Cleaned data/clark_measures.csv")
+write.csv(smith, "Cleaned data/smith.csv")
 ```
 
 
@@ -330,7 +342,7 @@ smith_final <- merge (x=smith_sexism, y=smith_logel, by="partID", all.x=TRUE)
 
 Write out cleaned data!
 ```{r}
-write.csv(smith_final, "ObjectInAction/Cleaned data/smith_final.csv" )
-write.csv(clark_final, "ObjectInAction/Cleaned data/clark_final.csv")
+write.csv(smith_final, "Cleaned data/smith_final.csv" )
+write.csv(clark_final, "Cleaned data/clark_final.csv")
 ```
 

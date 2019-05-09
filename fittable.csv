@@ -1,0 +1,306 @@
+,Model,
+ 
+,Estimate(Std.Err.),p,
+
+,Intercepts,
+
+howbody.avg.A,1.96{(0.11)},.000,
+
+howbody.avg.P,1.96{(0.11)},.000,
+
+authenticity.A,5.25{(0.12)},.000,
+
+authenticity.P,5.25{(0.12)},.000,
+
+trigram.score.A,5.11{(0.43)},.000,
+
+trigram.score.P,4.97{(0.43)},.000,
+
+careerasp.A,3.89{(0.08)},.000,
+
+careerasp.P,3.89{(0.08)},.000,
+
+relag.A,4.72{(0.10)},.000,
+
+relag.P,4.72{(0.10)},.000,
+
+TSO.A,0.02{(0.24)},.934,
+
+TSO.P,0.02{(0.24)},.934,
+
+a2pSOO.A,-1.55{(0.14)},.000,
+
+a2pSOO.P,-1.55{(0.14)},.000,
+
+TSO.P.SOO.A,0.23{(0.32)},.478,
+
+TSO.A.SOO.P,0.23{(0.32)},.478,
+
+,Residual Variances,
+
+howbody.avg.A,1.25{(0.23)},.000,
+
+howbody.avg.P,1.25{(0.23)},.000,
+
+TSO.A,7.67{(1.32)},.000,
+
+TSO.P,7.67{(1.32)},.000,
+
+a2pSOO.A,1.37{(0.25)},.000,
+
+a2pSOO.P,1.37{(0.25)},.000,
+
+authenticity.A,1.05{(0.19)},.000,
+
+authenticity.P,1.05{(0.19)},.000,
+
+trigram.score.A,6.06{(1.41)},.000,
+
+trigram.score.P,6.05{(1.41)},.000,
+
+careerasp.A,0.48{(0.11)},.000,
+
+careerasp.P,0.28{(0.07)},.000,
+
+relag.A,0.47{(0.11)},.000,
+
+TSO.A.SOO.P,30.60{(5.73)},.000,
+
+TSO.P.SOO.A,34.61{(6.10)},.000,
+
+relag.P,1.50{(0.34)},.000,
+
+,Residual Covariances,
+
+howbody.avg.A w/TSO.A,0.20{(0.36)},.577,
+
+howbody.avg.A w/a2pSOO.A,-0.11{(0.16)},.494,
+
+howbody.avg.A w/a2pSOO.P,0.31{(0.17)},.067,
+
+howbody.avg.A w/TSO.A.SOO.P,-0.51{(0.74)},.492,
+
+howbody.avg.P w/TSO.P,0.20{(0.36)},.577,
+
+howbody.avg.P w/a2pSOO.P,-0.11{(0.16)},.494,
+
+howbody.avg.P w/a2pSOO.A,0.31{(0.17)},.067,
+
+howbody.avg.P w/TSO.P.SOO.A,-0.51{(0.74)},.492,
+
+howbody.avg.P w/TSO.A,0.80{(0.38)},.036,
+
+howbody.avg.A w/TSO.P,0.80{(0.38)},.036,
+
+howbody.avg.P w/TSO.A.SOO.P,-2.01{(0.81)},.014,
+
+howbody.avg.A w/TSO.P.SOO.A,-2.01{(0.81)},.014,
+
+howbody.avg.A w/authenticity.A,-0.07{(0.14)},.626,
+
+howbody.avg.P w/authenticity.P,-0.07{(0.14)},.626,
+
+howbody.avg.A w/authenticity.P,-0.00{(0.14)},.996,
+
+howbody.avg.P w/authenticity.A,-0.00{(0.14)},.996,
+
+authenticity.A w/trigram.score.A,0.25{(0.32)},.427,
+
+authenticity.P w/trigram.score.P,0.25{(0.32)},.427,
+
+authenticity.A w/careerasp.A,0.21{(0.08)},.010,
+
+authenticity.P w/careerasp.P,0.21{(0.08)},.010,
+
+authenticity.A w/relag.A,0.30{(0.11)},.007,
+
+authenticity.P w/relag.P,0.30{(0.11)},.007,
+
+trigram.score.A w/relag.P,-0.04{(0.23)},.858,
+
+trigram.score.P w/relag.A,-0.04{(0.23)},.858,
+
+trigram.score.A w/careerasp.P,0.04{(0.18)},.838,
+
+trigram.score.P w/careerasp.A,0.04{(0.18)},.838,
+
+trigram.score.A w/trigram.score.P,0.89{(1.10)},.416,
+
+careerasp.A w/relag.P,-0.03{(0.05)},.505,
+
+careerasp.P w/relag.A,-0.03{(0.05)},.505,
+
+careerasp.A w/careerasp.P,0.06{(0.06)},.320,
+
+relag.A w/relag.P,-0.08{(0.13)},.537,
+
+TSO.A.SOO.P w/authenticity.A,-0.49{(0.73)},.505,
+
+TSO.P.SOO.A w/authenticity.P,-0.49{(0.73)},.505,
+
+TSO.A w/authenticity.A,-0.21{(0.35)},.555,
+
+TSO.P w/authenticity.P,-0.21{(0.35)},.555,
+
+authenticity.A w/a2pSOO.A,-0.05{(0.15)},.737,
+
+authenticity.P w/a2pSOO.P,-0.05{(0.15)},.737,
+
+TSO.P.SOO.A w/authenticity.A,0.33{(0.70)},.633,
+
+TSO.A.SOO.P w/authenticity.P,0.33{(0.70)},.633,
+
+TSO.P w/authenticity.A,-0.08{(0.33)},.808,
+
+TSO.A w/authenticity.P,-0.08{(0.33)},.808,
+
+authenticity.A w/a2pSOO.P,0.18{(0.15)},.230,
+
+authenticity.P w/a2pSOO.A,0.18{(0.15)},.230,
+
+TSO.A.SOO.P w/trigram.score.A,-0.60{(1.72)},.727,
+
+TSO.P.SOO.A w/trigram.score.P,-0.60{(1.72)},.727,
+
+TSO.A w/trigram.score.A,0.61{(0.84)},.469,
+
+TSO.P w/trigram.score.P,0.61{(0.84)},.469,
+
+trigram.score.A w/a2pSOO.A,0.33{(0.36)},.357,
+
+trigram.score.P w/a2pSOO.P,0.33{(0.36)},.357,
+
+TSO.A.SOO.P w/careerasp.A,-0.66{(0.44)},.130,
+
+TSO.P.SOO.A w/careerasp.P,-0.66{(0.44)},.130,
+
+TSO.A w/careerasp.A,0.18{(0.21)},.393,
+
+TSO.P w/careerasp.P,0.18{(0.21)},.393,
+
+careerasp.A w/a2pSOO.A,-0.08{(0.09)},.374,
+
+careerasp.P w/a2pSOO.P,-0.08{(0.09)},.374,
+
+TSO.A.SOO.P w/relag.A,0.38{(0.57)},.501,
+
+TSO.P.SOO.A w/relag.P,0.38{(0.57)},.501,
+
+TSO.A w/relag.A,-0.55{(0.29)},.058,
+
+TSO.P w/relag.P,-0.55{(0.29)},.058,
+
+relag.A w/a2pSOO.A,0.09{(0.12)},.424,
+
+relag.P w/a2pSOO.P,0.09{(0.12)},.424,
+
+TSO.P.SOO.A w/trigram.score.A,2.77{(0.97)},.004,
+
+TSO.A.SOO.P w/trigram.score.P,2.77{(0.97)},.004,
+
+TSO.P w/trigram.score.A,-1.55{(0.14)},.000,
+
+TSO.A w/trigram.score.P,-1.55{(0.14)},.000,
+
+trigram.score.A w/a2pSOO.P,0.23{(0.32)},.478,
+
+trigram.score.P w/a2pSOO.A,0.23{(0.32)},.478,
+
+TSO.P.SOO.A w/careerasp.A,0.08{(0.41)},.853,
+
+TSO.A.SOO.P w/careerasp.P,0.08{(0.41)},.853,
+
+TSO.P w/careerasp.A,-0.06{(0.20)},.786,
+
+TSO.A w/careerasp.P,-0.06{(0.20)},.786,
+
+careerasp.A w/a2pSOO.P,-0.03{(0.09)},.732,
+
+careerasp.P w/a2pSOO.A,-0.03{(0.09)},.732,
+
+TSO.P.SOO.A w/relag.A,0.17{(0.56)},.763,
+
+TSO.A.SOO.P w/relag.P,0.17{(0.56)},.763,
+
+TSO.P w/relag.A,-0.11{(0.26)},.674,
+
+TSO.A w/relag.P,-0.11{(0.26)},.674,
+
+relag.A w/a2pSOO.P,-0.11{(0.12)},.354,
+
+relag.P w/a2pSOO.A,-0.11{(0.12)},.354,
+
+howbody.avg.A w/trigram.score.A,0.06{(0.22)},.803,
+
+howbody.avg.P w/trigram.score.P,0.06{(0.22)},.803,
+
+howbody.avg.A w/careerasp.A,-0.01{(0.06)},.826,
+
+howbody.avg.P w/careerasp.P,-0.01{(0.06)},.826,
+
+howbody.avg.A w/relag.A,0.05{(0.07)},.462,
+
+howbody.avg.P w/relag.P,0.05{(0.07)},.462,
+
+howbody.avg.P w/trigram.score.A,0.06{(0.22)},.803,
+
+howbody.avg.A w/trigram.score.P,0.06{(0.22)},.803,
+
+howbody.avg.P w/careerasp.A,-0.01{(0.06)},.826,
+
+howbody.avg.A w/careerasp.P,-0.01{(0.06)},.826,
+
+howbody.avg.P w/relag.A,0.05{(0.07)},.462,
+
+howbody.avg.A w/relag.P,0.05{(0.07)},.462,
+
+howbody.avg.A w/howbody.avg.P,-0.30{(0.23)},.196,
+
+authenticity.A w/authenticity.P,-0.20{(0.16)},.206,
+
+trigram.score.A w/careerasp.A,-0.08{(0.19)},.662,
+
+trigram.score.A w/relag.A,-0.00{(0.25)},.988,
+
+careerasp.A w/relag.A,0.11{(0.07)},.099,
+
+trigram.score.P w/careerasp.P,-0.08{(0.19)},.662,
+
+trigram.score.P w/relag.P,-0.00{(0.25)},.988,
+
+careerasp.P w/relag.P,0.11{(0.07)},.099,
+
+TSO.A w/TSO.A.SOO.P,-13.23{(2.53)},.000,
+
+TSO.P w/TSO.P.SOO.A,-13.23{(2.53)},.000,
+
+TSO.A.SOO.P w/a2pSOO.P,-0.43{(0.79)},.588,
+
+TSO.P.SOO.A w/a2pSOO.A,-0.43{(0.79)},.588,
+
+TSO.A w/a2pSOO.P,0.19{(0.38)},.612,
+
+TSO.P w/a2pSOO.A,0.19{(0.38)},.612,
+
+TSO.A w/a2pSOO.A,0.74{(0.42)},.081,
+
+TSO.P w/a2pSOO.P,0.74{(0.42)},.081,
+
+TSO.A.SOO.P w/a2pSOO.A,-1.53{(0.87)},.077,
+
+TSO.P.SOO.A w/a2pSOO.P,-1.53{(0.87)},.077,
+
+TSO.P w/TSO.A.SOO.P,0.39{(0.46)},.397,
+
+TSO.A w/TSO.P.SOO.A,0.39{(0.46)},.397,
+
+,Fit Indices,
+
+chi^2,93.17(78),.116,
+
+RMSEA,0.08,,
+
++Fixed parameter,
+
+
+
