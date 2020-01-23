@@ -1,0 +1,46 @@
+```{r}
+chi_isat <- 89.135
+df_isat <- 75
+
+#this is definitely right  
+chi_mod <- 120.502
+df_mod <- 112
+
+chi_null <- 218.844
+df_null <- 129
+```
+
+adjust
+
+```{r}
+chi_mod_adj <- chi_mod - chi_isat
+df_mod_adj <- df_mod - df_isat
+
+chi_null_adj <- chi_null - chi_isat
+df_null_adj <- df_null - df_isat
+```
+
+Chi-square test for model fit
+
+```{r}
+pchisq(chi_mod_adj, df_mod_adj, lower.tail = FALSE)
+```
+
+Fit statistics
+
+```{r}
+RMSEA <- sqrt(((chi_mod_adj/df_mod_adj)-1)/(32-1))
+chi_mod_adj/df_mod_adj-1
+sqrt(-.15/31)
+
+#Trying to take square root of negative number...so zero. Because df is smaller than chi-sqaure. 
+RMSEA <- 0 
+```
+
+```{r}
+CFI <- 1-((chi_mod_adj-df_mod_adj)/(chi_null_adj-df_null_adj))
+CFI
+```
+
+
+
