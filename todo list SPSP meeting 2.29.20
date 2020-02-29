@@ -1,0 +1,38 @@
+Todo list (issues for github):
+
+-Seriously though, how'd the poster session go? What comments did poeple have?
+
+-Decide on analysis type...I think I remember us discussion how we might actually want to use MLM as to avoid the CRAZY df issue and the Olsen & Kenny of it all. We can place all of the SEM analyses in a supplement. 
+
+-Do we need to do a new literature review? 
+  -I'm INTO the idea of this paper. Thanks for finding it!: Brunell, A. B., Kernis, M. H., Goldman, B. M., 
+  Heppner, W., Davis, P., Cascio, E., & Webster, G. D. (2010). Dispositional authenticity and romantic 
+  relationship functioning. Personality and Individual Differences, 48 (8), 900–905. 
+  doi:10.1016/j.paid.2010.02.018.  
+
+-What journal should we sent this to? PWQ then Body Image? PSPB? I LOVE that the paper is fully reproducible and written with papaja. I feel like that might warrant a try for PSPB if we ramp that aspect up a bit. 
+  -Look up publication guidelines (page length, abstract lenth)
+
+-Timeline for me. Their timelines. 
+
+-New APA 7th addition. See if papaja has any updates. 
+
+-revamp the title? What did we actually learn. How confident are we in that inference? For exmaple, we can make it more about the partner effect only. 
+
+
+
+MANUSCRIPT NOTES
+
+-Abstract is too long. **I already made some edits.** 
+
+-Re-writing of the introduction. Needs to strike more of a scientific tone.
+  -What's this: “Engendered lives,” 1993. 
+  -Remove quotes: Sexual objectification occurs with both “endless variety and monotonous similarity,” and is thus mediated by unique combinations of race, ethnicity, sexuality, age, and class (Fredrickson, Hendler, Nilsen, O’Barr, & Roberts, 2011; Rubin, 1975, cited in Fraser and Nicholson (1989), p. 28). 
+    -Although I like the note about conbinations of identities. 
+    
+-Introduction needs more structure. The first paragraph is way too long. It's doesn't look as long in R and I thik that might be hard to switch and get a feel for how short they need to be while writing in R. **I made some edits**
+
+-Let's go thorugh and make sure we're saying exactly what we mean. Empirical evidence reveals that objectification manifests through inauthenticity in romantic relationships (Brunell et al., 2010), adverse attitudes in regard to career aspirations, and a decrease in concentration and impairment in female cognitive performance (Swim et al.,
+2001). Is this really in the Swim paper? Maybe it is. 
+
+-The giant missing piece is the literaure about women objectifying other women, what it means, who it is similar and different two being objectified by men. There's tons of "male gaze" literature for example. I bet there is more recent research about women-on-women objectification. 

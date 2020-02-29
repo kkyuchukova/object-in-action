@@ -19,7 +19,7 @@ affiliation:
 
 
 abstract: |
-  Objectification theory is a valuable framework for conceptualizing the psychological consequences of being female within a society that sexually objectifies the female body, and considering the ways in which girls and women are acculturated to then internalize an observer’s perspective as a primary view of their appearance. Empirical evidence has largely elucidated links between objectification, self-objectification, and negative outcomes for woman within interpersonal interactions between male-female pairs particularly. The purpose of the present study was to extend past research and consider the relationships between such valuable phenomena and their effects on authenticity within interactions between female pairs. Woman were brought into the laboratory and interacted in same-sex dyads. Dyadic analysis was utilized to detect whether partners’ objectification of each other affected state self-objectification, and the resulting feelings of comfort and authenticity during the interaction. After the interaction, participants completed a questionnaire which measured many constructs including cognitive performance, career aspirations, and relationship agency. Results revealed no significant relationship between self-objectification and authenticity. Further, although there were significantly negative effects on career aspirations and relationship agency resulting from a lack of relationship authenticity, there was no evidence that this is due to feelings of sexual objectification. The significant partner effect of objectification on actor self-objectification suggests that women being objectified by other women still results in feelings of self-objectification, and such research has powerful implications for the ways that women interact in both sexual and non-sexual settings.
+  Empirical evidence has only found links between objectification, self-objectification, and negative outcomes for woman within interpersonal interactions between male-female pairs. The purpose of the present study was to extend past research and consider the relationships between such valuable phenomena and their effects on authenticity within interactions between female pairs. Woman were brought into the laboratory and interacted in same-sex dyads. Dyadic analysis was utilized to detect whether partners’ objectification of each other affected state self-objectification, and the resulting feelings of comfort and authenticity during the interaction. After the interaction, participants completed a questionnaire which measured many constructs including cognitive performance, career aspirations, and relationship agency. Results revealed no significant relationship between self-objectification and authenticity. Further, although there were significantly negative effects on career aspirations and relationship agency resulting from a lack of relationship authenticity, there was no evidence that this is due to feelings of sexual objectification. The significant partner effect of objectification on actor self-objectification suggests that women being objectified by other women still results in feelings of self-objectification, and such research has powerful implications for the ways that women interact in both sexual and non-sexual settings.
   
 keywords          : "keywords"
 
@@ -73,18 +73,27 @@ knitr::opts_chunk$set(cache.extra = knitr::rand_seed)
 
 #Clark
 #SOO
-clark_extsoo_alpha <- psych::alpha(select(clark_measures, otherint_1, otherint_2, otherint_5, otherint_6, otherint_10))$total[2]
+clark_extsoo_alpha <- psych::alpha(select(clark_measures, otherint_1, otherint_2, 
+                                          otherint_5, otherint_6, otherint_10))$total[2]
 
-clark_intsoo_alpha <- psych::alpha(select(clark_measures, otherint_3, otherint_4, otherint_7, otherint_8, otherint_9, otherint_11, otherint_12))$total[2]
+clark_intsoo_alpha <- psych::alpha(select(clark_measures, otherint_3, otherint_4, 
+                                          otherint_7, otherint_8, otherint_9, otherint_11, 
+                                          otherint_12))$total[2]
 #Smith
-smith_extsoo_alpha <- psych::alpha(select(smith, otherint_1, otherint_2, otherint_5, otherint_6, otherint_10))$total[2]
-smith_intsoo_alpha <- psych::alpha(select(smith, otherint_3, otherint_4, otherint_7, otherint_8, otherint_9, otherint_11, otherint_12))$total[2]
+smith_extsoo_alpha <- psych::alpha(select(smith, otherint_1, otherint_2, otherint_5, 
+                                          otherint_6, otherint_10))$total[2]
+smith_intsoo_alpha <- psych::alpha(select(smith, otherint_3, otherint_4, otherint_7, 
+                                          otherint_8, otherint_9, otherint_11, otherint_12))$total[2]
 
 ##Interaction Authenticity
 #Clark
-clark_intauth_alpha <- psych::alpha(select(clark_measures, inter_1, inter_3, inter_5, inter_6, inter_7, inter_9, inter_10, interaux_5, interaux_6))$total[2]
+clark_intauth_alpha <- psych::alpha(select(clark_measures, inter_1, inter_3, inter_5, 
+                                           inter_6, inter_7, inter_9, inter_10, interaux_5, 
+                                           interaux_6))$total[2]
 #Smith
-smith_intauth_alpha <- psych::alpha(select(smith, inter_1, inter_3, inter_5, inter_6, inter_7, inter_9, inter_10, interaux_5, interaux_6))$total[2]
+smith_intauth_alpha <- psych::alpha(select(smith, inter_1, inter_3, inter_5, inter_6, 
+                                           inter_7, inter_9, inter_10, interaux_5, 
+                                           interaux_6))$total[2]
 
 ##SSO
 #Clark
@@ -97,12 +106,19 @@ smith_howbody3 <- psych::alpha(select(smith, howbody_1, howbody_2, howbody_3))
 
 ##Relationship Agency
 #Clark
-clark_relag_alpha <- psych::alpha(select(clark_measures, relag_1, relag_2, relag_3, relag_4, relag_5, relag_6, relag_7, relag_8, relag_9.r))$total[2]
+clark_relag_alpha <- psych::alpha(select(clark_measures, relag_1, relag_2, relag_3, 
+                                         relag_4, relag_5, relag_6, relag_7, relag_8, 
+                                         relag_9.r))$total[2]
 #Smith
-smith_relag_alpha <- psych::alpha(select(smith, relag_1, relag_2, relag_3, relag_4, relag_5, relag_6, relag_7, relag_8, relag_9.r))$total[2]
+smith_relag_alpha <- psych::alpha(select(smith, relag_1, relag_2, relag_3, relag_4, 
+                                         relag_5, relag_6, relag_7, relag_8, 
+                                         relag_9.r))$total[2]
 ##DROPPING ITEM 9
-clark_relag_alpha <- psych::alpha(select(clark_measures, relag_1, relag_2, relag_3, relag_4, relag_5, relag_6, relag_7, relag_8))$total[2]
-smith_relag_alpha <- psych::alpha(select(smith, relag_1, relag_2, relag_3, relag_4, relag_5, relag_6, relag_7, relag_8))$total[2]
+clark_relag_alpha <- psych::alpha(select(clark_measures, relag_1, relag_2, relag_3, 
+                                         relag_4, relag_5, relag_6, relag_7, relag_8))$total[2]
+
+smith_relag_alpha <- psych::alpha(select(smith, relag_1, relag_2, relag_3, relag_4, 
+                                         relag_5, relag_6, relag_7, relag_8))$total[2]
 
 corr.test(select(clark_measures, relag_1, relag_2, relag_3, relag_4, relag_5, relag_6, relag_7, relag_8, relag_9.r))
 corr.test(select(smith, relag_1, relag_2, relag_3, relag_4, relag_5, relag_6, relag_7, relag_8, relag_9.r))
@@ -128,6 +144,7 @@ smith_careerasp_alpha <- psych::alpha(select(smith, careerasp_1, careerasp_2, ca
 #Clark--external and internal
 clark_funcTSO_alpha <- psych::alpha(select(clark_measures,tso_1, tso_2, tso_4, tso_7, tso_9), check.keys=TRUE)$total[2]
 clark_physTSO_alpha <- psych::alpha(select(clark_measures,tso_3, tso_5, tso_6, tso_8, tso_10), check.keys=TRUE)$total[2]
+
 #Smith--external and internal
 smith_funcTSO_alpha <- psych::alpha(select(smith,tso_1, tso_2, tso_4, tso_7, tso_9), check.keys=TRUE)$total[2]
 smith_physTSO_alpha <- psych::alpha(select(smith,tso_3, tso_5, tso_6, tso_8, tso_10), check.keys=TRUE)$total[2]
@@ -184,8 +201,16 @@ correlations <- apa.cor.table(clarksmith_correlations, table.number=1)
 ```
 
 #Introduction
-Theorists across diverse disciplines have explored the multiple ways that the body conveys social meaning, as well as how these meanings shape gendered experiences and therefore inform individuals’ thinking, feeling, and behavior, especially during interpersonal interactions with members of different social groups [@Kaschak]. Empirical evidence illustrates how women, in particular,  continue to be objects of perpetual discrimination as a result of psychosocial markers, like gender, that produce modes through which their identity is understood [@swimetal]. Objectification theory, a valuable theoretical framework proposed by @robertsfredrickson which works to contextualize female bodies as socio-cultural constructions, can be employed to illuminate the gender oppression and negative lived experiences of girls and women. Additionally, one of the most detrimental forms of discrimination against them is thought to be the process by which their whole being is viewed as a collection of sexualized body parts valued predominantly for commodification, a phenomena termed sexual objectification [@Bartky]. Sexual objectification occurs with both “endless variety and monotonous similarity,” and is thus mediated by unique combinations of race, ethnicity, sexuality, age, and class [@fredricksonetal2011; @rubin1975, cited in @frasernicholson1989, p. 28]. Amid such heterogeneity though, “having a reproductively mature female body” proposed by @robertsfredrickson is likely to create a shared vulnerability to sexual objectification and a variety of shared negative experiences as a result. Studies have shown that within social encounters women are gazed at more than men [@briton1995], often times feel ‘looked at’ within interpersonal interactions [@argyle1969], and will more than likely internalize the objectifying gaze on physical self [@young1979]. Moreover, perhaps the most adverse effect of objectifying treatment is that it effectively socializes girls and women to treat themselves as objects to be looked at and evaluated, an effect termed self-objectification  [@Bartky; @berger1972; @fredricksonetal1998]. Self-objectification is a multidimensional process that accounts for the cognitive mechanism that translates experiences of sexualization at the cultural level to psychological (e.g., anxiety, self-esteem, authenticity, motivational states) and behavioral (cognitive performance, body monitoring) features of mental health and well-being at the individual level [@calogero2011; @moradi2008]. @calogero2011 proposes that the construct of self-objectification can be conceptualized as a learned trait. Furthermore, it can also be elicited momentarily, through the media, for example, with sexualized images in movies and magazines, which can lead to a state of self-objectification [@calogero2011, @moradi2008]. Being objectified by another person and possessing trait-level self-objectification (TSO) may interact to influence experiences of feeling like a body, or state self-objectification (SSO).
-In the current work, we sought to examine what occurs during an interaction in which one or both partners are objectifying each other, similarly to @garcia2016objectification,  but between same-sex female interpersonal interactions. We predicted that being objectified by one’s interaction partner would lead to self-objectification, in addition to modified feelings of authenticity in postinteraciton outcomes, including feelings of agency in romantic relationships, career aspiration, and cognitive performance [@quinnetal]. Empirical evidence reveals that objectification manifests through inauthenticity in romantic relationships [@brunelletal2010], adverse attitudes in regard to career aspirations, and a decrease in concentration and impairment in female cognitive performance [@swimetal]. Moreover, it was the goal of this research to empirically explore the role of interaction authenticity in objectification by utilizing a structural equation modeling to examine the effects for both women simultaneously. We expected to replicate the results found in the previous @garcia2016objectification study. More specifically, we expected to find a positive relationship between state-other objectification and self-state objectification, and a resulting negative relationship between self-state objectification and interaction authenticity. Finally, we expected there to be a positive relationship between interaction authenticity and cognitive performance, relationship agency, and career aspirations.
+Theorists across diverse disciplines have explored the multiple ways that the body conveys social meaning, as well as how these meanings shape gendered experiences and therefore inform individuals’ thinking, feeling, and behavior, especially during interpersonal interactions with members of different social groups [@Kaschak]. Empirical evidence illustrates how women, in particular,  continue to be objects of perpetual discrimination as a result of psychosocial markers, like gender, that produce modes through which their identity is understood [@swimetal]. Objectification theory, a valuable theoretical framework proposed by @robertsfredrickson which works to contextualize female bodies as socio-cultural constructions, can be employed to illuminate the gender oppression and negative lived experiences of girls and women. 
+
+Additionally, one of the most detrimental forms of discrimination against them is thought to be the process by which their whole being is viewed as a collection of sexualized body parts valued predominantly for commodification, a phenomena termed sexual objectification [@Bartky]. Sexual objectification occurs with both “endless variety and monotonous similarity,” and is thus mediated by unique combinations of race, ethnicity, sexuality, age, and class [@fredricksonetal2011; @rubin1975, cited in @frasernicholson1989, p. 28]. Amid such heterogeneity though, “having a reproductively mature female body” proposed by @robertsfredrickson is likely to create a shared vulnerability to sexual objectification and a variety of shared negative experiences as a result. Studies have shown that within social encounters women are gazed at more than men [@briton1995], often times feel ‘looked at’ within interpersonal interactions [@argyle1969], and will more than likely internalize the objectifying gaze on physical self [@young1979]. 
+Moreover, perhaps the most adverse effect of objectifying treatment is that it effectively socializes girls and women to treat themselves as objects to be looked at and evaluated, an effect termed self-objectification  [@Bartky; @berger1972; @fredricksonetal1998]. Self-objectification is a multidimensional process that accounts for the cognitive mechanism that translates experiences of sexualization at the cultural level to psychological (e.g., anxiety, self-esteem, authenticity, motivational states) and behavioral (cognitive performance, body monitoring) features of mental health and well-being at the individual level [@calogero2011; @moradi2008]. @calogero2011 proposes that the construct of self-objectification can be conceptualized as a learned trait. 
+
+Furthermore, it can also be elicited momentarily, through the media, for example, with sexualized images in movies and magazines, which can lead to a state of self-objectification [@calogero2011, @moradi2008]. Being objectified by another person and possessing trait-level self-objectification (TSO) may interact to influence experiences of feeling like a body, or state self-objectification (SSO).
+
+In the current work, we sought to examine what occurs during an interaction in which one or both partners are objectifying each other, similarly to @garcia2016objectification,  but between same-sex female interpersonal interactions. We predicted that being objectified by one’s interaction partner would lead to self-objectification, in addition to modified feelings of authenticity in postinteraciton outcomes, including feelings of agency in romantic relationships, career aspiration, and cognitive performance [@quinnetal]. Empirical evidence reveals that objectification manifests through inauthenticity in romantic relationships [@brunelletal2010], adverse attitudes in regard to career aspirations, and a decrease in concentration and impairment in female cognitive performance [@swimetal]. 
+
+Moreover, it was the goal of this research to empirically explore the role of interaction authenticity in objectification by utilizing a structural equation modeling to examine the effects for both women simultaneously. We expected to replicate the results found in the previous @garcia2016objectification study. More specifically, we expected to find a positive relationship between state-other objectification and self-state objectification, and a resulting negative relationship between self-state objectification and interaction authenticity. Finally, we expected there to be a positive relationship between interaction authenticity and cognitive performance, relationship agency, and career aspirations.
 
 
 
@@ -200,7 +225,6 @@ Two participants were then brought into a larger interaction room where they sat
 
 ##Combining Samples
 Data from two different samples were used for this study and are discussed below. In the measures section that follows we refer to them as Sample 1 and Sample 2. Sample 1 is from a co-ed liberal arts college in the northeast and Sample 2 is from a women’s liberal arts college in the northeast.
-
 
 ##Post interaction Measures
 The following measures were collected in the order they are presented following the interaction. Correlations appear in Table\ \@ref(tab:corrtable), and descriptive statistics appear in Table\ \@ref(tab:descriptives). 
