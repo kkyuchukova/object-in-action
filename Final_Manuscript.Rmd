@@ -3,20 +3,21 @@ title             : "Objectification in Action: Self- and Other-Objectification 
 shorttitle        : "Objectification in Action"
 
 author: 
+  - name          : "Randi L. Garcia"
+    affiliation   : "1, 2"
+    corresponding : yes    # Define only one corresponding author
+    address       : "415 Bass Hall, Smith College, Northampton, MA 01060"
+    email         : "rgarcia@smith.edu"
   - name          : "Kat Kyuchukova"
     affiliation   : "1"
   - name          : "Asha Hinson"
-    affiliation   : "1"
-  - name          : "Randi L. Garcia"
-    corresponding : yes    # Define only one corresponding author
-    address       : "Postal address"
-    email         : "my@email.com"
     affiliation   : "1"    
 
 affiliation:
   - id            : "1"
-    institution   : "Smith College"
-
+    institution   : "Department of Psychology, Smith College"
+  - id            : "2"
+    institution   : "Program in Statistical and Data Sciences, Smith College"
 
 abstract: |
   Empirical evidence has only found links between objectification, self-objectification, and negative outcomes for woman within interpersonal interactions between male-female pairs. The purpose of the present study was to extend past research and consider the relationships between such valuable phenomena and their effects on authenticity within interactions between female pairs. Woman were brought into the laboratory and interacted in same-sex dyads. Dyadic analysis was utilized to detect whether partners’ objectification of each other affected state self-objectification, and the resulting feelings of comfort and authenticity during the interaction. After the interaction, participants completed a questionnaire which measured many constructs including cognitive performance, career aspirations, and relationship agency. Results revealed no significant relationship between self-objectification and authenticity. Further, although there were significantly negative effects on career aspirations and relationship agency resulting from a lack of relationship authenticity, there was no evidence that this is due to feelings of sexual objectification. The significant partner effect of objectification on actor self-objectification suggests that women being objectified by other women still results in feelings of self-objectification, and such research has powerful implications for the ways that women interact in both sexual and non-sexual settings.
@@ -200,7 +201,6 @@ correlations <- apa.cor.table(clarksmith_correlations, table.number=1)
 
 ```
 
-#Introduction
 Theorists across diverse disciplines have explored the multiple ways that the body conveys social meaning, as well as how these meanings shape gendered experiences and therefore inform individuals’ thinking, feeling, and behavior, especially during interpersonal interactions with members of different social groups [@Kaschak]. Empirical evidence illustrates how women, in particular,  continue to be objects of perpetual discrimination as a result of psychosocial markers, like gender, that produce modes through which their identity is understood [@swimetal]. Objectification theory, a valuable theoretical framework proposed by @robertsfredrickson which works to contextualize female bodies as socio-cultural constructions, can be employed to illuminate the gender oppression and negative lived experiences of girls and women. 
 
 Additionally, one of the most detrimental forms of discrimination against them is thought to be the process by which their whole being is viewed as a collection of sexualized body parts valued predominantly for commodification, a phenomena termed sexual objectification [@Bartky]. Sexual objectification occurs with both “endless variety and monotonous similarity,” and is thus mediated by unique combinations of race, ethnicity, sexuality, age, and class [@fredricksonetal2011; @rubin1975, cited in @frasernicholson1989, p. 28]. Amid such heterogeneity though, “having a reproductively mature female body” proposed by @robertsfredrickson is likely to create a shared vulnerability to sexual objectification and a variety of shared negative experiences as a result. Studies have shown that within social encounters women are gazed at more than men [@briton1995], often times feel ‘looked at’ within interpersonal interactions [@argyle1969], and will more than likely internalize the objectifying gaze on physical self [@young1979]. 
