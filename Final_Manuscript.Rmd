@@ -45,7 +45,7 @@ set.seed(42)
 knitr::opts_chunk$set(cache.extra = knitr::rand_seed, include = FALSE)
 ```
 
-```{r packages}
+```{r packages, warning = FALSE, message = FALSE}
 library(papaja)
 library(nlme)
 library(haven)
@@ -133,7 +133,7 @@ glrstab<- function(x, export=FALSE) {
  rnd  <- papaja::printnum(r, gt1 = FALSE, digits = 2)  #round, drop leading 0 - Thanks CRSH!								                     
  Rnew <- matrix(paste(rnd, mystars, sep=""), ncol=ncol(rnd)) 
  
-  #remove 1.0 correlations from diagonal  and set the strings
+#remove 1.0 correlations from diagonal and set the strings
  diag(Rnew) <- ''		
  Rnew[upper.tri(Rnew)] <- ''								                	
  
@@ -144,9 +144,9 @@ glrstab<- function(x, export=FALSE) {
  Rnew[upper.tri(Rnew)] <- ''			
  Rnew
  
- Rnew <- cbind(round(describe(x)[,3:4],2), Rnew)		     #describe x, M sD - put them in the matrix
- colnames(Rnew)[1:2] <- c("M","SD")					      		#Beschriftung der neuen Spalten
- Rnew <- Rnew[,1:(ncol(Rnew)-1)]							        	#delete the last column (ugly)
+ Rnew <- cbind(round(describe(x)[,3:4],2), Rnew)		 #describe x, M sD - put them in the matrix
+ colnames(Rnew)[1:2] <- c("M","SD")			#Beschriftung der neuen Spalten-"labeling of the new columns"
+ Rnew <- Rnew[,1:(ncol(Rnew)-1)]							   	#delete the last column (ugly)
  
  #export to clipboard
  
@@ -313,8 +313,6 @@ clark_physTSO_alpha <- psych::alpha(select(clark_measures, tso_3, tso_5, tso_6, 
 #Smith--external and internal
 smith_funcTSO_alpha <- psych::alpha(select(smith, tso_1, tso_2, tso_4, tso_7, tso_9), check.keys=TRUE)$total[2]
 smith_physTSO_alpha <- psych::alpha(select(smith, tso_3, tso_5, tso_6, tso_8, tso_10), check.keys=TRUE)$total[2]
-
-
 ```
 
 ###Trait Self-Objectification
@@ -380,327 +378,459 @@ include_graphics("2016_figure.jpg")
 ```
 
 ## Analysis Strategy
-This study sought to replicate the results of @garcia2016objectification’s study, done with male-female pairs, which used dyadic analysis to detect whether partners’ objectification of one another affected state self-objectification (SSO). See Figure\ \@ref(fig:2016figure) for the path analysis results of the previous study. We hope to investigate how the main effects found in the previous study relay to interactions between women: specifically, the relationship between state-other objectification and self-state objectification and the resulting effect of self-state objectification on inauthenticity during the interaction.
+This study sought to replicate the results of @garcia2016objectification’s study, done with male-female pairs, which used a dyadic path analysis to detect whether partners’ objectification of one another affected state self-objectification (SSO). See Figure\ \@ref(fig:2016figure) for the results of the analysis from this previous study. We hope to investigate how the central effects found in the previous study relate to interactions between two women. Specifically, we are interested in testing the relationship between state-other objectification and SSO, and how SSO in turn, affecs feelings of inauthenticity during the interaction. In addition, we will also test if the effect of other-objectification in an interaction on SSO is only present for those women who are high in trait self-objectification, as in @garcia2016objectification. Further, we will investigate the realtionships between experiencing interaction inauthenticity and relationship agency, career aspirations, and cognitive performance. 
 
-We used path analysis to obtain our estimates, but because our sample is nonindependent, we used the indistinguishable actor–partner interdependence model [@olsen2006structural]. The APIM can be defined as a "model of dyadic relationships that integrates a conceptual view of interdependence with the appropriate statistical techniques for measuring and testing it" [@olsen2006structural]. See Figure\ \@ref(fig:apim) for a basic APIM model. Unlike the original @garcia2016objectification study, our study deals with indistinguishable dyads, meaning the designation of who is designated as "actor" and who is designated as "partner" is arbitrary. Due to constraints of the basic APIM, in that this was an exploration of indistinguishable female dyads, we had to fix all path estimates to be the same across/between people and partners, in addition to all variances, covariances, endogenous intercepts, and exogenous means. Due to the complexity of the original @garcia2016objectification study, we also had to set the exogenous covariances equal. More specifically, the covariances between TSO, actor and partner objectification, and the interaction between actor TSO and partner objectification (and vice versa).
+While @garcia2016objectification used dyadic path analysis, we will conduct our dyadic analyses using multilevel modeling. Dyadic analyses for distingishable dyads (e.g., mixed-gender interacting pairs) is more natural in Structual Equation Modeling (SEM) than it is for indistinguishable dayds (e.g., same-gender interacting pairs) [@ledermann2017analyzing; @garcia2015moderation]. One reason for this asymmetry is that, due to the arbitrary distinctions made bewteen "partner 1" and "partner 2" in indistinguishable dyads, many estimates need to be fixed to be equal (i.e., paths, variances, covariances, endogenous intercepts, and exogenous means) for indistinguishable dyads but these equality contraints should not then be considered in the degrees of freedom calculations for fit estimations [@olsen2006structural]. Further, @olsen2006structural detail how a new independence model and the corresponding fit measure should be re-calculated for indistinguishable dyads models. The current study uses dyadic multilevel modeling (MLM) to test all relationships and mediation paterns. See @ledermann2017analyzing for a more complete discussion of the considerations for using SEM versus MLM for dyadic analysis.  
 
-In order to interpret model fit, which refers to the ability of a model to reproduce the data (i.e., usually the varience-covariance matrix) we utilized both the I-SAT (saturated) model, and the Null model to ensure that all possible corresponding covariences are fixed to be equal across partners. We obtained fit estimates by subtracting the chi-square estimate for the I-SAT model from the analysis model [@olsen2006structural, @peugh2013analyzing].
+Testing the @garcia2016objectification model on the current, same-gender, sample, involves using the Actor-Partner Independence Model (APIM) approch for each outcome variable (i.e., endogenous variable in Figure\ \@ref(fig:2016figure)). Thus, we ran five APIM's to test all the hypothesized relationships. See Figure\ \@ref(fig:apim) for a basic APIM model. The APIM includes effects due to one's own, as well as one's partner's, predictor variables ($X$'s) on the one's own outcome variable ($Y$). Unlike the original @garcia2016objectification study, our study deals with indistinguishable dyads, meaning the designation of who is designated as "actor" and who is designated as "partner" is arbitrary. Recall that the indistinguiahble nature of the dyads in the current study led us to choose the MLM approach over SEM. These analyses are considered exploratory, given the lack of prior research theorizing about these linkages.
+
+<!-- The model differences as a result of adopting this MLM approach include an examination of the partner effect of TSO on SSO, partner effect of SSO on authenticity, and partner effects of authenticity on congitive performance, relationship agency, and career aspirations.  -->
+
+<!-- We used path analysis to obtain our estimates, but because our sample is nonindependent, we used the indistinguishable actor–partner interdependence model [@olsen2006structural]. The APIM can be defined as a "model of dyadic relationships that integrates a conceptual view of interdependence with the appropriate statistical techniques for measuring and testing it" [@olsen2006structural]. Due to the complexity of the original @garcia2016objectification study, we also had to set the exogenous covariances equal. More specifically, the covariances between TSO, actor and partner objectification, and the interaction between actor TSO and partner objectification (and vice versa). -->
+
+<!-- In order to interpret model fit, which refers to the ability of a model to reproduce the data (i.e., usually the varience-covariance matrix) we utilized both the I-SAT (saturated) model, and the Null model to ensure that all possible corresponding covariences are fixed to be equal across partners. We obtained fit estimates by subtracting the chi-square estimate for the I-SAT model from the analysis model [@olsen2006structural, @peugh2013analyzing]. -->
 
 ```{r}
-#Filtering for just one partnum and creating TSO * objectification interaction
-dyad_cswomen <- clarksmith_women %>%
-  mutate(TSO_P_SOO_A = TSO_P*a2pSOO_A,
-         TSO_A_SOO_P = TSO_A*a2pSOO_P) %>%
-  filter(partnum_A==1)
-
-
-model <- '#####regressions 
-howbody_avg_A ~ t*TSO_A + a*a2pSOO_A + b*a2pSOO_P + c*TSO_A_SOO_P
-authenticity_A ~ d*howbody_avg_A
-howbody_avg_P ~ t*TSO_P + a*a2pSOO_P + b*a2pSOO_A + c*TSO_P_SOO_A
-authenticity_P ~ d*howbody_avg_P
-trigram_score_A ~ e1*authenticity_A
-careerasp_A ~ e2*authenticity_A
-relag_A ~ e3*authenticity_A
-trigram_score_P ~ e1*authenticity_P
-careerasp_P ~ e2*authenticity_P
-relag_P ~ e3*authenticity_P
-######covariances
-#endogenous
-howbody_avg_A ~~ howbody_avg_P
-authenticity_A ~~ authenticity_P
-trigram_score_A ~~ trigram_score_P
-careerasp_A ~~ careerasp_P
-relag_A ~~ relag_P
-trigram_score_A ~~ 0*careerasp_A
-trigram_score_A ~~ 0*relag_A
-trigram_score_A ~~ 0*careerasp_P
-trigram_score_A ~~ 0*relag_P
-careerasp_A ~~ 0*relag_A
-careerasp_A ~~ 0*trigram_score_P
-careerasp_A ~~ 0*relag_P
-relag_A ~~ 0*trigram_score_P
-relag_A ~~ 0*careerasp_P
-trigram_score_P ~~ 0*careerasp_P
-trigram_score_P ~~ 0*relag_P
-careerasp_P ~~ 0*relag_P
-#####variances
-howbody_avg_A ~~ v1*howbody_avg_A
-howbody_avg_P ~~ v1*howbody_avg_P
-TSO_A ~~ v2*TSO_A
-TSO_P ~~ v2*TSO_P
-a2pSOO_A ~~ v3*a2pSOO_A
-a2pSOO_P ~~ v3*a2pSOO_P
-authenticity_A ~~ v4*authenticity_A
-authenticity_P ~~ v4*authenticity_P
-##endogenous intercepts
-howbody_avg_A ~ i*1
-howbody_avg_P ~ i*1
-authenticity_A ~ i2*1
-authenticity_P ~ i2*1
-trigram_score_A ~ i3*1
-trigram_score_P ~ i4*1
-careerasp_A ~ i5*1
-careerasp_P ~ i5*1
-relag_A ~ i6*1
-relag_P ~ i6*1
-##exogenous means
-TSO_A ~ m*1
-TSO_P ~ m*1
-a2pSOO_A ~ m2*1
-a2pSOO_P ~ m2*1
-TSO_P_SOO_A ~ m3*1
-TSO_A_SOO_P ~ m3*1
-## exogenous covariances
-TSO_A_SOO_P ~~ c1*TSO_A
-TSO_P_SOO_A ~~ c1*TSO_P
-TSO_A_SOO_P ~~ c2*a2pSOO_P
-TSO_P_SOO_A ~~ c2*a2pSOO_A
-TSO_A ~~ c3*a2pSOO_P
-TSO_P ~~ c3*a2pSOO_A
-TSO_A ~~ c4*a2pSOO_A
-TSO_P ~~ c4*a2pSOO_P
-TSO_A_SOO_P ~~ c5*a2pSOO_A
-TSO_P_SOO_A ~~ c5*a2pSOO_P
-TSO_A_SOO_P ~~ c6*TSO_P
-TSO_P_SOO_A ~~ c6*TSO_A
-'
-
-isatmodel <- '#####regressions 
-#Part one/two
-howbody_avg_A ~~ t*TSO_A
-howbody_avg_A ~~ a*a2pSOO_A
-howbody_avg_A ~~ b*a2pSOO_P 
-howbody_avg_A ~~ c*TSO_A_SOO_P
-
-howbody_avg_P ~~ t*TSO_P
-howbody_avg_P ~~ a*a2pSOO_P 
-howbody_avg_P ~~ b*a2pSOO_A 
-howbody_avg_P ~~ c*TSO_P_SOO_A
-
-TSO_A ~~ f*howbody_avg_P
-TSO_P ~~ f*howbody_avg_A
-TSO_A_SOO_P ~~ g*howbody_avg_P
-TSO_P_SOO_A ~~ g*howbody_avg_A
-
-#Part two/three
-authenticity_A ~~ d*howbody_avg_A
-authenticity_P ~~ d*howbody_avg_P
-howbody_avg_A ~~ h*authenticity_P
-howbody_avg_P ~~ h*authenticity_A
-
-
-#Part three/four
-trigram_score_A ~~ e1*authenticity_A
-trigram_score_P ~~ e1*authenticity_P
-careerasp_A ~~ e2*authenticity_A
-careerasp_P ~~ e2*authenticity_P
-relag_A ~~ e3*authenticity_A
-relag_P ~~ e3*authenticity_P
-trigram_score_A ~~ e4*relag_P
-trigram_score_P ~~ e4*relag_A
-trigram_score_A ~~ e5*careerasp_P
-trigram_score_P ~~ e5*careerasp_A
-trigram_score_A ~~ e6*trigram_score_P
-#trigram_score_P ~~ e6*trigram_score_A
-careerasp_A ~~ e7*relag_P
-careerasp_P ~~ e7*relag_A
-careerasp_A ~~ e8*careerasp_P
-#careerasp_A ~~ e9*trigram_score_P
-#careerasp_P ~~ e9*trigram_score_A
-relag_A ~~ e10*relag_P
-
-#One to three
-#direct actor effects
-authenticity_A ~~ k1*TSO_A_SOO_P
-authenticity_P ~~ k1*TSO_P_SOO_A
-authenticity_A ~~ k2*TSO_A
-authenticity_P ~~ k2*TSO_P
-authenticity_A ~~k3*a2pSOO_A
-authenticity_P ~~k3*a2pSOO_P
-
-#direct partner effects
-authenticity_A ~~ k4*TSO_P_SOO_A
-authenticity_P ~~k4*TSO_A_SOO_P
-authenticity_A ~~ k5*TSO_P
-authenticity_P ~~ k5*TSO_A
-authenticity_A ~~ k6*a2pSOO_P
-authenticity_P ~~ k6*a2pSOO_A
-
-#One to four
-#Direct actor effects
-trigram_score_A ~~ l1*TSO_A_SOO_P
-trigram_score_P ~~ l1*TSO_P_SOO_A
-trigram_score_A ~~ l2*TSO_A
-trigram_score_P ~~ l2*TSO_P
-trigram_score_A ~~ l3*a2pSOO_A
-trigram_score_P ~~ l3*a2pSOO_P
-careerasp_A ~~ l4*TSO_A_SOO_P
-careerasp_P ~~ l4*TSO_P_SOO_A
-careerasp_A ~~ l5*TSO_A
-careerasp_P ~~ l5*TSO_P
-careerasp_A ~~ l6*a2pSOO_A
-careerasp_P ~~ l6*a2pSOO_P
-relag_A ~~ l7*TSO_A_SOO_P
-relag_P ~~ l7*TSO_P_SOO_A
-relag_A ~~ l8*TSO_A
-relag_P ~~ l8*TSO_P
-relag_A ~~ l9*a2pSOO_A
-relag_P ~~ l9*a2pSOO_P
-
-#direct partner effects
-trigram_score_A ~~ m1*TSO_P_SOO_A
-trigram_score_P ~~ m1*TSO_A_SOO_P
-trigram_score_A ~~ m2*TSO_P
-trigram_score_P ~~ m2*TSO_A
-trigram_score_A ~~ m3*a2pSOO_P
-trigram_score_P ~~ m3*a2pSOO_A
-careerasp_A ~~ m4*TSO_P_SOO_A
-careerasp_P ~~ m4*TSO_A_SOO_P
-careerasp_A ~~ m5*TSO_P
-careerasp_P ~~ m5*TSO_A
-careerasp_A ~~ m6*a2pSOO_P
-careerasp_P ~~ m6*a2pSOO_A
-relag_A ~~ m7*TSO_P_SOO_A
-relag_P ~~ m7*TSO_A_SOO_P
-relag_A ~~ m8*TSO_P
-relag_P ~~ m8*TSO_A
-relag_A ~~ m9*a2pSOO_P
-relag_P ~~ m9*a2pSOO_A
-
-#Two to four
-#direct actor effects
-trigram_score_A ~~ o1*howbody_avg_A
-trigram_score_P ~~ o1*howbody_avg_P
-careerasp_A ~~ o2*howbody_avg_A
-careerasp_P ~~ o2*howbody_avg_P
-relag_A ~~ o3*howbody_avg_A
-relag_P ~~ o3*howbody_avg_P
-
-#direct partner effects
-trigram_score_A ~~ o1*howbody_avg_P
-trigram_score_P ~~ o1*howbody_avg_A
-careerasp_A ~~ o2*howbody_avg_P
-careerasp_P ~~ o2*howbody_avg_A
-relag_A ~~ o3*howbody_avg_P
-relag_P ~~ o3*howbody_avg_A
-
-
-######covariances
-#endogenous
-howbody_avg_A ~~ howbody_avg_P
-authenticity_A ~~ authenticity_P
-#trigram_score_A ~~ trigram_score_P
-#careerasp_A ~~ careerasp_P
-#relag_A ~~ relag_P
-trigram_score_A ~~ q1*careerasp_A 
-trigram_score_A ~~ q2*relag_A
-
-careerasp_A ~~ q3*relag_A
-
-trigram_score_P ~~ q1*careerasp_P
-trigram_score_P ~~ q2*relag_P
-
-careerasp_P ~~ q3*relag_P
-
-trigram_score_A ~~ q4*careerasp_P
-trigram_score_A ~~ q5*relag_P
-
-
-trigram_score_P ~~ q4*careerasp_A
-trigram_score_P ~~ q5*relag_A
-
-careerasp_A ~~ q6*relag_P
-careerasp_P ~~ q6*relag_A
-
-
-#####variances
-howbody_avg_A ~~ v1*howbody_avg_A
-howbody_avg_P ~~ v1*howbody_avg_P
-TSO_A ~~ v2*TSO_A
-TSO_P ~~ v2*TSO_P
-a2pSOO_A ~~ v3*a2pSOO_A
-a2pSOO_P ~~ v3*a2pSOO_P
-authenticity_A ~~ v4*authenticity_A
-authenticity_P ~~ v4*authenticity_P
-##endogenous intercepts
-howbody_avg_A ~ i*1
-howbody_avg_P ~ i*1
-authenticity_A ~ i2*1
-authenticity_P ~ i2*1
-trigram_score_A ~ i3*1
-trigram_score_P ~ i4*1
-careerasp_A ~ i5*1
-careerasp_P ~ i5*1
-relag_A ~ i6*1
-relag_P ~ i6*1
-##exogenous means
-TSO_A ~ m*1
-TSO_P ~ m*1
-a2pSOO_A ~ m2*1
-a2pSOO_P ~ m2*1
-TSO_P_SOO_A ~ m3*1
-TSO_A_SOO_P ~ m3*1
-## exogenous covariances
-TSO_A_SOO_P ~~ c1*TSO_A
-TSO_P_SOO_A ~~ c1*TSO_P
-TSO_A_SOO_P ~~ c2*a2pSOO_P
-TSO_P_SOO_A ~~ c2*a2pSOO_A
-TSO_A ~~ c3*a2pSOO_P
-TSO_P ~~ c3*a2pSOO_A
-TSO_A ~~ c4*a2pSOO_A
-TSO_P ~~ c4*a2pSOO_P
-TSO_A_SOO_P ~~ c5*a2pSOO_A
-TSO_P_SOO_A ~~ c5*a2pSOO_P
-TSO_A_SOO_P ~~ c6*TSO_P
-TSO_P_SOO_A ~~ c6*TSO_A
-'
-
-
-
-fit <- sem(model, data=dyad_cswomen)
+# #Filtering for just one partnum and creating TSO * objectification interaction
+# dyad_cswomen <- clarksmith_women %>%
+#   mutate(TSO_P_SOO_A = TSO_P*a2pSOO_A,
+#          TSO_A_SOO_P = TSO_A*a2pSOO_P) %>%
+#   filter(partnum_A==1)
+# 
+# 
+# model <- '#####regressions 
+# howbody_avg_A ~ t*TSO_A + a*a2pSOO_A + b*a2pSOO_P + c*TSO_A_SOO_P
+# authenticity_A ~ d*howbody_avg_A
+# howbody_avg_P ~ t*TSO_P + a*a2pSOO_P + b*a2pSOO_A + c*TSO_P_SOO_A
+# authenticity_P ~ d*howbody_avg_P
+# trigram_score_A ~ e1*authenticity_A
+# careerasp_A ~ e2*authenticity_A
+# relag_A ~ e3*authenticity_A
+# trigram_score_P ~ e1*authenticity_P
+# careerasp_P ~ e2*authenticity_P
+# relag_P ~ e3*authenticity_P
+# ######covariances
+# #endogenous
+# howbody_avg_A ~~ howbody_avg_P
+# authenticity_A ~~ authenticity_P
+# trigram_score_A ~~ trigram_score_P
+# careerasp_A ~~ careerasp_P
+# relag_A ~~ relag_P
+# trigram_score_A ~~ 0*careerasp_A
+# trigram_score_A ~~ 0*relag_A
+# trigram_score_A ~~ 0*careerasp_P
+# trigram_score_A ~~ 0*relag_P
+# careerasp_A ~~ 0*relag_A
+# careerasp_A ~~ 0*trigram_score_P
+# careerasp_A ~~ 0*relag_P
+# relag_A ~~ 0*trigram_score_P
+# relag_A ~~ 0*careerasp_P
+# trigram_score_P ~~ 0*careerasp_P
+# trigram_score_P ~~ 0*relag_P
+# careerasp_P ~~ 0*relag_P
+# #####variances
+# howbody_avg_A ~~ v1*howbody_avg_A
+# howbody_avg_P ~~ v1*howbody_avg_P
+# TSO_A ~~ v2*TSO_A
+# TSO_P ~~ v2*TSO_P
+# a2pSOO_A ~~ v3*a2pSOO_A
+# a2pSOO_P ~~ v3*a2pSOO_P
+# authenticity_A ~~ v4*authenticity_A
+# authenticity_P ~~ v4*authenticity_P
+# ##endogenous intercepts
+# howbody_avg_A ~ i*1
+# howbody_avg_P ~ i*1
+# authenticity_A ~ i2*1
+# authenticity_P ~ i2*1
+# trigram_score_A ~ i3*1
+# trigram_score_P ~ i4*1
+# careerasp_A ~ i5*1
+# careerasp_P ~ i5*1
+# relag_A ~ i6*1
+# relag_P ~ i6*1
+# ##exogenous means
+# TSO_A ~ m*1
+# TSO_P ~ m*1
+# a2pSOO_A ~ m2*1
+# a2pSOO_P ~ m2*1
+# TSO_P_SOO_A ~ m3*1
+# TSO_A_SOO_P ~ m3*1
+# ## exogenous covariances
+# TSO_A_SOO_P ~~ c1*TSO_A
+# TSO_P_SOO_A ~~ c1*TSO_P
+# TSO_A_SOO_P ~~ c2*a2pSOO_P
+# TSO_P_SOO_A ~~ c2*a2pSOO_A
+# TSO_A ~~ c3*a2pSOO_P
+# TSO_P ~~ c3*a2pSOO_A
+# TSO_A ~~ c4*a2pSOO_A
+# TSO_P ~~ c4*a2pSOO_P
+# TSO_A_SOO_P ~~ c5*a2pSOO_A
+# TSO_P_SOO_A ~~ c5*a2pSOO_P
+# TSO_A_SOO_P ~~ c6*TSO_P
+# TSO_P_SOO_A ~~ c6*TSO_A
+# '
+# 
+# isatmodel <- '#####regressions 
+# #Part one/two
+# howbody_avg_A ~~ t*TSO_A
+# howbody_avg_A ~~ a*a2pSOO_A
+# howbody_avg_A ~~ b*a2pSOO_P 
+# howbody_avg_A ~~ c*TSO_A_SOO_P
+# 
+# howbody_avg_P ~~ t*TSO_P
+# howbody_avg_P ~~ a*a2pSOO_P 
+# howbody_avg_P ~~ b*a2pSOO_A 
+# howbody_avg_P ~~ c*TSO_P_SOO_A
+# 
+# TSO_A ~~ f*howbody_avg_P
+# TSO_P ~~ f*howbody_avg_A
+# TSO_A_SOO_P ~~ g*howbody_avg_P
+# TSO_P_SOO_A ~~ g*howbody_avg_A
+# 
+# #Part two/three
+# authenticity_A ~~ d*howbody_avg_A
+# authenticity_P ~~ d*howbody_avg_P
+# howbody_avg_A ~~ h*authenticity_P
+# howbody_avg_P ~~ h*authenticity_A
+# 
+# 
+# #Part three/four
+# trigram_score_A ~~ e1*authenticity_A
+# trigram_score_P ~~ e1*authenticity_P
+# careerasp_A ~~ e2*authenticity_A
+# careerasp_P ~~ e2*authenticity_P
+# relag_A ~~ e3*authenticity_A
+# relag_P ~~ e3*authenticity_P
+# trigram_score_A ~~ e4*relag_P
+# trigram_score_P ~~ e4*relag_A
+# trigram_score_A ~~ e5*careerasp_P
+# trigram_score_P ~~ e5*careerasp_A
+# trigram_score_A ~~ e6*trigram_score_P
+# #trigram_score_P ~~ e6*trigram_score_A
+# careerasp_A ~~ e7*relag_P
+# careerasp_P ~~ e7*relag_A
+# careerasp_A ~~ e8*careerasp_P
+# #careerasp_A ~~ e9*trigram_score_P
+# #careerasp_P ~~ e9*trigram_score_A
+# relag_A ~~ e10*relag_P
+# 
+# #One to three
+# #direct actor effects
+# authenticity_A ~~ k1*TSO_A_SOO_P
+# authenticity_P ~~ k1*TSO_P_SOO_A
+# authenticity_A ~~ k2*TSO_A
+# authenticity_P ~~ k2*TSO_P
+# authenticity_A ~~k3*a2pSOO_A
+# authenticity_P ~~k3*a2pSOO_P
+# 
+# #direct partner effects
+# authenticity_A ~~ k4*TSO_P_SOO_A
+# authenticity_P ~~k4*TSO_A_SOO_P
+# authenticity_A ~~ k5*TSO_P
+# authenticity_P ~~ k5*TSO_A
+# authenticity_A ~~ k6*a2pSOO_P
+# authenticity_P ~~ k6*a2pSOO_A
+# 
+# #One to four
+# #Direct actor effects
+# trigram_score_A ~~ l1*TSO_A_SOO_P
+# trigram_score_P ~~ l1*TSO_P_SOO_A
+# trigram_score_A ~~ l2*TSO_A
+# trigram_score_P ~~ l2*TSO_P
+# trigram_score_A ~~ l3*a2pSOO_A
+# trigram_score_P ~~ l3*a2pSOO_P
+# careerasp_A ~~ l4*TSO_A_SOO_P
+# careerasp_P ~~ l4*TSO_P_SOO_A
+# careerasp_A ~~ l5*TSO_A
+# careerasp_P ~~ l5*TSO_P
+# careerasp_A ~~ l6*a2pSOO_A
+# careerasp_P ~~ l6*a2pSOO_P
+# relag_A ~~ l7*TSO_A_SOO_P
+# relag_P ~~ l7*TSO_P_SOO_A
+# relag_A ~~ l8*TSO_A
+# relag_P ~~ l8*TSO_P
+# relag_A ~~ l9*a2pSOO_A
+# relag_P ~~ l9*a2pSOO_P
+# 
+# #direct partner effects
+# trigram_score_A ~~ m1*TSO_P_SOO_A
+# trigram_score_P ~~ m1*TSO_A_SOO_P
+# trigram_score_A ~~ m2*TSO_P
+# trigram_score_P ~~ m2*TSO_A
+# trigram_score_A ~~ m3*a2pSOO_P
+# trigram_score_P ~~ m3*a2pSOO_A
+# careerasp_A ~~ m4*TSO_P_SOO_A
+# careerasp_P ~~ m4*TSO_A_SOO_P
+# careerasp_A ~~ m5*TSO_P
+# careerasp_P ~~ m5*TSO_A
+# careerasp_A ~~ m6*a2pSOO_P
+# careerasp_P ~~ m6*a2pSOO_A
+# relag_A ~~ m7*TSO_P_SOO_A
+# relag_P ~~ m7*TSO_A_SOO_P
+# relag_A ~~ m8*TSO_P
+# relag_P ~~ m8*TSO_A
+# relag_A ~~ m9*a2pSOO_P
+# relag_P ~~ m9*a2pSOO_A
+# 
+# #Two to four
+# #direct actor effects
+# trigram_score_A ~~ o1*howbody_avg_A
+# trigram_score_P ~~ o1*howbody_avg_P
+# careerasp_A ~~ o2*howbody_avg_A
+# careerasp_P ~~ o2*howbody_avg_P
+# relag_A ~~ o3*howbody_avg_A
+# relag_P ~~ o3*howbody_avg_P
+# 
+# #direct partner effects
+# trigram_score_A ~~ o1*howbody_avg_P
+# trigram_score_P ~~ o1*howbody_avg_A
+# careerasp_A ~~ o2*howbody_avg_P
+# careerasp_P ~~ o2*howbody_avg_A
+# relag_A ~~ o3*howbody_avg_P
+# relag_P ~~ o3*howbody_avg_A
+# 
+# 
+# ######covariances
+# #endogenous
+# howbody_avg_A ~~ howbody_avg_P
+# authenticity_A ~~ authenticity_P
+# #trigram_score_A ~~ trigram_score_P
+# #careerasp_A ~~ careerasp_P
+# #relag_A ~~ relag_P
+# trigram_score_A ~~ q1*careerasp_A 
+# trigram_score_A ~~ q2*relag_A
+# 
+# careerasp_A ~~ q3*relag_A
+# 
+# trigram_score_P ~~ q1*careerasp_P
+# trigram_score_P ~~ q2*relag_P
+# 
+# careerasp_P ~~ q3*relag_P
+# 
+# trigram_score_A ~~ q4*careerasp_P
+# trigram_score_A ~~ q5*relag_P
+# 
+# 
+# trigram_score_P ~~ q4*careerasp_A
+# trigram_score_P ~~ q5*relag_A
+# 
+# careerasp_A ~~ q6*relag_P
+# careerasp_P ~~ q6*relag_A
+# 
+# 
+# #####variances
+# howbody_avg_A ~~ v1*howbody_avg_A
+# howbody_avg_P ~~ v1*howbody_avg_P
+# TSO_A ~~ v2*TSO_A
+# TSO_P ~~ v2*TSO_P
+# a2pSOO_A ~~ v3*a2pSOO_A
+# a2pSOO_P ~~ v3*a2pSOO_P
+# authenticity_A ~~ v4*authenticity_A
+# authenticity_P ~~ v4*authenticity_P
+# ##endogenous intercepts
+# howbody_avg_A ~ i*1
+# howbody_avg_P ~ i*1
+# authenticity_A ~ i2*1
+# authenticity_P ~ i2*1
+# trigram_score_A ~ i3*1
+# trigram_score_P ~ i4*1
+# careerasp_A ~ i5*1
+# careerasp_P ~ i5*1
+# relag_A ~ i6*1
+# relag_P ~ i6*1
+# ##exogenous means
+# TSO_A ~ m*1
+# TSO_P ~ m*1
+# a2pSOO_A ~ m2*1
+# a2pSOO_P ~ m2*1
+# TSO_P_SOO_A ~ m3*1
+# TSO_A_SOO_P ~ m3*1
+# ## exogenous covariances
+# TSO_A_SOO_P ~~ c1*TSO_A
+# TSO_P_SOO_A ~~ c1*TSO_P
+# TSO_A_SOO_P ~~ c2*a2pSOO_P
+# TSO_P_SOO_A ~~ c2*a2pSOO_A
+# TSO_A ~~ c3*a2pSOO_P
+# TSO_P ~~ c3*a2pSOO_A
+# TSO_A ~~ c4*a2pSOO_A
+# TSO_P ~~ c4*a2pSOO_P
+# TSO_A_SOO_P ~~ c5*a2pSOO_A
+# TSO_P_SOO_A ~~ c5*a2pSOO_P
+# TSO_A_SOO_P ~~ c6*TSO_P
+# TSO_P_SOO_A ~~ c6*TSO_A
+# '
+# 
+# 
+# 
+# fit <- sem(model, data=dyad_cswomen)
+# ```
+# 
+# ```{r sem, include=TRUE, results='asis'}
+# fit_table <- xtable(parameterEstimates(fit))
+# 
+# fit_table <- fit_table %>%
+#   filter(op=="~") %>%
+#   mutate(lhs = ifelse(lhs == "howbody_avg_A", "Actor SSO",
+#                       ifelse(lhs=="authenticity_A", "Actor Authenticity",
+#                              ifelse(lhs=="howbody_avg_P", "Partner SSO",
+#                                     ifelse(lhs=="authenticity_P", "Partner Authenticity",
+#                                            ifelse(lhs=="relag_A", "Actor Rel. Agency",
+#                                                   ifelse(lhs=="relag_P", "Partner Rel. Agency",
+#                                                          ifelse(lhs=="careerasp_A", "Actor Career Aspirations",
+#                                                                 ifelse(lhs=="careerasp_P", "Partner Career Aspirations",
+#                                                                        ifelse(lhs=="trigram_score_A", "Actor Cog. Performance",
+#                                                                               ifelse(lhs=="trigram_score_P", "Partner Cog. Performance", NA)))))))))),
+#          rhs = ifelse(rhs=="TSO_A", "Actor TSO",
+#                       ifelse(rhs=="a2pSOO_A", "Actor Obj. of Partner",
+#                              ifelse(rhs=="a2pSOO_P", "Partner Obj. of Actor",
+#                                     ifelse(rhs=="TSO_A_SOO_P", "Actor TSO x Partner Obj.",
+#                                            ifelse(rhs == "howbody_avg_A", "Actor SSO",
+#                                                   ifelse(rhs=="howbody_avg_P", "Partner SSO",
+#                                                          ifelse(rhs=="TSO_P", "Partner TSO",
+#                                                                 ifelse(rhs=="TSO_P_SOO_A", "Partner TSO x Actor Obj.",
+#                                                                        ifelse(rhs=="authenticity_A", "Actor Authenticity",
+#                                                                               ifelse(rhs=="authenticity_P", "Partner Authenticity", NA))))))))))) %>%
+#   select(lhs, op, rhs, est, se, z, pvalue) %>%
+#   #taking out partner-partner estimates
+#   slice(1:5,11:13)
+# 
+# colnames(fit_table) <- c("Path", "", "", "Estimate", "SE", "z-value", "p-value")
+# 
+# apa_table(fit_table, caption = "Estimates from final Path Analysis Model", font_size = "small")
+# ```
+# 
+# ```{r semfigure, include=TRUE, echo=FALSE, results='asis', out.width="400px", fig.cap="Path Analysis Model with Estimates"}
+# include_graphics("SEMfigure.png")
+# ```
 ```
 
-```{r sem, include=TRUE, results='asis'}
-fit_table <- xtable(parameterEstimates(fit))
+```{r}
+#SSO
+apim1 <- gls(howbody_avg_A ~ a2pSOO_A + a2pSOO_P + TSO_A + a2pSOO_P*TSO_A, 
+                 na.action=na.omit, 
+                 correlation=corCompSymm (form=~1|dyadID),
+                 data=clarksmith_women)
 
-fit_table <- fit_table %>%
-  filter(op=="~") %>%
-  mutate(lhs = ifelse(lhs == "howbody_avg_A", "Actor SSO", 
-                      ifelse(lhs=="authenticity_A", "Actor Authenticity",
-                             ifelse(lhs=="howbody_avg_P", "Partner SSO",
-                                    ifelse(lhs=="authenticity_P", "Partner Authenticity", 
-                                           ifelse(lhs=="relag_A", "Actor Rel. Agency",
-                                                  ifelse(lhs=="relag_P", "Partner Rel. Agency",
-                                                         ifelse(lhs=="careerasp_A", "Actor Career Aspirations",
-                                                                ifelse(lhs=="careerasp_P", "Partner Career Aspirations",
-                                                                       ifelse(lhs=="trigram_score_A", "Actor Cog. Performance",
-                                                                              ifelse(lhs=="trigram_score_P", "Partner Cog. Performance", NA)))))))))),
-         rhs = ifelse(rhs=="TSO_A", "Actor TSO",
-                      ifelse(rhs=="a2pSOO_A", "Actor Obj. of Partner",
-                             ifelse(rhs=="a2pSOO_P", "Partner Obj. of Actor",
-                                    ifelse(rhs=="TSO_A_SOO_P", "Actor TSO x Partner Obj.",
-                                           ifelse(rhs == "howbody_avg_A", "Actor SSO",
-                                                  ifelse(rhs=="howbody_avg_P", "Partner SSO",
-                                                         ifelse(rhs=="TSO_P", "Partner TSO",
-                                                                ifelse(rhs=="TSO_P_SOO_A", "Partner TSO x Actor Obj.",
-                                                                       ifelse(rhs=="authenticity_A", "Actor Authenticity", 
-                                                                              ifelse(rhs=="authenticity_P", "Partner Authenticity", NA))))))))))) %>%
-  select(lhs, op, rhs, est, se, z, pvalue) %>%
-  #taking out partner-partner estimates
-  slice(1:5,11:13)
+summary(apim1)
+```
 
-colnames(fit_table) <- c("Path", "", "", "Estimate", "SE", "z-value", "p-value")
+```{r}
+#authenticity
+apim2 <- gls(authenticity_A ~ howbody_avg_A, 
+                 na.action=na.omit, 
+                 correlation=corCompSymm (form=~1|dyadID),
+                 data=clarksmith_women)
 
-apa_table(fit_table, caption = "Estimates from final Path Analysis Model", font_size = "small")
+summary(apim2)
+```
+
+```{r}
+#cognitive performance
+apim3 <- gls(trigram_score_A ~ authenticity_A, 
+                 na.action=na.omit, 
+                 correlation=corCompSymm (form=~1|dyadID),
+                 data=clarksmith_women)
+
+summary(apim3)
+```
+
+```{r}
+#relationship agency
+apim4 <- gls(relag_A ~ authenticity_A, 
+                 na.action=na.omit, 
+                 correlation=corCompSymm (form=~1|dyadID),
+                 data=clarksmith_women)
+
+summary(apim4)
+```
+
+```{r}
+#career aspirations
+apim5 <- gls(careerasp_A ~ authenticity_A, 
+                 na.action=na.omit, 
+                 correlation=corCompSymm (form=~1|dyadID),
+                 data=clarksmith_women)
+
+summary(apim5)
+```
+
+```{r}
+# pround <- function(val){ 
+#   ifelse(val < .001, 
+#          return(sub("^(-?)0.", "\\1.", sprintf("%.3f", .001))), 
+#          return(sub("^(-?)0.", "\\1.", sprintf("%.3f", val))))
+# }
+# 
+# estround <- function(val){ 
+#   ifelse(abs(val) < .01, 
+#          return(.01), 
+#          return(round(val, 2)))
+# }
+
+#only works for merModlmerTest objects or when p-values on are in column 4, "lm" objects
+# report_stats <- function(mod, est){
+#   
+#   b <- coef(summary(mod))[,1]
+#   se <- coef(summary(mod))[,2]
+#   ifelse(class(mod) == "merModLmerTest", 
+#          p <- coef(summary(mod))[,5], 
+#          p <- coef(summary(mod))[,4])
+#   
+#   paste(ifelse(abs(b[est]) < .01,"*b* < ","*b* = "), as.character(estround(b[est])), 
+#         ifelse(se[est] < .01, ", *SE* < ", ", *SE* = "), as.character(estround(se[est])), 
+#         ifelse(p[est] < .001, ", *p* < ", ", *p* = "),  as.character(pround(p[est])), 
+#         sep = "") %>%
+#     return()
+# }
+
+# randomeffects <- as.data.frame(VarCorr(mlm_mod1.0))
+# randomeffects2 <- as.data.frame(VarCorr(mlm_mod2.0))
+```
+
+
+```{r mlm, include=TRUE, results='asis'}
+# fit_table <- xtable(parameterEstimates(fit))
+# 
+# fit_table <- fit_table %>%
+#   filter(op=="~") %>%
+#   mutate(lhs = ifelse(lhs == "howbody_avg_A", "Actor SSO",
+#                       ifelse(lhs=="authenticity_A", "Actor Authenticity",
+#                              ifelse(lhs=="howbody_avg_P", "Partner SSO",
+#                                     ifelse(lhs=="authenticity_P", "Partner Authenticity",
+#                                            ifelse(lhs=="relag_A", "Actor Rel. Agency",
+#                                                   ifelse(lhs=="relag_P", "Partner Rel. Agency",
+#                                                          ifelse(lhs=="careerasp_A", "Actor Career Aspirations",
+#                                                                 ifelse(lhs=="careerasp_P", "Partner Career Aspirations",
+#                                                                        ifelse(lhs=="trigram_score_A", "Actor Cog. Performance",
+#                                                                               ifelse(lhs=="trigram_score_P", "Partner Cog. Performance", NA)))))))))),
+#          rhs = ifelse(rhs=="TSO_A", "Actor TSO",
+#                       ifelse(rhs=="a2pSOO_A", "Actor Obj. of Partner",
+#                              ifelse(rhs=="a2pSOO_P", "Partner Obj. of Actor",
+#                                     ifelse(rhs=="TSO_A_SOO_P", "Actor TSO x Partner Obj.",
+#                                            ifelse(rhs == "howbody_avg_A", "Actor SSO",
+#                                                   ifelse(rhs=="howbody_avg_P", "Partner SSO",
+#                                                          ifelse(rhs=="TSO_P", "Partner TSO",
+#                                                                 ifelse(rhs=="TSO_P_SOO_A", "Partner TSO x Actor Obj.",
+#                                                                        ifelse(rhs=="authenticity_A", "Actor Authenticity",
+#                                                                               ifelse(rhs=="authenticity_P", "Partner Authenticity", NA))))))))))) %>%
+#   select(lhs, op, rhs, est, se, z, pvalue) %>%
+#   #taking out partner-partner estimates
+#   slice(1:5,11:13)
+# 
+# colnames(fit_table) <- c("Path", "", "", "Estimate", "SE", "z-value", "p-value")
+# 
+# apa_table(fit_table, caption = "Estimates from final Path Analysis Model", font_size = "small")
 ```
 
 ```{r semfigure, include=TRUE, echo=FALSE, results='asis', out.width="400px", fig.cap="Path Analysis Model with Estimates"}
-include_graphics("SEMfigure.png")
+# include_graphics("SEMfigure.png")
 ```
 
+
 ##Main Results
-All model estimates and p-values are found in Table\ \@ref(tab:sem) and the relationships are depicted in Figure\ \@ref(fig:semfigure). The most important findings from @garcia2016objectification were the significant partner effect between actor SSO and partner objectification (specifically men's objectification of women and women's SSO), and the link between actor SSO and actor authenticity (also specifically for women). We did not find a significant effect between actor SSO and actor authenticity ($\beta$= -.10, $p$=.38), which means we do not have evidence to support the idea that partner objectification is the cause for the negative effects related to relationship inauthenticity. However, we did find a significant relationship between partner objectification and actor SSO ($\beta$= .25, $p$=.03), which supports our hypothesis that objectification from other women also causes women to self-objectify just as it does in interactions between male-female pairs. We also found a significantly negative effect of authenticity on career aspirations ($\beta$= .18, $p$=.01) and relationship agency ($\beta$=.27, $p$=.01). We found that the model had good fit ($\chi^2$=22.33, $df$=34). In this case, a good fit indicates that there are no direct effects of SSO or SOO on the outcomes on cognitive performance, relationship agency, and career aspirations, which indicates that the path we chose makes sense.
+All model estimates and p-values are found in Table\ \@ref(tab:mlm) and the relationships with estimates included are depicted in Figure\ \@ref(fig:semfigure). 
+
+<!-- The most important findings from @garcia2016objectification were the significant partner effect between actor SSO and partner objectification (specifically men's objectification of women and women's SSO), and the link between actor SSO and actor authenticity (also specifically for women). We did not find a significant effect between actor SSO and actor authenticity ($\beta$= -.10, $p$=.38), which means we do not have evidence to support the idea that partner objectification is the cause for the negative effects related to relationship inauthenticity. However, we did find a significant relationship between partner objectification and actor SSO ($\beta$= .25, $p$=.03), which supports our hypothesis that objectification from other women also causes women to self-objectify just as it does in interactions between male-female pairs. We also found a significantly negative effect of authenticity on career aspirations ($\beta$= .18, $p$=.01) and relationship agency ($\beta$=.27, $p$=.01). We found that the model had good fit ($\chi^2$=22.33, $df$=34). In this case, a good fit indicates that there are no direct effects of SSO or SOO on the outcomes on cognitive performance, relationship agency, and career aspirations, which indicates that the path we chose makes sense. -->
 
 #Discussion
 As stated previously, we did not find a significant effect between actor SSO and actor authenticity ($\beta$= -.10, $p$=.38), which suggests that there is not sufficient evidence to support the claim that partner objectification is the cause for the diverse range of negative effects related to relationship inauthenticity. However, we did observe a significant partner effect of objectification on actor self-objectification, which does align with our hypothesis that theorized objectification from other women can also cause women to self-objectify just as they do within interactions between male-female pairs. The results of this study demonstrate the complex and ambivalent nature of female sexual objectification and additionally highlight the psychological and social consequences of such objectification processes on women’s social relationships and well-being. The sample of the current study was comprised of Western women, being that sexual objectification is most prevalent in this culture [@loughnan2015], and research on objectification conducted outside of Western or Westernized countries is scarce [@moradi2008]. Because “bodies exist within social and cultural contexts, and hence are also constructed through sociocultural practices and discourses” [@robertsfredrickson, p.174], it is important to consider how diverse social identities within unique cultural contexts may inform sexual objectification phenomenon to test the cross-cultural applicability of theoretical frameworks [@loughnan2015]. Further, sexualzing experiences and self-objectification are thought to begin a very young age, and thus, researchers have only recently begun to examine such experiences among children [e.g., @holland2016; @jongenelis2014; @bury2016]. Considering the fact that the average mean age of the investigated participants of this current study was 18.85 years, research among younger and older individuals is needed, especially because self-objectification may change over time [@robertsfredrickson]. It may be valuable to question the extent to which children, adolescents, or emerging adults of different races or ethnicities are exposed to varied amounts of sexulizing content. Also, future experiments or longitudinal studies should explore the external validity of the notions of self-objectification and how the operalization of self-objectification may be improved. Regardless, the results from the current analysis highlight how subtle forms of sexist discrimination operate to inform prevention and intervention efforts in both clinical and educational contexts. These results are quite useful for promoting mental health and within early action programs for girls and young women, where scholars and practitioners might provide the tools necessary to circumvent or mitigate negative effects on self-objectification, and combat such experiences.
