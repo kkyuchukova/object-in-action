@@ -20,7 +20,7 @@ affiliation:
     institution   : "Program in Statistical and Data Sciences, Smith College"
 
 abstract: |
-  Empirical evidence has only found links between objectification, self-objectification, and negative outcomes for woman within interpersonal interactions between male-female pairs. The purpose of the present study was to extend past research and consider the relationships between such valuable phenomena and their effects on authenticity within interactions between female pairs. Woman were brought into the laboratory and interacted in same-sex dyads. Dyadic analysis was utilized to detect whether partners’ objectification of each other affected state self-objectification, and the resulting feelings of comfort and authenticity during the interaction. After the interaction, participants completed a questionnaire which measured many constructs including cognitive performance, career aspirations, and relationship agency. Results revealed no significant relationship between self-objectification and authenticity. Further, although there were significantly negative effects on career aspirations and relationship agency resulting from a lack of relationship authenticity, there was no evidence that this is due to feelings of sexual objectification. The significant partner effect of objectification on actor self-objectification suggests that women being objectified by other women still results in feelings of self-objectification, and such research has powerful implications for the ways that women interact in both sexual and non-sexual settings.
+  Empirical evidence has only found links between objectification, self-objectification, and negative outcomes for woman within interpersonal interactions between male-female pairs. The purpose of the present study was to extend past research and consider the relationships between such valuable phenomena and their effects on authenticity within interactions between female pairs. Woman were brought into the laboratory and interacted in same-sex dyads. Dyadic analysis was utilized to detect whether partners’ objectification of each other affected state self-objectification, and the resulting feelings of comfort and authenticity during the interaction. After the interaction, participants completed a questionnaire which measured many constructs including cognitive performance, career aspirations, and relationship agency. Results revealed no significant relationship between self-objectification and authenticity. Further, although there were significantly negative effects on career aspirations and relationship agency resulting from a lack of relationship authenticity, there was no evidence that this is due to feelings of sexual objectification. The significant partner effect of objectification on actor self-objectification suggests that women being objectified by other women still results in feelings of self-objectification, and such research has powerful implications for the ways that women interact in both sexual and non-sexual settings. AUTHOR NOTE: mention Clark trigram coders Hannah et al. 
   
 keywords          : "keywords"
 
@@ -52,6 +52,7 @@ library(haven)
 library(devtools)
 library(psych)
 library(mosaic)
+#library(dyadr)
 library(tidyr)
 library(dplyr)
 library(irr)
@@ -711,6 +712,11 @@ apim1 <- gls(howbody_avg_A ~ a2pSOO_A + a2pSOO_P + TSO_A + a2pSOO_P*TSO_A,
                  correlation=corCompSymm (form=~1|dyadID),
                  data=clarksmith_women)
 
+apim1.b <- gls(howbody_avg_A ~ a2pSOO_A + a2pSOO_P + TSO_A, 
+                 na.action=na.omit, 
+                 correlation=corCompSymm (form=~1|dyadID),
+                 data=clarksmith_women)
+
 summary(apim1)
 ```
 
@@ -722,6 +728,30 @@ apim2 <- gls(authenticity_A ~ howbody_avg_A,
                  data=clarksmith_women)
 
 summary(apim2)
+
+#Trying to perform analyses for each item for a footnote...will need to get to the bottom of this. 
+# inter_1, inter_3, inter_5, inter_6, 
+# inter_7, inter_9, inter_10, interaux_5, 
+# interaux_6
+# 
+# apim2 <- gls(inter_1 ~ howbody_avg_A, 
+#                  na.action=na.omit, 
+#                  correlation=corCompSymm (form=~1|dyadID),
+#                  data=clarksmith_women)
+
+apim2.b <- gls(authenticity_A ~ howbody_avg_A + a2pSOO_P, 
+                 na.action=na.omit, 
+                 correlation=corCompSymm (form=~1|dyadID),
+                 data=clarksmith_women)
+
+summary(apim2.b)
+
+apim2.c <- gls(authenticity_A ~a2pSOO_P, 
+                 na.action=na.omit, 
+                 correlation=corCompSymm (form=~1|dyadID),
+                 data=clarksmith_women)
+
+summary(apim2.c)
 ```
 
 ```{r}
@@ -732,6 +762,20 @@ apim3 <- gls(trigram_score_A ~ authenticity_A,
                  data=clarksmith_women)
 
 summary(apim3)
+
+apim3.b <- gls(trigram_score_A ~ authenticity_A + howbody_avg_A, 
+                 na.action=na.omit, 
+                 correlation=corCompSymm (form=~1|dyadID),
+                 data=clarksmith_women)
+
+summary(apim3.b)
+
+apim3.c <- gls(trigram_score_A ~ authenticity_A + howbody_avg_A + a2pSOO_P, 
+                 na.action=na.omit, 
+                 correlation=corCompSymm (form=~1|dyadID),
+                 data=clarksmith_women)
+
+summary(apim3.c)
 ```
 
 ```{r}
@@ -742,6 +786,20 @@ apim4 <- gls(relag_A ~ authenticity_A,
                  data=clarksmith_women)
 
 summary(apim4)
+
+apim4.b <- gls(relag_A ~ authenticity_A + howbody_avg_A, 
+                 na.action=na.omit, 
+                 correlation=corCompSymm (form=~1|dyadID),
+                 data=clarksmith_women)
+
+summary(apim4.b)
+
+apim4.c <- gls(relag_A ~ authenticity_A + howbody_avg_A + a2pSOO_P, 
+                 na.action=na.omit, 
+                 correlation=corCompSymm (form=~1|dyadID),
+                 data=clarksmith_women)
+
+summary(apim4.c)
 ```
 
 ```{r}
@@ -752,41 +810,25 @@ apim5 <- gls(careerasp_A ~ authenticity_A,
                  data=clarksmith_women)
 
 summary(apim5)
+
+apim5.b <- gls(careerasp_A ~ authenticity_A + howbody_avg_A, 
+                 na.action=na.omit, 
+                 correlation=corCompSymm (form=~1|dyadID),
+                 data=clarksmith_women)
+
+summary(apim5.b)
+
+apim5.c <- gls(careerasp_A ~ authenticity_A + howbody_avg_A + a2pSOO_P, 
+                 na.action=na.omit, 
+                 correlation=corCompSymm (form=~1|dyadID),
+                 data=clarksmith_women)
+
+summary(apim5.c)
 ```
 
-```{r}
-# pround <- function(val){ 
-#   ifelse(val < .001, 
-#          return(sub("^(-?)0.", "\\1.", sprintf("%.3f", .001))), 
-#          return(sub("^(-?)0.", "\\1.", sprintf("%.3f", val))))
-# }
-# 
-# estround <- function(val){ 
-#   ifelse(abs(val) < .01, 
-#          return(.01), 
-#          return(round(val, 2)))
-# }
-
-#only works for merModlmerTest objects or when p-values on are in column 4, "lm" objects
-# report_stats <- function(mod, est){
-#   
-#   b <- coef(summary(mod))[,1]
-#   se <- coef(summary(mod))[,2]
-#   ifelse(class(mod) == "merModLmerTest", 
-#          p <- coef(summary(mod))[,5], 
-#          p <- coef(summary(mod))[,4])
-#   
-#   paste(ifelse(abs(b[est]) < .01,"*b* < ","*b* = "), as.character(estround(b[est])), 
-#         ifelse(se[est] < .01, ", *SE* < ", ", *SE* = "), as.character(estround(se[est])), 
-#         ifelse(p[est] < .001, ", *p* < ", ", *p* = "),  as.character(pround(p[est])), 
-#         sep = "") %>%
-#     return()
-# }
-
-# randomeffects <- as.data.frame(VarCorr(mlm_mod1.0))
-# randomeffects2 <- as.data.frame(VarCorr(mlm_mod2.0))
+```{r semfigure, include=TRUE, echo=FALSE, results='asis', out.width="400px", fig.cap="Path Analysis Model with Estimates"}
+include_graphics("SEMfigure.png")
 ```
-
 
 ```{r mlm, include=TRUE, results='asis'}
 # fit_table <- xtable(parameterEstimates(fit))
@@ -822,15 +864,49 @@ summary(apim5)
 # apa_table(fit_table, caption = "Estimates from final Path Analysis Model", font_size = "small")
 ```
 
-```{r semfigure, include=TRUE, echo=FALSE, results='asis', out.width="400px", fig.cap="Path Analysis Model with Estimates"}
-# include_graphics("SEMfigure.png")
-```
+```{r presentation-functions}
+ pround <- function(val){
+  ifelse(val < .001,
+         return(sub("^(-?)0.", "\\1.", sprintf("%.3f", .001))),
+         return(sub("^(-?)0.", "\\1.", sprintf("%.3f", val))))
+}
 
+estround <- function(val){
+  ifelse(abs(val) < .01,
+         return(.01),
+         return(round(val, 2)))
+}
+
+#only works for merModlmerTest objects or when p-values on are in column 4, "lm" objects
+report_stats <- function(mod, est){
+
+  b <- coef(summary(mod))[,1]
+  se <- coef(summary(mod))[,2]
+  ifelse(class(mod) == "merModLmerTest",
+         p <- coef(summary(mod))[,5],
+         p <- coef(summary(mod))[,4])
+
+  paste(ifelse(abs(b[est]) < .01,"*b* < ","*b* = "), as.character(estround(b[est])),
+        ifelse(se[est] < .01, ", *SE* < ", ", *SE* = "), as.character(estround(se[est])),
+        ifelse(p[est] < .001, ", *p* < ", ", *p* = "),  as.character(pround(p[est])),
+        sep = "") %>%
+    return()
+}
+
+report_stats(apim1, 2)
+
+# randomeffects <- as.data.frame(VarCorr(mlm_mod1.0))
+# randomeffects2 <- as.data.frame(VarCorr(mlm_mod2.0))
+```
 
 ##Main Results
 All model estimates and p-values are found in Table\ \@ref(tab:mlm) and the relationships with estimates included are depicted in Figure\ \@ref(fig:semfigure). 
 
-<!-- The most important findings from @garcia2016objectification were the significant partner effect between actor SSO and partner objectification (specifically men's objectification of women and women's SSO), and the link between actor SSO and actor authenticity (also specifically for women). We did not find a significant effect between actor SSO and actor authenticity ($\beta$= -.10, $p$=.38), which means we do not have evidence to support the idea that partner objectification is the cause for the negative effects related to relationship inauthenticity. However, we did find a significant relationship between partner objectification and actor SSO ($\beta$= .25, $p$=.03), which supports our hypothesis that objectification from other women also causes women to self-objectify just as it does in interactions between male-female pairs. We also found a significantly negative effect of authenticity on career aspirations ($\beta$= .18, $p$=.01) and relationship agency ($\beta$=.27, $p$=.01). We found that the model had good fit ($\chi^2$=22.33, $df$=34). In this case, a good fit indicates that there are no direct effects of SSO or SOO on the outcomes on cognitive performance, relationship agency, and career aspirations, which indicates that the path we chose makes sense. -->
+The most important finding from @garcia2016objectification was the significant partner effect of other objectification and SSO (specifically men's objectification of women and women's SSO). As expected, the partner effect of other-objectification on SSO in the current all-women sample was statistically signficant, `r report_stats(apim1, 3)`, replicating @garcia2016objectification's fiding. One's own other objectification had no effect on SSO, `r report_stats(apim1, 2)`. Contrary to past finding however, there was no statistically significant interaction of partner's other objectification and the person's trait self-objectification on SSO, `r report_stats(apim1, 5)`. There was also no significant main effect of trait self-objectification on SSO `r report_stats(apim1.b, 4)`.
+
+Contrary to expectations, there was no significant effect of SSO on interaction authenticity, although the estimate of this effect was in the hypothesized negative direction, `r report_stats(apim2, 2)`. Because authenticity was a composite score of 9 items, two of which were interaction specific authenticity items, we also tested the effect of SSO on these items individually...ADD ANALYSIS...Although we hypothesized that SSO would mediate the relationship between partner's other objectification and interaction authenticity, after finding no relationship bewteen SSO and authencity, we also tested if the partner's other objectification had a direct effect on authenticity, but this effect was not significant, `r report_stats(apim2.b, 3)` (nor was the total effect of partner's other objectification on authenticity, `r report_stats(apim2.c, 2)`). 
+
+Lastly, althought there was no evidence that SSO was related to interaction authenticity in the current sample, we tested if interaction authenticity (composite of nine items) had effects on cognitive performace, career aspirations, and relationship agency, as it did in @garcia2016objectification. We again used MLM and thus, these efefcts were tested in three separate models. There was no significant effect of interaction authenticity on cognitive performance, `r report_stats(apim3, 2)`, but authenticity was significantly positively related to both career aspirations, `r report_stats(apim5, 2)`, and relationships agency, `r report_stats(apim4, 2)`. There was no direct effect of SSO on cognitive performance, `r report_stats(apim3.b, 3)`, and no direct effect of partner's other objectificaiton on cognifitve performance, `r report_stats(apim3.c, 4)`. There was no direct effect of SSO on career aspirations, `r report_stats(apim5.b, 3)`, and no direct effect of partner's other objectificaiton on career aspirations, `r report_stats(apim5.c, 4)`. There was no direct effect of SSO on relationship agency, `r report_stats(apim4.b, 3)`, and no direct effect of partner's other objectificaiton on relationship agency, `r report_stats(apim4.c, 4)`. 
 
 #Discussion
 As stated previously, we did not find a significant effect between actor SSO and actor authenticity ($\beta$= -.10, $p$=.38), which suggests that there is not sufficient evidence to support the claim that partner objectification is the cause for the diverse range of negative effects related to relationship inauthenticity. However, we did observe a significant partner effect of objectification on actor self-objectification, which does align with our hypothesis that theorized objectification from other women can also cause women to self-objectify just as they do within interactions between male-female pairs. The results of this study demonstrate the complex and ambivalent nature of female sexual objectification and additionally highlight the psychological and social consequences of such objectification processes on women’s social relationships and well-being. The sample of the current study was comprised of Western women, being that sexual objectification is most prevalent in this culture [@loughnan2015], and research on objectification conducted outside of Western or Westernized countries is scarce [@moradi2008]. Because “bodies exist within social and cultural contexts, and hence are also constructed through sociocultural practices and discourses” [@robertsfredrickson, p.174], it is important to consider how diverse social identities within unique cultural contexts may inform sexual objectification phenomenon to test the cross-cultural applicability of theoretical frameworks [@loughnan2015]. Further, sexualzing experiences and self-objectification are thought to begin a very young age, and thus, researchers have only recently begun to examine such experiences among children [e.g., @holland2016; @jongenelis2014; @bury2016]. Considering the fact that the average mean age of the investigated participants of this current study was 18.85 years, research among younger and older individuals is needed, especially because self-objectification may change over time [@robertsfredrickson]. It may be valuable to question the extent to which children, adolescents, or emerging adults of different races or ethnicities are exposed to varied amounts of sexulizing content. Also, future experiments or longitudinal studies should explore the external validity of the notions of self-objectification and how the operalization of self-objectification may be improved. Regardless, the results from the current analysis highlight how subtle forms of sexist discrimination operate to inform prevention and intervention efforts in both clinical and educational contexts. These results are quite useful for promoting mental health and within early action programs for girls and young women, where scholars and practitioners might provide the tools necessary to circumvent or mitigate negative effects on self-objectification, and combat such experiences.
