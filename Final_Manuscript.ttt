@@ -19,6 +19,8 @@ Actor's cognitive performance & 5.03 & 2.29 & .08 & .11 & .11 & .02 & .07\\
 \end{threeparttable}
 \end{center}
 \end{table*}
+\efloatseparator
+ 
 \begin{table*}[hbt]
 \ifnextchar[{\eatarg}{}
 [tbp]
@@ -40,28 +42,5 @@ Actor's cognitive performance & 5.03 & 2.29\\
 \end{threeparttable}
 \end{center}
 \end{table*}
-\begin{table*}[hbt]
-\ifnextchar[{\eatarg}{}
-[tbp]
-\begin{center}
-\begin{threeparttable}
-\caption{\label{tab:sem}Estimates from final Path Analysis Model}
-\small{
-\begin{tabular}{lllllll}
-\toprule
-Path & \multicolumn{1}{c}{} & \multicolumn{1}{c}{} & \multicolumn{1}{c}{Estimate} & \multicolumn{1}{c}{SE} & \multicolumn{1}{c}{z-value} & \multicolumn{1}{c}{p-value}\\
-\midrule
-Actor SSO & \textasciitilde{} & Actor TSO & 0.08 & 0.09 & 0.91 & 0.36\\
-Actor SSO & \textasciitilde{} & Actor Obj. of Partner & -0.17 & 0.12 & -1.41 & 0.16\\
-Actor SSO & \textasciitilde{} & Partner Obj. of Actor & 0.25 & 0.12 & 2.15 & 0.03\\
-Actor SSO & \textasciitilde{} & Actor TSO x Partner Obj. & 0.00 & 0.04 & -0.10 & 0.92\\
-Actor Authenticity & \textasciitilde{} & Actor SSO & -0.10 & 0.12 & -0.88 & 0.38\\
-Actor Cog. Performance & \textasciitilde{} & Actor Authenticity & 0.33 & 0.27 & 1.22 & 0.22\\
-Actor Career Aspirations & \textasciitilde{} & Actor Authenticity & 0.18 & 0.07 & 2.66 & 0.01\\
-Actor Rel. Agency & \textasciitilde{} & Actor Authenticity & 0.27 & 0.10 & 2.64 & 0.01\\
-\bottomrule
-\end{tabular}
-}
-\end{threeparttable}
-\end{center}
-\end{table*}
+\efloatseparator
+ 

@@ -91,6 +91,8 @@ Two participants were then brought into a larger interaction room where they sat
 clark_measures <- read.csv("Cleaned data/clark_measures.csv")
 smith <- read.csv("Cleaned data/smith.csv")
 clarksmith_women <- read.csv("Cleaned data/clarksmith_women.csv")
+
+smith$inter_1
 ```
 
 ##Combining Samples
