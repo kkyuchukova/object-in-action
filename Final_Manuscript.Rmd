@@ -88,14 +88,12 @@ Two participants were then brought into a larger interaction room where they sat
 
 
 ```{r data}
-clark_measures <- read.csv("Cleaned data/clark_measures.csv")
-smith <- read.csv("Cleaned data/smith.csv")
+clark_final <- read.csv("Cleaned data/clark_final.csv")
+smith_final <- read.csv("Cleaned data/smith_final.csv")
 clarksmith_women <- read.csv("Cleaned data/clarksmith_women.csv")
-
-smith$inter_1
 ```
 
-##Combining Samples
+##Combined Samples
 
 ```{r}
 ns <- clarksmith_women %>%
@@ -104,7 +102,7 @@ ns <- clarksmith_women %>%
   as.matrix() %>% as.numeric()
 ```
 
-Data from two different, but demographically equivalent, samples were combined to create the final analysis sample (*N =* `r nrow(clarksmith_women)`) used in this study. In the measures section that follows we refer to them as Sample 1 and Sample 2. Sample 1 (*N =* `r ns[3]`) is from a co-ed liberal arts college in the northeast US and Sample 2 (*N =* `r ns[4]`) is from a women’s liberal arts college in the northeast US. The results section contains more detail about equivalence analyses to support the decision to combine these two samples. 
+Data from two different, but demographically equivalent, samples were combined to create the final analysis sample (*N =* `r nrow(clarksmith_women)`) used in this study. In the measures section that follows we refer to them as Sample 1 and Sample 2. Sample 1 (*N =* `r ns[3]`) is from a co-ed liberal arts college in the northeast US and Sample 2 (*N =* `r ns[4]`) is from a women’s liberal arts college in the northeast US. The description of the samples section below contains more detail about equivalence analyses to support the decision to combine these two samples. 
 
 ```{r correaltions}
 #NOT SURE WHAT THIS CHUNK WAS FOR BUT ITS NOT NEEDED
@@ -210,15 +208,15 @@ Trigrams from the Remote Associates Task [@mcfarlin1984remote] were utilized to 
 ```{r alpha_SOO}
 ##SOO
 #Clark
-clark_extsoo_alpha <- psych::alpha(select(clark_measures, otherint_1, otherint_2, 
+clark_extsoo_alpha <- psych::alpha(select(clark_final, otherint_1, otherint_2, 
                                           otherint_5, otherint_6, otherint_10))$total[2]
-clark_intsoo_alpha <- psych::alpha(select(clark_measures, otherint_3, otherint_4, 
+clark_intsoo_alpha <- psych::alpha(select(clark_final, otherint_3, otherint_4, 
                                           otherint_7, otherint_8, otherint_9, otherint_11, 
                                           otherint_12))$total[2]
 #Smith
-smith_extsoo_alpha <- psych::alpha(select(smith, otherint_1, otherint_2, otherint_5, 
+smith_extsoo_alpha <- psych::alpha(select(smith_final, otherint_1, otherint_2, otherint_5, 
                                           otherint_6, otherint_10))$total[2]
-smith_intsoo_alpha <- psych::alpha(select(smith, otherint_3, otherint_4, otherint_7, 
+smith_intsoo_alpha <- psych::alpha(select(smith_final, otherint_3, otherint_4, otherint_7, 
                                           otherint_8, otherint_9, otherint_11, otherint_12))$total[2]
 ```
 
@@ -228,11 +226,11 @@ To measure the participant’s objectification of their partner in the interacti
 ```{r alpha_intauth}
 ##Interaction Authenticity
 #Clark
-clark_intauth_alpha <- psych::alpha(select(clark_measures, inter_1, inter_3, inter_5, 
+clark_intauth_alpha <- psych::alpha(select(clark_final, inter_1, inter_3, inter_5, 
                                            inter_6, inter_7, inter_9, inter_10, interaux_5, 
                                            interaux_6))$total[2]
 #Smith
-smith_intauth_alpha <- psych::alpha(select(smith, inter_1, inter_3, inter_5, inter_6, 
+smith_intauth_alpha <- psych::alpha(select(smith_final, inter_1, inter_3, inter_5, inter_6, 
                                            inter_7, inter_9, inter_10, interaux_5, 
                                            interaux_6))$total[2]
 ```
@@ -243,13 +241,13 @@ To assess the magnitude to which individuals felt comfortable in the interaction
 ```{r alpha_SSO}
 ##SSO
 #Clark - two items
-clark_howbody_alpha<- psych::alpha(select(clark_measures, howbody_1, howbody_2))$total[2]
+clark_howbody_alpha<- psych::alpha(select(clark_final, howbody_1, howbody_2))$total[2]
 #Smith - two items
-smith_howbody_alpha <- psych::alpha(select(smith, howbody_1, howbody_2))$total[2]
+smith_howbody_alpha <- psych::alpha(select(smith_final,  howbody_1, howbody_2))$total[2]
 #Clark - three items
-clark_howbody3 <- psych::alpha(select(clark_measures, howbody_1, howbody_2, howbody_3))
+clark_howbody3 <- psych::alpha(select(clark_final, howbody_1, howbody_2, howbody_3))
 #Smith - three items
-smith_howbody3 <- psych::alpha(select(smith, howbody_1, howbody_2, howbody_3))
+smith_howbody3 <- psych::alpha(select(smith_final, howbody_1, howbody_2, howbody_3))
 ```
 
 ###State Self-Objectification
@@ -258,21 +256,21 @@ To assess state self-objectification, we used an average of two items from @sagu
 ```{r alpha_relagen}
 ##Relationship Agency
 #Clark
-clark_relag_alpha <- psych::alpha(select(clark_measures, relag_1, relag_2, relag_3, 
+clark_relag_alpha <- psych::alpha(select(clark_final, relag_1, relag_2, relag_3, 
                                          relag_4, relag_5, relag_6, relag_7, relag_8, 
                                          relag_9.r))$total[2]
 #Smith
-smith_relag_alpha <- psych::alpha(select(smith, relag_1, relag_2, relag_3, relag_4, 
+smith_relag_alpha <- psych::alpha(select(smith_final, relag_1, relag_2, relag_3, relag_4, 
                                          relag_5, relag_6, relag_7, relag_8, 
                                          relag_9.r))$total[2]
 
-#corr.test(select(clark_measures, relag_1, relag_2, relag_3, relag_4, relag_5, relag_6, relag_7, relag_8, relag_9.r))
-#corr.test(select(smith, relag_1, relag_2, relag_3, relag_4, relag_5, relag_6, relag_7, relag_8, relag_9.r))
+#corr.test(select(clark_final, relag_1, relag_2, relag_3, relag_4, relag_5, relag_6, relag_7, relag_8, relag_9.r))
+#corr.test(select(smith_final, relag_1, relag_2, relag_3, relag_4, relag_5, relag_6, relag_7, relag_8, relag_9.r))
 ##DROPPING ITEM 9
-clark_relag_alpha <- psych::alpha(select(clark_measures, relag_1, relag_2, relag_3, 
+clark_relag_alpha <- psych::alpha(select(clark_final, relag_1, relag_2, relag_3, 
                                          relag_4, relag_5, relag_6, relag_7, relag_8))$total[2]
 
-smith_relag_alpha <- psych::alpha(select(smith, relag_1, relag_2, relag_3, relag_4, 
+smith_relag_alpha <- psych::alpha(select(smith_final, relag_1, relag_2, relag_3, relag_4, 
                                          relag_5, relag_6, relag_7, relag_8))$total[2]
 ```
 
@@ -282,23 +280,23 @@ A scale was used from @garcia2016objectification to assess how much agency an in
 ```{r alpha_career}
 ##Career Aspirations
 #Clark
-clark_measures <- clark_measures %>% #reverse code certain career aspiration variables
+clark_final <- clark_final %>% #reverse code certain career aspiration variables
   mutate(careerasp4.r = (min(careerasp_4, na.rm = TRUE) + max(careerasp_4, na.rm = TRUE) - careerasp_4),
          careerasp7.r = (min(careerasp_7, na.rm = TRUE) + max(careerasp_7, na.rm = TRUE) - careerasp_7),
          careerasp10.r = (min(careerasp_10, na.rm = TRUE) + max(careerasp_10, na.rm = TRUE) - careerasp_10))
 
-clark_careerasp_alpha <- psych::alpha(select(clark_measures, careerasp_1, careerasp_2, 
+clark_careerasp_alpha <- psych::alpha(select(clark_final, careerasp_1, careerasp_2, 
                                              careerasp_3, careerasp4.r, careerasp_5, 
                                              careerasp_6, careerasp7.r, careerasp_8, 
                                              careerasp_9, careerasp10.r))$total[2]
 
 #Smith
-smith <- smith %>% #reverse code certain career aspiration variables
+smith_final <- smith_final %>% #reverse code certain career aspiration variables
   mutate(careerasp4.r = (min(careerasp_4, na.rm = TRUE) + max(careerasp_4, na.rm = TRUE) - careerasp_4),
          careerasp7.r = (min(careerasp_7, na.rm = TRUE) + max(careerasp_7, na.rm = TRUE) - careerasp_7),
          careerasp10.r = (min(careerasp_10, na.rm = TRUE) + max(careerasp_10, na.rm = TRUE) - careerasp_10))
 
-smith_careerasp_alpha <- psych::alpha(select(smith, careerasp_1, careerasp_2, 
+smith_careerasp_alpha <- psych::alpha(select(smith_final, careerasp_1, careerasp_2, 
                                              careerasp_3, careerasp4.r, careerasp_5, 
                                              careerasp_6, careerasp7.r, careerasp_8, 
                                              careerasp_9, careerasp10.r))$total[2]
@@ -310,16 +308,38 @@ To conceptualize participants’ career aspirations after the interaction, we us
 ```{r alpha_TSO}
 ###TSO
 #Clark--external and internal
-clark_funcTSO_alpha <- psych::alpha(select(clark_measures, tso_1, tso_2, tso_4, tso_7, tso_9), check.keys=TRUE)$total[2]
-clark_physTSO_alpha <- psych::alpha(select(clark_measures, tso_3, tso_5, tso_6, tso_8, tso_10), check.keys=TRUE)$total[2]
+clark_funcTSO_alpha <- psych::alpha(select(clark_final, tso_1, tso_2, tso_4, tso_7, tso_9), check.keys=TRUE)$total[2]
+clark_physTSO_alpha <- psych::alpha(select(clark_final, tso_3, tso_5, tso_6, tso_8, tso_10), check.keys=TRUE)$total[2]
 
 #Smith--external and internal
-smith_funcTSO_alpha <- psych::alpha(select(smith, tso_1, tso_2, tso_4, tso_7, tso_9), check.keys=TRUE)$total[2]
-smith_physTSO_alpha <- psych::alpha(select(smith, tso_3, tso_5, tso_6, tso_8, tso_10), check.keys=TRUE)$total[2]
+smith_funcTSO_alpha <- psych::alpha(select(smith_final, tso_1, tso_2, tso_4, tso_7, tso_9), check.keys=TRUE)$total[2]
+smith_physTSO_alpha <- psych::alpha(select(smith_final, tso_3, tso_5, tso_6, tso_8, tso_10), check.keys=TRUE)$total[2]
 ```
 
 ###Trait Self-Objectification
 Trait self-objectification (TSO) was assessed using the Self-Objectification Questionnaire [@fredricksonetal1998; @nollfredrickson1998], which evaluates the extent to which individuals view their bodies in observable versus nonobservable ways. The questionnaire asked participants to rank order both appearance and functional aspects of their bodies, from 1 (least important) to 10 (most important), with respect to physical self-concepts. Of the ten body attributes, five of the items were appearance-based (weight, sex appeal, physical attractiveness, firm/sculpted muscles and body measurements), and five of the items were competence-based (strength, physical coordination, energy level, health and physical fitness). Difference scores were computed by subtracting the sum of the 5 functional aspects/competence attributes (e.g., health, strength) from the sum of the 5 physical self-concepts/appearance attributes (e.g., physical attractiveness, weight), and all measures were multiplied by -1, as was done in @garcia2016objectification, so that positive scores indicated greater TSO. 
+
+###Description of the Samples
+Thirty-two previously unacquainted self-identifying female-sex dyads (64 total participants) from two liberal arts institutions in the Northeast of the United States participated in this study.  More specifically, twelve of the pairs, which derived from Sample 1, were students at a co-ed liberal arts college, while the remaining twenty pairs who came from Sample 2 attended a women’s liberal arts college. Initially, data was collected from same-sex and mixed-sex dyads that comprised of male and female gendered individuals. Sample 1 originally consisted of twenty-two pairs, twelve men and thirty-two women. Twenty-three pairs made up of forty-three women and one man, as well as two participants who did not identify with either gender category, formed Sample 2. For consistency, we limited participant data to same sex female pairs at the two colleges.
+
+```{r}
+##Correlations
+round(corr.test(select(filter(clarksmith_women, smith_or_clark == "Smith"), 
+                 a2pSOO_A, a2pSOO_P, TSO_A,
+                 howbody_avg_A,
+                 authenticity_A, 
+                 trigram_score_A, careerasp_A, relag_A))$r, 3)
+
+round(corr.test(select(filter(clarksmith_women, smith_or_clark == "Clark"), 
+                 a2pSOO_A, a2pSOO_P, TSO_A, 
+                 howbody_avg_A,
+                 authenticity_A, 
+                 trigram_score_A, careerasp_A, relag_A))$r, 3)
+```
+
+There were some similar correaltions bewtween study variables across samples. 
+
+Due these similarities across samples in regard to correlation patterns between significant variables within this study, the two datasets were combined. These participants were mostly first-year college students, with an average age of `r mean_age` (SD = `r sd_age`). The sample was `r percent_white`% White/European American, `r percentage_black`% Black/African-American, `r percent_asian`% Asian/Pacific Islander, `r percent_latinx`% Latinx, and `r percent_other`% mixed-race. There were `r samerace_white` White/White pairs and `r samerace_minority` same race racial minority pairs, for a total of `r samerace_white + samerace_minority` same-race pairs. The remaining `r mixedrace_white + mixedrace_minority` were mixed race pairs, of which `r mixedrace_white` were White/racial minority pairings and `r mixedrace_minority` were cross-racial minority group pairs. `r percent_straight`% of the sample identified as heterosexual, and `r percent_queer`% identified as gay, lesbian or bisexual. 
 
 ```{r demographics}
 #favstats(~TSO_A, data=clarksmith_women)
@@ -356,12 +376,9 @@ mixedrace_minority <- 1+2+1+1
 test <- clarksmith_women %>%
   filter(race_A==3, race_A!=race_P)
 
-tally(~gender, data=clark_measures)
-tally(~gender, data=smith)
+tally(~gender, data=clark_final)
+tally(~gender, data=smith_final)
 ```
-
-###Description of the Samples
-Thirty-two previously unacquainted self-identifying female-sex dyads (64 total participants) from two liberal arts institutions in the Northeast of the United States participated in this study.  More specifically, twelve of the pairs, which derived from Sample 1, were students at a co-ed liberal arts college, while the remaining twenty pairs who came from Sample 2 attended a women’s liberal arts college. Initially, data was collected from same-sex and mixed-sex dyads that comprised of male and female gendered individuals. Sample 1 originally consisted of twenty-two pairs, twelve men and thirty-two women. Twenty-three pairs made up of forty-three women and one man, as well as two participants who did not identify with either gender category, formed Sample 2. Due to similarities across samples in regard to correlation patterns between significant variables within this study, the two datasets were combined. For consistency, we limited participant data to same sex female pairs at the two colleges. These participants were mostly first-year college students, with an average age of `r mean_age` (SD = `r sd_age`). The sample was `r percent_white`% White/European American, `r percentage_black`% Black/African-American, `r percent_asian`% Asian/Pacific Islander, `r percent_latinx`% Latinx, and `r percent_other`% mixed-race. There were `r samerace_white` White/White pairs and `r samerace_minority` same race racial minority pairs, for a total of `r samerace_white + samerace_minority` same-race pairs. The remaining `r mixedrace_white + mixedrace_minority` were mixed race pairs, of which `r mixedrace_white` were White/racial minority pairings and `r mixedrace_minority` were cross-racial minority group pairs. `r percent_straight`% of the sample identified as heterosexual, and `r percent_queer`% identified as gay, lesbian or bisexual. 
 
 # Results
 ```{r create_r-references, warning=FALSE, message=FALSE}
@@ -370,12 +387,15 @@ r_refs(file = "r-references.bib")
 ```
 ## Data analysis
 We used `r cite_r("r-references.bib")` for all our analyses.
+
 ```{r apim, include=TRUE, echo=FALSE, results='asis', out.width="400px", fig.cap="Basic actor-partner interdependence model (APIM) depiction."}
 include_graphics("APIM_figure.png")
 ```
+
 ```{r 2016figure, include=TRUE, echo=FALSE, results='asis', out.width="400px", fig.cap="Path Analysis Model from Garcia et al. (2016) study with distinguishable dyads."}
 include_graphics("2016_figure.jpg")
 ```
+
 ## Analysis Strategy
 This study sought to replicate the results of @garcia2016objectification’s study, done with male-female pairs, which used a dyadic path analysis to detect whether partners’ objectification of one another affected state self-objectification (SSO). See Figure\ \@ref(fig:2016figure) for the results of the analysis from this previous study. We hope to investigate how the central effects found in the previous study relate to interactions between two women. Specifically, we are interested in testing the relationship between state-other objectification and SSO, and how SSO in turn, affecs feelings of inauthenticity during the interaction. In addition, we will also test if the effect of other-objectification in an interaction on SSO is only present for those women who are high in trait self-objectification, as in @garcia2016objectification. Further, we will investigate the realtionships between experiencing interaction inauthenticity and relationship agency, career aspirations, and cognitive performance. 
 
@@ -394,319 +414,7 @@ Before moving to the main analyses, we discuss statistical equivalence test that
 ### Combining Samples
 
 The correaltions between study variables is similar across samples. The realibialities for the study scales were also equivalent. (Note that the two samples were two small to conduct formal measurement equivalence tests for scales.) There are no statistically significant differences between samples in demographics including age, STATS, and ethnicity, STATS. 
-```{r}
-# #Filtering for just one partnum and creating TSO * objectification interaction
-# dyad_cswomen <- clarksmith_women %>%
-#   mutate(TSO_P_SOO_A = TSO_P*a2pSOO_A,
-#          TSO_A_SOO_P = TSO_A*a2pSOO_P) %>%
-#   filter(partnum_A==1)
-# 
-# 
-# model <- '#####regressions 
-# howbody_avg_A ~ t*TSO_A + a*a2pSOO_A + b*a2pSOO_P + c*TSO_A_SOO_P
-# authenticity_A ~ d*howbody_avg_A
-# howbody_avg_P ~ t*TSO_P + a*a2pSOO_P + b*a2pSOO_A + c*TSO_P_SOO_A
-# authenticity_P ~ d*howbody_avg_P
-# trigram_score_A ~ e1*authenticity_A
-# careerasp_A ~ e2*authenticity_A
-# relag_A ~ e3*authenticity_A
-# trigram_score_P ~ e1*authenticity_P
-# careerasp_P ~ e2*authenticity_P
-# relag_P ~ e3*authenticity_P
-# ######covariances
-# #endogenous
-# howbody_avg_A ~~ howbody_avg_P
-# authenticity_A ~~ authenticity_P
-# trigram_score_A ~~ trigram_score_P
-# careerasp_A ~~ careerasp_P
-# relag_A ~~ relag_P
-# trigram_score_A ~~ 0*careerasp_A
-# trigram_score_A ~~ 0*relag_A
-# trigram_score_A ~~ 0*careerasp_P
-# trigram_score_A ~~ 0*relag_P
-# careerasp_A ~~ 0*relag_A
-# careerasp_A ~~ 0*trigram_score_P
-# careerasp_A ~~ 0*relag_P
-# relag_A ~~ 0*trigram_score_P
-# relag_A ~~ 0*careerasp_P
-# trigram_score_P ~~ 0*careerasp_P
-# trigram_score_P ~~ 0*relag_P
-# careerasp_P ~~ 0*relag_P
-# #####variances
-# howbody_avg_A ~~ v1*howbody_avg_A
-# howbody_avg_P ~~ v1*howbody_avg_P
-# TSO_A ~~ v2*TSO_A
-# TSO_P ~~ v2*TSO_P
-# a2pSOO_A ~~ v3*a2pSOO_A
-# a2pSOO_P ~~ v3*a2pSOO_P
-# authenticity_A ~~ v4*authenticity_A
-# authenticity_P ~~ v4*authenticity_P
-# ##endogenous intercepts
-# howbody_avg_A ~ i*1
-# howbody_avg_P ~ i*1
-# authenticity_A ~ i2*1
-# authenticity_P ~ i2*1
-# trigram_score_A ~ i3*1
-# trigram_score_P ~ i4*1
-# careerasp_A ~ i5*1
-# careerasp_P ~ i5*1
-# relag_A ~ i6*1
-# relag_P ~ i6*1
-# ##exogenous means
-# TSO_A ~ m*1
-# TSO_P ~ m*1
-# a2pSOO_A ~ m2*1
-# a2pSOO_P ~ m2*1
-# TSO_P_SOO_A ~ m3*1
-# TSO_A_SOO_P ~ m3*1
-# ## exogenous covariances
-# TSO_A_SOO_P ~~ c1*TSO_A
-# TSO_P_SOO_A ~~ c1*TSO_P
-# TSO_A_SOO_P ~~ c2*a2pSOO_P
-# TSO_P_SOO_A ~~ c2*a2pSOO_A
-# TSO_A ~~ c3*a2pSOO_P
-# TSO_P ~~ c3*a2pSOO_A
-# TSO_A ~~ c4*a2pSOO_A
-# TSO_P ~~ c4*a2pSOO_P
-# TSO_A_SOO_P ~~ c5*a2pSOO_A
-# TSO_P_SOO_A ~~ c5*a2pSOO_P
-# TSO_A_SOO_P ~~ c6*TSO_P
-# TSO_P_SOO_A ~~ c6*TSO_A
-# '
-# 
-# isatmodel <- '#####regressions 
-# #Part one/two
-# howbody_avg_A ~~ t*TSO_A
-# howbody_avg_A ~~ a*a2pSOO_A
-# howbody_avg_A ~~ b*a2pSOO_P 
-# howbody_avg_A ~~ c*TSO_A_SOO_P
-# 
-# howbody_avg_P ~~ t*TSO_P
-# howbody_avg_P ~~ a*a2pSOO_P 
-# howbody_avg_P ~~ b*a2pSOO_A 
-# howbody_avg_P ~~ c*TSO_P_SOO_A
-# 
-# TSO_A ~~ f*howbody_avg_P
-# TSO_P ~~ f*howbody_avg_A
-# TSO_A_SOO_P ~~ g*howbody_avg_P
-# TSO_P_SOO_A ~~ g*howbody_avg_A
-# 
-# #Part two/three
-# authenticity_A ~~ d*howbody_avg_A
-# authenticity_P ~~ d*howbody_avg_P
-# howbody_avg_A ~~ h*authenticity_P
-# howbody_avg_P ~~ h*authenticity_A
-# 
-# 
-# #Part three/four
-# trigram_score_A ~~ e1*authenticity_A
-# trigram_score_P ~~ e1*authenticity_P
-# careerasp_A ~~ e2*authenticity_A
-# careerasp_P ~~ e2*authenticity_P
-# relag_A ~~ e3*authenticity_A
-# relag_P ~~ e3*authenticity_P
-# trigram_score_A ~~ e4*relag_P
-# trigram_score_P ~~ e4*relag_A
-# trigram_score_A ~~ e5*careerasp_P
-# trigram_score_P ~~ e5*careerasp_A
-# trigram_score_A ~~ e6*trigram_score_P
-# #trigram_score_P ~~ e6*trigram_score_A
-# careerasp_A ~~ e7*relag_P
-# careerasp_P ~~ e7*relag_A
-# careerasp_A ~~ e8*careerasp_P
-# #careerasp_A ~~ e9*trigram_score_P
-# #careerasp_P ~~ e9*trigram_score_A
-# relag_A ~~ e10*relag_P
-# 
-# #One to three
-# #direct actor effects
-# authenticity_A ~~ k1*TSO_A_SOO_P
-# authenticity_P ~~ k1*TSO_P_SOO_A
-# authenticity_A ~~ k2*TSO_A
-# authenticity_P ~~ k2*TSO_P
-# authenticity_A ~~k3*a2pSOO_A
-# authenticity_P ~~k3*a2pSOO_P
-# 
-# #direct partner effects
-# authenticity_A ~~ k4*TSO_P_SOO_A
-# authenticity_P ~~k4*TSO_A_SOO_P
-# authenticity_A ~~ k5*TSO_P
-# authenticity_P ~~ k5*TSO_A
-# authenticity_A ~~ k6*a2pSOO_P
-# authenticity_P ~~ k6*a2pSOO_A
-# 
-# #One to four
-# #Direct actor effects
-# trigram_score_A ~~ l1*TSO_A_SOO_P
-# trigram_score_P ~~ l1*TSO_P_SOO_A
-# trigram_score_A ~~ l2*TSO_A
-# trigram_score_P ~~ l2*TSO_P
-# trigram_score_A ~~ l3*a2pSOO_A
-# trigram_score_P ~~ l3*a2pSOO_P
-# careerasp_A ~~ l4*TSO_A_SOO_P
-# careerasp_P ~~ l4*TSO_P_SOO_A
-# careerasp_A ~~ l5*TSO_A
-# careerasp_P ~~ l5*TSO_P
-# careerasp_A ~~ l6*a2pSOO_A
-# careerasp_P ~~ l6*a2pSOO_P
-# relag_A ~~ l7*TSO_A_SOO_P
-# relag_P ~~ l7*TSO_P_SOO_A
-# relag_A ~~ l8*TSO_A
-# relag_P ~~ l8*TSO_P
-# relag_A ~~ l9*a2pSOO_A
-# relag_P ~~ l9*a2pSOO_P
-# 
-# #direct partner effects
-# trigram_score_A ~~ m1*TSO_P_SOO_A
-# trigram_score_P ~~ m1*TSO_A_SOO_P
-# trigram_score_A ~~ m2*TSO_P
-# trigram_score_P ~~ m2*TSO_A
-# trigram_score_A ~~ m3*a2pSOO_P
-# trigram_score_P ~~ m3*a2pSOO_A
-# careerasp_A ~~ m4*TSO_P_SOO_A
-# careerasp_P ~~ m4*TSO_A_SOO_P
-# careerasp_A ~~ m5*TSO_P
-# careerasp_P ~~ m5*TSO_A
-# careerasp_A ~~ m6*a2pSOO_P
-# careerasp_P ~~ m6*a2pSOO_A
-# relag_A ~~ m7*TSO_P_SOO_A
-# relag_P ~~ m7*TSO_A_SOO_P
-# relag_A ~~ m8*TSO_P
-# relag_P ~~ m8*TSO_A
-# relag_A ~~ m9*a2pSOO_P
-# relag_P ~~ m9*a2pSOO_A
-# 
-# #Two to four
-# #direct actor effects
-# trigram_score_A ~~ o1*howbody_avg_A
-# trigram_score_P ~~ o1*howbody_avg_P
-# careerasp_A ~~ o2*howbody_avg_A
-# careerasp_P ~~ o2*howbody_avg_P
-# relag_A ~~ o3*howbody_avg_A
-# relag_P ~~ o3*howbody_avg_P
-# 
-# #direct partner effects
-# trigram_score_A ~~ o1*howbody_avg_P
-# trigram_score_P ~~ o1*howbody_avg_A
-# careerasp_A ~~ o2*howbody_avg_P
-# careerasp_P ~~ o2*howbody_avg_A
-# relag_A ~~ o3*howbody_avg_P
-# relag_P ~~ o3*howbody_avg_A
-# 
-# 
-# ######covariances
-# #endogenous
-# howbody_avg_A ~~ howbody_avg_P
-# authenticity_A ~~ authenticity_P
-# #trigram_score_A ~~ trigram_score_P
-# #careerasp_A ~~ careerasp_P
-# #relag_A ~~ relag_P
-# trigram_score_A ~~ q1*careerasp_A 
-# trigram_score_A ~~ q2*relag_A
-# 
-# careerasp_A ~~ q3*relag_A
-# 
-# trigram_score_P ~~ q1*careerasp_P
-# trigram_score_P ~~ q2*relag_P
-# 
-# careerasp_P ~~ q3*relag_P
-# 
-# trigram_score_A ~~ q4*careerasp_P
-# trigram_score_A ~~ q5*relag_P
-# 
-# 
-# trigram_score_P ~~ q4*careerasp_A
-# trigram_score_P ~~ q5*relag_A
-# 
-# careerasp_A ~~ q6*relag_P
-# careerasp_P ~~ q6*relag_A
-# 
-# 
-# #####variances
-# howbody_avg_A ~~ v1*howbody_avg_A
-# howbody_avg_P ~~ v1*howbody_avg_P
-# TSO_A ~~ v2*TSO_A
-# TSO_P ~~ v2*TSO_P
-# a2pSOO_A ~~ v3*a2pSOO_A
-# a2pSOO_P ~~ v3*a2pSOO_P
-# authenticity_A ~~ v4*authenticity_A
-# authenticity_P ~~ v4*authenticity_P
-# ##endogenous intercepts
-# howbody_avg_A ~ i*1
-# howbody_avg_P ~ i*1
-# authenticity_A ~ i2*1
-# authenticity_P ~ i2*1
-# trigram_score_A ~ i3*1
-# trigram_score_P ~ i4*1
-# careerasp_A ~ i5*1
-# careerasp_P ~ i5*1
-# relag_A ~ i6*1
-# relag_P ~ i6*1
-# ##exogenous means
-# TSO_A ~ m*1
-# TSO_P ~ m*1
-# a2pSOO_A ~ m2*1
-# a2pSOO_P ~ m2*1
-# TSO_P_SOO_A ~ m3*1
-# TSO_A_SOO_P ~ m3*1
-# ## exogenous covariances
-# TSO_A_SOO_P ~~ c1*TSO_A
-# TSO_P_SOO_A ~~ c1*TSO_P
-# TSO_A_SOO_P ~~ c2*a2pSOO_P
-# TSO_P_SOO_A ~~ c2*a2pSOO_A
-# TSO_A ~~ c3*a2pSOO_P
-# TSO_P ~~ c3*a2pSOO_A
-# TSO_A ~~ c4*a2pSOO_A
-# TSO_P ~~ c4*a2pSOO_P
-# TSO_A_SOO_P ~~ c5*a2pSOO_A
-# TSO_P_SOO_A ~~ c5*a2pSOO_P
-# TSO_A_SOO_P ~~ c6*TSO_P
-# TSO_P_SOO_A ~~ c6*TSO_A
-# '
-# 
-# 
-# 
-# fit <- sem(model, data=dyad_cswomen)
-# ```
-# 
-# ```{r sem, include=TRUE, results='asis'}
-# fit_table <- xtable(parameterEstimates(fit))
-# 
-# fit_table <- fit_table %>%
-#   filter(op=="~") %>%
-#   mutate(lhs = ifelse(lhs == "howbody_avg_A", "Actor SSO",
-#                       ifelse(lhs=="authenticity_A", "Actor Authenticity",
-#                              ifelse(lhs=="howbody_avg_P", "Partner SSO",
-#                                     ifelse(lhs=="authenticity_P", "Partner Authenticity",
-#                                            ifelse(lhs=="relag_A", "Actor Rel. Agency",
-#                                                   ifelse(lhs=="relag_P", "Partner Rel. Agency",
-#                                                          ifelse(lhs=="careerasp_A", "Actor Career Aspirations",
-#                                                                 ifelse(lhs=="careerasp_P", "Partner Career Aspirations",
-#                                                                        ifelse(lhs=="trigram_score_A", "Actor Cog. Performance",
-#                                                                               ifelse(lhs=="trigram_score_P", "Partner Cog. Performance", NA)))))))))),
-#          rhs = ifelse(rhs=="TSO_A", "Actor TSO",
-#                       ifelse(rhs=="a2pSOO_A", "Actor Obj. of Partner",
-#                              ifelse(rhs=="a2pSOO_P", "Partner Obj. of Actor",
-#                                     ifelse(rhs=="TSO_A_SOO_P", "Actor TSO x Partner Obj.",
-#                                            ifelse(rhs == "howbody_avg_A", "Actor SSO",
-#                                                   ifelse(rhs=="howbody_avg_P", "Partner SSO",
-#                                                          ifelse(rhs=="TSO_P", "Partner TSO",
-#                                                                 ifelse(rhs=="TSO_P_SOO_A", "Partner TSO x Actor Obj.",
-#                                                                        ifelse(rhs=="authenticity_A", "Actor Authenticity",
-#                                                                               ifelse(rhs=="authenticity_P", "Partner Authenticity", NA))))))))))) %>%
-#   select(lhs, op, rhs, est, se, z, pvalue) %>%
-#   #taking out partner-partner estimates
-#   slice(1:5,11:13)
-# 
-# colnames(fit_table) <- c("Path", "", "", "Estimate", "SE", "z-value", "p-value")
-# 
-# apa_table(fit_table, caption = "Estimates from final Path Analysis Model", font_size = "small")
-# ```
-# 
-# ```{r semfigure, include=TRUE, echo=FALSE, results='asis', out.width="400px", fig.cap="Path Analysis Model with Estimates"}
-# include_graphics("SEMfigure.png")
-# ```
-```
+
 ```{r}
 #SSO
 apim1 <- gls(howbody_avg_A ~ a2pSOO_A + a2pSOO_P + TSO_A + a2pSOO_P*TSO_A, 
@@ -721,6 +429,7 @@ apim1.b <- gls(howbody_avg_A ~ a2pSOO_A + a2pSOO_P + TSO_A,
 
 summary(apim1)
 ```
+
 ```{r}
 #authenticity
 apim2 <- gls(authenticity_A ~ howbody_avg_A, 
@@ -754,6 +463,7 @@ apim2.c <- gls(authenticity_A ~a2pSOO_P,
 
 summary(apim2.c)
 ```
+
 ```{r}
 #cognitive performance
 apim3 <- gls(trigram_score_A ~ authenticity_A, 
@@ -777,6 +487,7 @@ apim3.c <- gls(trigram_score_A ~ authenticity_A + howbody_avg_A + a2pSOO_P,
 
 summary(apim3.c)
 ```
+
 ```{r}
 #relationship agency
 apim4 <- gls(relag_A ~ authenticity_A, 
@@ -800,6 +511,7 @@ apim4.c <- gls(relag_A ~ authenticity_A + howbody_avg_A + a2pSOO_P,
 
 summary(apim4.c)
 ```
+
 ```{r}
 #career aspirations
 apim5 <- gls(careerasp_A ~ authenticity_A, 
@@ -823,9 +535,11 @@ apim5.c <- gls(careerasp_A ~ authenticity_A + howbody_avg_A + a2pSOO_P,
 
 summary(apim5.c)
 ```
+
 ```{r semfigure, include=TRUE, echo=FALSE, results='asis', out.width="400px", fig.cap="Path Analysis Model with Estimates"}
 include_graphics("SEMfigure.png")
 ```
+
 ```{r mlm, include=TRUE, results='asis'}
 # fit_table <- xtable(parameterEstimates(fit))
 # 

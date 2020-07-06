@@ -13,10 +13,9 @@ library(devtools)
 library(psych)
 library(mosaic)
 library(tidyr)
-library(dplyr)
 library(irr)
-library(lavaan)
-select <- dplyr::select
+#library(lavaan) #path model comments out at the end of this file
+library(dplyr)
 ```
 
 #Read in cleaned data
@@ -25,19 +24,22 @@ smith_final <- read.csv("Cleaned data/smith_final.csv")
 clark_final <- read.csv("Cleaned data/clark_final.csv")
 ```
 
-Making Pairwise
+#Restructuring data
+
+Clark
 ```{r}
-
-#Clark
-
-
+#Making pairwise
 clark<- clark_final %>%
   filter(dyadID!=4, dyadID!=14, dyadID!=19) %>%
   arrange(dyadID) %>%
   mutate(person=rep(1:2, times=22)) %>%
-  select(dyadID, person, partID, gender, age, race, sexor, a2pSOO, metaSOO, trigram_score, authenticity, howbody_avg, relag, careerasp, TSO, avg_sexism, sexism_logel) %>%
+  select(dyadID, person, partID, gender, age, race, sexor,        #add variables here for final analysis
+         a2pSOO, metaSOO, trigram_score, authenticity, 
+         inter_1, inter_3, inter_5, inter_6, inter_7, 
+         inter_9, inter_10, interaux_5, interaux_6, 
+         howbody_avg, relag, careerasp, TSO, 
+         avg_sexism, sexism_logel) %>%
   arrange(person)
-
 
 
 tempA <- clark %>% 
@@ -62,21 +64,20 @@ clark_pair <- bind_rows(tempA, tempB) %>%
 rm(tempA, tempB)
 
 head(clark_pair)
+```
 
+Smith
 
-#Smith
-
+```{r}
 #making these numeric
 smith_final$dyadID <- as.numeric(smith_final$dyadID)
 smith_final$partID <- as.numeric(smith_final$partID)
 
-
-
 #checking weird dyads to see if there is post interaction information
-smith_checK <- smith %>%
-  filter(dyadID==16|is.na(dyadID)|dyadID==798797|dyadID==999|dyadID==999999|dyadID==9999)%>%
-  arrange(dyadID) %>%
-  select(dyadID, partID, otherint_1:otherint_12)
+# smith_check <- smith_final %>%
+#   filter(dyadID==16|is.na(dyadID)|dyadID==798797|dyadID==999|dyadID==999999|dyadID==9999)%>%
+#   arrange(dyadID) %>%
+#   select(dyadID, partID, otherint_1:otherint_12)
 
 smith <- smith_final %>%
   filter(dyadID!=16, !is.na(dyadID), dyadID!=798797, dyadID!=999, dyadID!=999999, dyadID!=9999, dyadID!=7) %>%
@@ -84,7 +85,11 @@ smith <- smith_final %>%
   mutate(person=rep(1:2, times=23),
          partID= ifelse(dyadID==31 & person==2, 83, partID),
          dyadID= ifelse(dyadID==2 & partID==4|partID==5, 1, dyadID)) %>%
-  select(dyadID, person, partID, gender, age, race, sexor,a2pSOO, metaSOO, trigram_score, authenticity, howbody_avg, relag, careerasp, TSO, avg_sexism, sexism_logel)  %>%
+  select(dyadID, person, partID, gender, age, race, sexor,a2pSOO,        #add variables here for final analysis
+         metaSOO, trigram_score, authenticity, 
+         inter_1, inter_3, inter_5, inter_6, inter_7, 
+         inter_9, inter_10, interaux_5, interaux_6, 
+         howbody_avg, relag, careerasp, TSO, avg_sexism, sexism_logel)  %>%
   arrange(person)
 
 tempA <- smith %>% 
@@ -110,14 +115,13 @@ rm(tempA, tempB)
 head(smith_pair)
 ```
 
+Merging Datasets to arrive at 1 samegender women dataset
 
-Next steps: correlations, matrices etc
 ```{r}
 #Make pairwise data numeric
-x <- 1:35
+x <- 1:53
 smith_pair[,x] <- lapply(smith_pair[,x], as.numeric)
 clark_pair[,x] <-lapply(clark_pair[,x], as.numeric)
-
 
 ###Making same gender and mixed gender pair datasets
 #same
@@ -129,7 +133,7 @@ samegender_smith <- smith_pair %>%
 
 #making numeric
 samegender_smith[,x] <- lapply(samegender_smith[,x], as.numeric)
-samegender_clark[,x] <-lapply(samegender_clark[,x], as.numeric)
+samegender_clark[,x] <- lapply(samegender_clark[,x], as.numeric)
 
 #mixed
 diffgender_clark <- clark_pair %>%
@@ -138,6 +142,25 @@ diffgender_clark <- clark_pair %>%
 diffgender_smith <- smith_pair %>%
   filter(gender_A!=gender_P)
 
+#merging clark and smith same sex data
+samegender_smith <- samegender_smith %>%
+  mutate(smith_or_clark = "Smith",
+         dyadID = dyadID + 100)
+
+samegender_clark <- samegender_clark %>%
+  mutate(smith_or_clark = "Clark")
+
+clarksmith_same <- merge(x=samegender_smith, y=samegender_clark, all.x=TRUE, all.y=TRUE)
+
+clarksmith_women <- clarksmith_same %>%
+  filter(gender_A == 2)
+```
+
+###Checking equivalencies
+
+Next steps: correlations, matrices etc
+
+```{r}
 ##Correlations
 corr.test(select(samegender_clark, a2pSOO_A, a2pSOO_P, metaSOO_A, metaSOO_P, howbody_avg_A))
 corr.test(select(clark_pair, a2pSOO_A, a2pSOO_P, metaSOO_A, metaSOO_P, howbody_avg_A))
@@ -150,32 +173,34 @@ corr.test(select(samegender_smith, authenticity_A, careerasp_A, relag_A))
 corr.test(select(smith_pair, authenticity_A, careerasp_A, relag_A))
 ```
 
+Modeling the APIM for full dataset and separate samples
 
-MODELING THE APIM
 ```{r}
-#merging clark and smith same sex data
-samegender_smith <- samegender_smith %>%
-  mutate(smith_or_clark = "Smith",
-         dyadID = dyadID + 100)
-
-samegender_clark <- samegender_clark %>%
-  mutate(smith_or_clark = "Clark")
-
-clarksmith_same <- merge(x=samegender_smith, y=samegender_clark, all.x=TRUE, all.y=TRUE)
-
-clarksmith_women <- clarksmith_same %>%
-  filter(gender_A==2)
-
-
-#running the apim
-
-apim_women <- gls(howbody_avg_A ~ a2pSOO_A + a2pSOO_P + TSO_A + TSO_A*a2pSOO_P,
+#Combined samples
+apim_women <- gls(howbody_avg_A ~ a2pSOO_A + a2pSOO_P + TSO_A,
             data=clarksmith_women,
             correlation=corCompSymm(form=~1|dyadID),
             na.action = na.omit)
 summary(apim_women)
-
 ```
+
+
+```{r}
+apim_women_smith <- gls(howbody_avg_A ~ a2pSOO_A + a2pSOO_P + TSO_A,
+            data=clark_pair,
+            correlation=corCompSymm(form=~1|dyadID),
+            na.action = na.omit)
+summary(apim_women_smith)
+```
+
+```{r}
+apim_women_clark <- gls(howbody_avg_A ~ a2pSOO_A + a2pSOO_P + TSO_A,
+            data=smith_pair,
+            correlation=corCompSymm(form=~1|dyadID),
+            na.action = na.omit)
+summary(apim_women_clark)
+```
+
 
 #Writing a csv of clarksmith_women data
 ```{r}
@@ -220,7 +245,6 @@ tally(~gender, data=smith)
 ```
 
 
-
 ```{r}
 #Running direct correlations
 SSO_authenticity <- gls(howbody_avg_A~authenticity_A, data=clarksmith_women)
@@ -240,483 +264,483 @@ summary(SSO_RAT)
 
 ##PATH model
 
-```{r}
-#Filtering for just one partnum and creating TSO * objectification interaction
-dyad_cswomen <- clarksmith_women %>%
-  mutate(TSO_P_SOO_A = TSO_P*a2pSOO_A,
-         TSO_A_SOO_P = TSO_A*a2pSOO_P) %>%
-  filter(partnum_A==1)
-```
-
-
-```{r}
-model <- '#####regressions 
-howbody_avg_A ~ t*TSO_A + a*a2pSOO_A + b*a2pSOO_P + c*TSO_A_SOO_P
-howbody_avg_P ~ t*TSO_P + a*a2pSOO_P + b*a2pSOO_A + c*TSO_P_SOO_A
-authenticity_A ~ d*howbody_avg_A
-authenticity_P ~ d*howbody_avg_P
-trigram_score_A ~ e1*authenticity_A
-careerasp_A ~ e2*authenticity_A
-relag_A ~ e3*authenticity_A
-trigram_score_P ~ e1*authenticity_P
-careerasp_P ~ e2*authenticity_P
-relag_P ~ e3*authenticity_P
-######covariances
-#endogenous
-howbody_avg_A ~~ howbody_avg_P
-authenticity_A ~~ authenticity_P
-trigram_score_A ~~ trigram_score_P
-careerasp_A ~~ careerasp_P
-relag_A ~~ relag_P
-trigram_score_A ~~ 0*careerasp_A
-trigram_score_A ~~ 0*relag_A
-trigram_score_A ~~ 0*careerasp_P
-trigram_score_A ~~ 0*relag_P
-careerasp_A ~~ 0*relag_A
-careerasp_A ~~ 0*trigram_score_P
-careerasp_A ~~ 0*relag_P
-relag_A ~~ 0*trigram_score_P
-relag_A ~~ 0*careerasp_P
-trigram_score_P ~~ 0*careerasp_P
-trigram_score_P ~~ 0*relag_P
-careerasp_P ~~ 0*relag_P
-#####variances
-howbody_avg_A ~~ v1*howbody_avg_A
-howbody_avg_P ~~ v1*howbody_avg_P
-TSO_A ~~ v2*TSO_A
-TSO_P ~~ v2*TSO_P
-a2pSOO_A ~~ v3*a2pSOO_A
-a2pSOO_P ~~ v3*a2pSOO_P
-authenticity_A ~~ v4*authenticity_A
-authenticity_P ~~ v4*authenticity_P
-##endogenous intercepts
-howbody_avg_A ~ i*1
-howbody_avg_P ~ i*1
-authenticity_A ~ i2*1
-authenticity_P ~ i2*1
-trigram_score_A ~ i3*1
-trigram_score_P ~ i4*1
-careerasp_A ~ i5*1
-careerasp_P ~ i5*1
-relag_A ~ i6*1
-relag_P ~ i6*1
-##exogenous means
-TSO_A ~ m*1
-TSO_P ~ m*1
-a2pSOO_A ~ m2*1
-a2pSOO_P ~ m2*1
-TSO_P_SOO_A ~ m3*1
-TSO_A_SOO_P ~ m3*1
-## exogenous covariances
-TSO_A_SOO_P ~~ c1*TSO_A
-TSO_P_SOO_A ~~ c1*TSO_P
-TSO_A_SOO_P ~~ c2*a2pSOO_P
-TSO_P_SOO_A ~~ c2*a2pSOO_A
-TSO_A ~~ c3*a2pSOO_P
-TSO_P ~~ c3*a2pSOO_A
-TSO_A ~~ c4*a2pSOO_A
-TSO_P ~~ c4*a2pSOO_P
-TSO_A_SOO_P ~~ c5*a2pSOO_A
-TSO_P_SOO_A ~~ c5*a2pSOO_P
-TSO_A_SOO_P ~~ c6*TSO_P
-TSO_P_SOO_A ~~ c6*TSO_A
-'
-```
-
-```{r}
-isatmodel <- '#####regressions 
-#Part one/two
-howbody_avg_A ~~ t*TSO_A
-howbody_avg_A ~~ a*a2pSOO_A
-howbody_avg_A ~~ b*a2pSOO_P 
-howbody_avg_A ~~ c*TSO_A_SOO_P
-
-howbody_avg_P ~~ t*TSO_P
-howbody_avg_P ~~ a*a2pSOO_P 
-howbody_avg_P ~~ b*a2pSOO_A 
-howbody_avg_P ~~ c*TSO_P_SOO_A
-
-TSO_A ~~ f*howbody_avg_P
-TSO_P ~~ f*howbody_avg_A
-TSO_A_SOO_P ~~ g*howbody_avg_P
-TSO_P_SOO_A ~~ g*howbody_avg_A
-
-#Part two/three
-authenticity_A ~~ d*howbody_avg_A
-authenticity_P ~~ d*howbody_avg_P
-howbody_avg_A ~~ h*authenticity_P
-howbody_avg_P ~~ h*authenticity_A
-
-
-#Part three/four
-trigram_score_A ~~ e1*authenticity_A
-trigram_score_P ~~ e1*authenticity_P
-careerasp_A ~~ e2*authenticity_A
-careerasp_P ~~ e2*authenticity_P
-relag_A ~~ e3*authenticity_A
-relag_P ~~ e3*authenticity_P
-trigram_score_A ~~ e4*relag_P
-trigram_score_P ~~ e4*relag_A
-trigram_score_A ~~ e5*careerasp_P
-trigram_score_P ~~ e5*careerasp_A
-trigram_score_A ~~ e6*trigram_score_P
-#trigram_score_P ~~ e6*trigram_score_A
-careerasp_A ~~ e7*relag_P
-careerasp_P ~~ e7*relag_A
-careerasp_A ~~ e8*careerasp_P
-#careerasp_A ~~ e9*trigram_score_P
-#careerasp_P ~~ e9*trigram_score_A
-relag_A ~~ e10*relag_P
-
-#One to three
-#direct actor effects
-authenticity_A ~~ k1*TSO_A_SOO_P
-authenticity_P ~~ k1*TSO_P_SOO_A
-authenticity_A ~~ k2*TSO_A
-authenticity_P ~~ k2*TSO_P
-authenticity_A ~~k3*a2pSOO_A
-authenticity_P ~~k3*a2pSOO_P
-
-#direct partner effects
-authenticity_A ~~ k4*TSO_P_SOO_A
-authenticity_P ~~k4*TSO_A_SOO_P
-authenticity_A ~~ k5*TSO_P
-authenticity_P ~~ k5*TSO_A
-authenticity_A ~~ k6*a2pSOO_P
-authenticity_P ~~ k6*a2pSOO_A
-
-#One to four
-#Direct actor effects
-trigram_score_A ~~ l1*TSO_A_SOO_P
-trigram_score_P ~~ l1*TSO_P_SOO_A
-trigram_score_A ~~ l2*TSO_A
-trigram_score_P ~~ l2*TSO_P
-trigram_score_A ~~ l3*a2pSOO_A
-trigram_score_P ~~ l3*a2pSOO_P
-careerasp_A ~~ l4*TSO_A_SOO_P
-careerasp_P ~~ l4*TSO_P_SOO_A
-careerasp_A ~~ l5*TSO_A
-careerasp_P ~~ l5*TSO_P
-careerasp_A ~~ l6*a2pSOO_A
-careerasp_P ~~ l6*a2pSOO_P
-relag_A ~~ l7*TSO_A_SOO_P
-relag_P ~~ l7*TSO_P_SOO_A
-relag_A ~~ l8*TSO_A
-relag_P ~~ l8*TSO_P
-relag_A ~~ l9*a2pSOO_A
-relag_P ~~ l9*a2pSOO_P
-
-#direct partner effects
-trigram_score_A ~~ m1*TSO_P_SOO_A
-trigram_score_P ~~ m1*TSO_A_SOO_P
-trigram_score_A ~~ m2*TSO_P
-trigram_score_P ~~ m2*TSO_A
-trigram_score_A ~~ m3*a2pSOO_P
-trigram_score_P ~~ m3*a2pSOO_A
-careerasp_A ~~ m4*TSO_P_SOO_A
-careerasp_P ~~ m4*TSO_A_SOO_P
-careerasp_A ~~ m5*TSO_P
-careerasp_P ~~ m5*TSO_A
-careerasp_A ~~ m6*a2pSOO_P
-careerasp_P ~~ m6*a2pSOO_A
-relag_A ~~ m7*TSO_P_SOO_A
-relag_P ~~ m7*TSO_A_SOO_P
-relag_A ~~ m8*TSO_P
-relag_P ~~ m8*TSO_A
-relag_A ~~ m9*a2pSOO_P
-relag_P ~~ m9*a2pSOO_A
-
-#Two to four
-#direct actor effects
-trigram_score_A ~~ o1*howbody_avg_A
-trigram_score_P ~~ o1*howbody_avg_P
-careerasp_A ~~ o2*howbody_avg_A
-careerasp_P ~~ o2*howbody_avg_P
-relag_A ~~ o3*howbody_avg_A
-relag_P ~~ o3*howbody_avg_P
-
-#direct partner effects
-trigram_score_A ~~ o1*howbody_avg_P
-trigram_score_P ~~ o1*howbody_avg_A
-careerasp_A ~~ o2*howbody_avg_P
-careerasp_P ~~ o2*howbody_avg_A
-relag_A ~~ o3*howbody_avg_P
-relag_P ~~ o3*howbody_avg_A
-
-
-######covariances
-#endogenous
-howbody_avg_A ~~ howbody_avg_P
-authenticity_A ~~ authenticity_P
-#trigram_score_A ~~ trigram_score_P
-#careerasp_A ~~ careerasp_P
-#relag_A ~~ relag_P
-trigram_score_A ~~ q1*careerasp_A 
-trigram_score_A ~~ q2*relag_A
-
-careerasp_A ~~ q3*relag_A
-
-trigram_score_P ~~ q1*careerasp_P
-trigram_score_P ~~ q2*relag_P
-
-careerasp_P ~~ q3*relag_P
-
-trigram_score_A ~~ q4*careerasp_P
-trigram_score_A ~~ q5*relag_P
-
-
-trigram_score_P ~~ q4*careerasp_A
-trigram_score_P ~~ q5*relag_A
-
-careerasp_A ~~ q6*relag_P
-careerasp_P ~~ q6*relag_A
-
-
-#####variances
-howbody_avg_A ~~ v1*howbody_avg_A
-howbody_avg_P ~~ v1*howbody_avg_P
-TSO_A ~~ v2*TSO_A
-TSO_P ~~ v2*TSO_P
-a2pSOO_A ~~ v3*a2pSOO_A
-a2pSOO_P ~~ v3*a2pSOO_P
-authenticity_A ~~ v4*authenticity_A
-authenticity_P ~~ v4*authenticity_P
-##endogenous intercepts
-howbody_avg_A ~ i*1
-howbody_avg_P ~ i*1
-authenticity_A ~ i2*1
-authenticity_P ~ i2*1
-trigram_score_A ~ i3*1
-trigram_score_P ~ i4*1
-careerasp_A ~ i5*1
-careerasp_P ~ i5*1
-relag_A ~ i6*1
-relag_P ~ i6*1
-##exogenous means
-TSO_A ~ m*1
-TSO_P ~ m*1
-a2pSOO_A ~ m2*1
-a2pSOO_P ~ m2*1
-TSO_P_SOO_A ~ m3*1
-TSO_A_SOO_P ~ m3*1
-## exogenous covariances
-TSO_A_SOO_P ~~ l1*TSO_A
-TSO_P_SOO_A ~~ l1*TSO_P
-TSO_A_SOO_P ~~ l2*a2pSOO_P
-TSO_P_SOO_A ~~ l2*a2pSOO_A
-TSO_A ~~ l3*a2pSOO_P
-TSO_P ~~ l3*a2pSOO_A
-TSO_A ~~ l4*a2pSOO_A
-TSO_P ~~ l4*a2pSOO_P
-TSO_A_SOO_P ~~ l5*a2pSOO_A
-TSO_P_SOO_A ~~ l5*a2pSOO_P
-TSO_A_SOO_P ~~ l6*TSO_P
-TSO_P_SOO_A ~~ l6*TSO_A
-'
-```
-
-```{r}
-nullmodel <- '#####regressions 
-#Part one/two
-howbody_avg_A ~~ 0*TSO_A
-howbody_avg_A ~~ 0*a2pSOO_A
-howbody_avg_A ~~ 0*a2pSOO_P 
-howbody_avg_A ~~ 0*TSO_A_SOO_P
-
-howbody_avg_P ~~ 0*TSO_P
-howbody_avg_P ~~ 0*a2pSOO_P 
-howbody_avg_P ~~ 0*a2pSOO_A 
-howbody_avg_P ~~ 0*TSO_P_SOO_A
-
-TSO_A ~~ 0*howbody_avg_P
-TSO_P ~~ 0*howbody_avg_A
-TSO_A_SOO_P ~~ 0*howbody_avg_P
-TSO_P_SOO_A ~~ 0*howbody_avg_A
-
-#Part two/three
-authenticity_A ~~ 0*howbody_avg_A
-authenticity_P ~~ 0*howbody_avg_P
-howbody_avg_A ~~ 0*authenticity_P
-howbody_avg_P ~~ 0*authenticity_A
-
-
-#Part three/four
-trigram_score_A ~~ 0*authenticity_A
-trigram_score_P ~~ 0*authenticity_P
-careerasp_A ~~ 0*authenticity_A
-careerasp_P ~~ 0*authenticity_P
-relag_A ~~ 0*authenticity_A
-relag_P ~~ 0*authenticity_P
-trigram_score_A ~~ 0*relag_P
-trigram_score_P ~~ 0*relag_A
-trigram_score_A ~~ 0*careerasp_P
-trigram_score_P ~~ 0*careerasp_A
-trigram_score_A ~~ e6*trigram_score_P
-#trigram_score_P ~~ e6*trigram_score_A
-careerasp_A ~~ 0*relag_P
-careerasp_P ~~ 0*relag_A
-careerasp_A ~~ e8*careerasp_P
-#careerasp_A ~~ 0*trigram_score_P
-#careerasp_P ~~ 0*trigram_score_A
-relag_A ~~ e10*relag_P
-
-#One to three
-#direct actor effects
-authenticity_A ~~ 0*TSO_A_SOO_P
-authenticity_P ~~ 0*TSO_P_SOO_A
-authenticity_A ~~ 0*TSO_A
-authenticity_P ~~ 0*TSO_P
-authenticity_A ~~0*a2pSOO_A
-authenticity_P ~~ 0*a2pSOO_P
-
-#direct partner effects
-authenticity_A ~~ 0*TSO_P_SOO_A
-authenticity_P ~~ 0*TSO_A_SOO_P
-authenticity_A ~~ 0*TSO_P
-authenticity_P ~~ 0*TSO_A
-authenticity_A ~~ 0*a2pSOO_P
-authenticity_P ~~ 0*a2pSOO_A
-
-#One to four
-#Direct actor effects
-trigram_score_A ~~ 0*TSO_A_SOO_P
-trigram_score_P ~~ 0*TSO_P_SOO_A
-trigram_score_A ~~ 0*TSO_A
-trigram_score_P ~~ 0*TSO_P
-trigram_score_A ~~ 0*a2pSOO_A
-trigram_score_P ~~ 0*a2pSOO_P
-careerasp_A ~~ 0*TSO_A_SOO_P
-careerasp_P ~~ 0*TSO_P_SOO_A
-careerasp_A ~~ 0*TSO_A
-careerasp_P ~~ 0*TSO_P
-careerasp_A ~~ 0*a2pSOO_A
-careerasp_P ~~ 0*a2pSOO_P
-relag_A ~~ 0*TSO_A_SOO_P
-relag_P ~~ 0*TSO_P_SOO_A
-relag_A ~~ 0*TSO_A
-relag_P ~~ 0*TSO_P
-relag_A ~~ 0*a2pSOO_A
-relag_P ~~ 0*a2pSOO_P
-
-#direct partner effects
-trigram_score_A ~~ 0*TSO_P_SOO_A
-trigram_score_P ~~ 0*TSO_A_SOO_P
-trigram_score_A ~~ 0*TSO_P
-trigram_score_P ~~ 0*TSO_A
-trigram_score_A ~~ 0*a2pSOO_P
-trigram_score_P ~~ 0*a2pSOO_A
-careerasp_A ~~ 0*TSO_P_SOO_A
-careerasp_P ~~ 0*TSO_A_SOO_P
-careerasp_A ~~ 0*TSO_P
-careerasp_P ~~ 0*TSO_A
-careerasp_A ~~ 0*a2pSOO_P
-careerasp_P ~~ 0*a2pSOO_A
-relag_A ~~ 0*TSO_P_SOO_A
-relag_P ~~ 0*TSO_A_SOO_P
-relag_A ~~ 0*TSO_P
-relag_P ~~ 0*TSO_A
-relag_A ~~ 0*a2pSOO_P
-relag_P ~~ 0*a2pSOO_A
-
-#Two to four
-#direct actor effects
-trigram_score_A ~~ 0*howbody_avg_A
-trigram_score_P ~~ 0*howbody_avg_P
-careerasp_A ~~ 0*howbody_avg_A
-careerasp_P ~~ 0*howbody_avg_P
-relag_A ~~ 0*howbody_avg_A
-relag_P ~~ 0*howbody_avg_P
-
-#direct partner effects
-trigram_score_A ~~ 0*howbody_avg_P
-trigram_score_P ~~ 0*howbody_avg_A
-careerasp_A ~~ 0*howbody_avg_P
-careerasp_P ~~ 0*howbody_avg_A
-relag_A ~~ 0*howbody_avg_P
-relag_P ~~ 0*howbody_avg_A
-
-
-######covariances
-#endogenous
-howbody_avg_A ~~ 0*howbody_avg_P
-authenticity_A ~~ 0*authenticity_P
-#trigram_score_A ~~ 0*trigram_score_P
-#careerasp_A ~~ 0*careerasp_P
-trigram_score_A ~~ 0*careerasp_A 
-trigram_score_A ~~ 0*relag_A
-
-careerasp_A ~~ 0*relag_A
-
-trigram_score_P ~~ 0*careerasp_P
-trigram_score_P ~~ 0*relag_P
-
-careerasp_P ~~ 0*relag_P
-
-trigram_score_A ~~ 0*careerasp_P
-trigram_score_A ~~ 0*relag_P
-
-
-trigram_score_P ~~ 0*careerasp_A
-trigram_score_P ~~ 0*relag_A
-
-careerasp_A ~~ 0*relag_P
-careerasp_P ~~ 0*relag_A
-
-
-#####variances
-howbody_avg_A ~~ v1*howbody_avg_A
-howbody_avg_P ~~ v1*howbody_avg_P
-TSO_A ~~ v2*TSO_A
-TSO_P ~~ v2*TSO_P
-a2pSOO_A ~~ v3*a2pSOO_A
-a2pSOO_P ~~ v3*a2pSOO_P
-authenticity_A ~~ v4*authenticity_A
-authenticity_P ~~ v4*authenticity_P
-##endogenous intercepts
-howbody_avg_A ~ i*1
-howbody_avg_P ~ i*1
-authenticity_A ~ i2*1
-authenticity_P ~ i2*1
-trigram_score_A ~ i3*1
-trigram_score_P ~ i4*1
-careerasp_A ~ i5*1
-careerasp_P ~ i5*1
-relag_A ~ i6*1
-relag_P ~ i6*1
-##exogenous means
-TSO_A ~ m*1
-TSO_P ~ m*1
-a2pSOO_A ~ m2*1
-a2pSOO_P ~ m2*1
-TSO_P_SOO_A ~ m3*1
-TSO_A_SOO_P ~ m3*1
-## exogenous covariances
-TSO_A_SOO_P ~~ 0*TSO_A
-TSO_P_SOO_A ~~ 0*TSO_P
-TSO_A_SOO_P ~~ 0*a2pSOO_P
-TSO_P_SOO_A ~~ 0*a2pSOO_A
-TSO_A ~~ 0*a2pSOO_P
-TSO_P ~~ 0*a2pSOO_A
-TSO_A ~~ 0*a2pSOO_A
-TSO_P ~~ 0*a2pSOO_P
-TSO_A_SOO_P ~~ 0*a2pSOO_A
-TSO_P_SOO_A ~~ 0*a2pSOO_P
-TSO_A_SOO_P ~~ 0*TSO_P
-TSO_P_SOO_A ~~ 0*TSO_A
-'
-```
-
-
-```{r}
-fit <- sem(isatmodel, data=dyad_cswomen)
-summary(fit, standardized=TRUE)
-
-fit2 <- sem(model, data=dyad_cswomen)
-summary(fit2, standardized=TRUE)
-
-fit3 <- sem(nullmodel, data=dyad_cswomen)
-summary(fit3, standardized=TRUE)
-```
+# ```{r}
+# #Filtering for just one partnum and creating TSO * objectification interaction
+# dyad_cswomen <- clarksmith_women %>%
+#   mutate(TSO_P_SOO_A = TSO_P*a2pSOO_A,
+#          TSO_A_SOO_P = TSO_A*a2pSOO_P) %>%
+#   filter(partnum_A==1)
+# ```
+# 
+# 
+# ```{r}
+# model <- '#####regressions 
+# howbody_avg_A ~ t*TSO_A + a*a2pSOO_A + b*a2pSOO_P + c*TSO_A_SOO_P
+# howbody_avg_P ~ t*TSO_P + a*a2pSOO_P + b*a2pSOO_A + c*TSO_P_SOO_A
+# authenticity_A ~ d*howbody_avg_A
+# authenticity_P ~ d*howbody_avg_P
+# trigram_score_A ~ e1*authenticity_A
+# careerasp_A ~ e2*authenticity_A
+# relag_A ~ e3*authenticity_A
+# trigram_score_P ~ e1*authenticity_P
+# careerasp_P ~ e2*authenticity_P
+# relag_P ~ e3*authenticity_P
+# ######covariances
+# #endogenous
+# howbody_avg_A ~~ howbody_avg_P
+# authenticity_A ~~ authenticity_P
+# trigram_score_A ~~ trigram_score_P
+# careerasp_A ~~ careerasp_P
+# relag_A ~~ relag_P
+# trigram_score_A ~~ 0*careerasp_A
+# trigram_score_A ~~ 0*relag_A
+# trigram_score_A ~~ 0*careerasp_P
+# trigram_score_A ~~ 0*relag_P
+# careerasp_A ~~ 0*relag_A
+# careerasp_A ~~ 0*trigram_score_P
+# careerasp_A ~~ 0*relag_P
+# relag_A ~~ 0*trigram_score_P
+# relag_A ~~ 0*careerasp_P
+# trigram_score_P ~~ 0*careerasp_P
+# trigram_score_P ~~ 0*relag_P
+# careerasp_P ~~ 0*relag_P
+# #####variances
+# howbody_avg_A ~~ v1*howbody_avg_A
+# howbody_avg_P ~~ v1*howbody_avg_P
+# TSO_A ~~ v2*TSO_A
+# TSO_P ~~ v2*TSO_P
+# a2pSOO_A ~~ v3*a2pSOO_A
+# a2pSOO_P ~~ v3*a2pSOO_P
+# authenticity_A ~~ v4*authenticity_A
+# authenticity_P ~~ v4*authenticity_P
+# ##endogenous intercepts
+# howbody_avg_A ~ i*1
+# howbody_avg_P ~ i*1
+# authenticity_A ~ i2*1
+# authenticity_P ~ i2*1
+# trigram_score_A ~ i3*1
+# trigram_score_P ~ i4*1
+# careerasp_A ~ i5*1
+# careerasp_P ~ i5*1
+# relag_A ~ i6*1
+# relag_P ~ i6*1
+# ##exogenous means
+# TSO_A ~ m*1
+# TSO_P ~ m*1
+# a2pSOO_A ~ m2*1
+# a2pSOO_P ~ m2*1
+# TSO_P_SOO_A ~ m3*1
+# TSO_A_SOO_P ~ m3*1
+# ## exogenous covariances
+# TSO_A_SOO_P ~~ c1*TSO_A
+# TSO_P_SOO_A ~~ c1*TSO_P
+# TSO_A_SOO_P ~~ c2*a2pSOO_P
+# TSO_P_SOO_A ~~ c2*a2pSOO_A
+# TSO_A ~~ c3*a2pSOO_P
+# TSO_P ~~ c3*a2pSOO_A
+# TSO_A ~~ c4*a2pSOO_A
+# TSO_P ~~ c4*a2pSOO_P
+# TSO_A_SOO_P ~~ c5*a2pSOO_A
+# TSO_P_SOO_A ~~ c5*a2pSOO_P
+# TSO_A_SOO_P ~~ c6*TSO_P
+# TSO_P_SOO_A ~~ c6*TSO_A
+# '
+# ```
+# 
+# ```{r}
+# isatmodel <- '#####regressions 
+# #Part one/two
+# howbody_avg_A ~~ t*TSO_A
+# howbody_avg_A ~~ a*a2pSOO_A
+# howbody_avg_A ~~ b*a2pSOO_P 
+# howbody_avg_A ~~ c*TSO_A_SOO_P
+# 
+# howbody_avg_P ~~ t*TSO_P
+# howbody_avg_P ~~ a*a2pSOO_P 
+# howbody_avg_P ~~ b*a2pSOO_A 
+# howbody_avg_P ~~ c*TSO_P_SOO_A
+# 
+# TSO_A ~~ f*howbody_avg_P
+# TSO_P ~~ f*howbody_avg_A
+# TSO_A_SOO_P ~~ g*howbody_avg_P
+# TSO_P_SOO_A ~~ g*howbody_avg_A
+# 
+# #Part two/three
+# authenticity_A ~~ d*howbody_avg_A
+# authenticity_P ~~ d*howbody_avg_P
+# howbody_avg_A ~~ h*authenticity_P
+# howbody_avg_P ~~ h*authenticity_A
+# 
+# 
+# #Part three/four
+# trigram_score_A ~~ e1*authenticity_A
+# trigram_score_P ~~ e1*authenticity_P
+# careerasp_A ~~ e2*authenticity_A
+# careerasp_P ~~ e2*authenticity_P
+# relag_A ~~ e3*authenticity_A
+# relag_P ~~ e3*authenticity_P
+# trigram_score_A ~~ e4*relag_P
+# trigram_score_P ~~ e4*relag_A
+# trigram_score_A ~~ e5*careerasp_P
+# trigram_score_P ~~ e5*careerasp_A
+# trigram_score_A ~~ e6*trigram_score_P
+# #trigram_score_P ~~ e6*trigram_score_A
+# careerasp_A ~~ e7*relag_P
+# careerasp_P ~~ e7*relag_A
+# careerasp_A ~~ e8*careerasp_P
+# #careerasp_A ~~ e9*trigram_score_P
+# #careerasp_P ~~ e9*trigram_score_A
+# relag_A ~~ e10*relag_P
+# 
+# #One to three
+# #direct actor effects
+# authenticity_A ~~ k1*TSO_A_SOO_P
+# authenticity_P ~~ k1*TSO_P_SOO_A
+# authenticity_A ~~ k2*TSO_A
+# authenticity_P ~~ k2*TSO_P
+# authenticity_A ~~k3*a2pSOO_A
+# authenticity_P ~~k3*a2pSOO_P
+# 
+# #direct partner effects
+# authenticity_A ~~ k4*TSO_P_SOO_A
+# authenticity_P ~~k4*TSO_A_SOO_P
+# authenticity_A ~~ k5*TSO_P
+# authenticity_P ~~ k5*TSO_A
+# authenticity_A ~~ k6*a2pSOO_P
+# authenticity_P ~~ k6*a2pSOO_A
+# 
+# #One to four
+# #Direct actor effects
+# trigram_score_A ~~ l1*TSO_A_SOO_P
+# trigram_score_P ~~ l1*TSO_P_SOO_A
+# trigram_score_A ~~ l2*TSO_A
+# trigram_score_P ~~ l2*TSO_P
+# trigram_score_A ~~ l3*a2pSOO_A
+# trigram_score_P ~~ l3*a2pSOO_P
+# careerasp_A ~~ l4*TSO_A_SOO_P
+# careerasp_P ~~ l4*TSO_P_SOO_A
+# careerasp_A ~~ l5*TSO_A
+# careerasp_P ~~ l5*TSO_P
+# careerasp_A ~~ l6*a2pSOO_A
+# careerasp_P ~~ l6*a2pSOO_P
+# relag_A ~~ l7*TSO_A_SOO_P
+# relag_P ~~ l7*TSO_P_SOO_A
+# relag_A ~~ l8*TSO_A
+# relag_P ~~ l8*TSO_P
+# relag_A ~~ l9*a2pSOO_A
+# relag_P ~~ l9*a2pSOO_P
+# 
+# #direct partner effects
+# trigram_score_A ~~ m1*TSO_P_SOO_A
+# trigram_score_P ~~ m1*TSO_A_SOO_P
+# trigram_score_A ~~ m2*TSO_P
+# trigram_score_P ~~ m2*TSO_A
+# trigram_score_A ~~ m3*a2pSOO_P
+# trigram_score_P ~~ m3*a2pSOO_A
+# careerasp_A ~~ m4*TSO_P_SOO_A
+# careerasp_P ~~ m4*TSO_A_SOO_P
+# careerasp_A ~~ m5*TSO_P
+# careerasp_P ~~ m5*TSO_A
+# careerasp_A ~~ m6*a2pSOO_P
+# careerasp_P ~~ m6*a2pSOO_A
+# relag_A ~~ m7*TSO_P_SOO_A
+# relag_P ~~ m7*TSO_A_SOO_P
+# relag_A ~~ m8*TSO_P
+# relag_P ~~ m8*TSO_A
+# relag_A ~~ m9*a2pSOO_P
+# relag_P ~~ m9*a2pSOO_A
+# 
+# #Two to four
+# #direct actor effects
+# trigram_score_A ~~ o1*howbody_avg_A
+# trigram_score_P ~~ o1*howbody_avg_P
+# careerasp_A ~~ o2*howbody_avg_A
+# careerasp_P ~~ o2*howbody_avg_P
+# relag_A ~~ o3*howbody_avg_A
+# relag_P ~~ o3*howbody_avg_P
+# 
+# #direct partner effects
+# trigram_score_A ~~ o1*howbody_avg_P
+# trigram_score_P ~~ o1*howbody_avg_A
+# careerasp_A ~~ o2*howbody_avg_P
+# careerasp_P ~~ o2*howbody_avg_A
+# relag_A ~~ o3*howbody_avg_P
+# relag_P ~~ o3*howbody_avg_A
+# 
+# 
+# ######covariances
+# #endogenous
+# howbody_avg_A ~~ howbody_avg_P
+# authenticity_A ~~ authenticity_P
+# #trigram_score_A ~~ trigram_score_P
+# #careerasp_A ~~ careerasp_P
+# #relag_A ~~ relag_P
+# trigram_score_A ~~ q1*careerasp_A 
+# trigram_score_A ~~ q2*relag_A
+# 
+# careerasp_A ~~ q3*relag_A
+# 
+# trigram_score_P ~~ q1*careerasp_P
+# trigram_score_P ~~ q2*relag_P
+# 
+# careerasp_P ~~ q3*relag_P
+# 
+# trigram_score_A ~~ q4*careerasp_P
+# trigram_score_A ~~ q5*relag_P
+# 
+# 
+# trigram_score_P ~~ q4*careerasp_A
+# trigram_score_P ~~ q5*relag_A
+# 
+# careerasp_A ~~ q6*relag_P
+# careerasp_P ~~ q6*relag_A
+# 
+# 
+# #####variances
+# howbody_avg_A ~~ v1*howbody_avg_A
+# howbody_avg_P ~~ v1*howbody_avg_P
+# TSO_A ~~ v2*TSO_A
+# TSO_P ~~ v2*TSO_P
+# a2pSOO_A ~~ v3*a2pSOO_A
+# a2pSOO_P ~~ v3*a2pSOO_P
+# authenticity_A ~~ v4*authenticity_A
+# authenticity_P ~~ v4*authenticity_P
+# ##endogenous intercepts
+# howbody_avg_A ~ i*1
+# howbody_avg_P ~ i*1
+# authenticity_A ~ i2*1
+# authenticity_P ~ i2*1
+# trigram_score_A ~ i3*1
+# trigram_score_P ~ i4*1
+# careerasp_A ~ i5*1
+# careerasp_P ~ i5*1
+# relag_A ~ i6*1
+# relag_P ~ i6*1
+# ##exogenous means
+# TSO_A ~ m*1
+# TSO_P ~ m*1
+# a2pSOO_A ~ m2*1
+# a2pSOO_P ~ m2*1
+# TSO_P_SOO_A ~ m3*1
+# TSO_A_SOO_P ~ m3*1
+# ## exogenous covariances
+# TSO_A_SOO_P ~~ l1*TSO_A
+# TSO_P_SOO_A ~~ l1*TSO_P
+# TSO_A_SOO_P ~~ l2*a2pSOO_P
+# TSO_P_SOO_A ~~ l2*a2pSOO_A
+# TSO_A ~~ l3*a2pSOO_P
+# TSO_P ~~ l3*a2pSOO_A
+# TSO_A ~~ l4*a2pSOO_A
+# TSO_P ~~ l4*a2pSOO_P
+# TSO_A_SOO_P ~~ l5*a2pSOO_A
+# TSO_P_SOO_A ~~ l5*a2pSOO_P
+# TSO_A_SOO_P ~~ l6*TSO_P
+# TSO_P_SOO_A ~~ l6*TSO_A
+# '
+# ```
+# 
+# ```{r}
+# nullmodel <- '#####regressions 
+# #Part one/two
+# howbody_avg_A ~~ 0*TSO_A
+# howbody_avg_A ~~ 0*a2pSOO_A
+# howbody_avg_A ~~ 0*a2pSOO_P 
+# howbody_avg_A ~~ 0*TSO_A_SOO_P
+# 
+# howbody_avg_P ~~ 0*TSO_P
+# howbody_avg_P ~~ 0*a2pSOO_P 
+# howbody_avg_P ~~ 0*a2pSOO_A 
+# howbody_avg_P ~~ 0*TSO_P_SOO_A
+# 
+# TSO_A ~~ 0*howbody_avg_P
+# TSO_P ~~ 0*howbody_avg_A
+# TSO_A_SOO_P ~~ 0*howbody_avg_P
+# TSO_P_SOO_A ~~ 0*howbody_avg_A
+# 
+# #Part two/three
+# authenticity_A ~~ 0*howbody_avg_A
+# authenticity_P ~~ 0*howbody_avg_P
+# howbody_avg_A ~~ 0*authenticity_P
+# howbody_avg_P ~~ 0*authenticity_A
+# 
+# 
+# #Part three/four
+# trigram_score_A ~~ 0*authenticity_A
+# trigram_score_P ~~ 0*authenticity_P
+# careerasp_A ~~ 0*authenticity_A
+# careerasp_P ~~ 0*authenticity_P
+# relag_A ~~ 0*authenticity_A
+# relag_P ~~ 0*authenticity_P
+# trigram_score_A ~~ 0*relag_P
+# trigram_score_P ~~ 0*relag_A
+# trigram_score_A ~~ 0*careerasp_P
+# trigram_score_P ~~ 0*careerasp_A
+# trigram_score_A ~~ e6*trigram_score_P
+# #trigram_score_P ~~ e6*trigram_score_A
+# careerasp_A ~~ 0*relag_P
+# careerasp_P ~~ 0*relag_A
+# careerasp_A ~~ e8*careerasp_P
+# #careerasp_A ~~ 0*trigram_score_P
+# #careerasp_P ~~ 0*trigram_score_A
+# relag_A ~~ e10*relag_P
+# 
+# #One to three
+# #direct actor effects
+# authenticity_A ~~ 0*TSO_A_SOO_P
+# authenticity_P ~~ 0*TSO_P_SOO_A
+# authenticity_A ~~ 0*TSO_A
+# authenticity_P ~~ 0*TSO_P
+# authenticity_A ~~0*a2pSOO_A
+# authenticity_P ~~ 0*a2pSOO_P
+# 
+# #direct partner effects
+# authenticity_A ~~ 0*TSO_P_SOO_A
+# authenticity_P ~~ 0*TSO_A_SOO_P
+# authenticity_A ~~ 0*TSO_P
+# authenticity_P ~~ 0*TSO_A
+# authenticity_A ~~ 0*a2pSOO_P
+# authenticity_P ~~ 0*a2pSOO_A
+# 
+# #One to four
+# #Direct actor effects
+# trigram_score_A ~~ 0*TSO_A_SOO_P
+# trigram_score_P ~~ 0*TSO_P_SOO_A
+# trigram_score_A ~~ 0*TSO_A
+# trigram_score_P ~~ 0*TSO_P
+# trigram_score_A ~~ 0*a2pSOO_A
+# trigram_score_P ~~ 0*a2pSOO_P
+# careerasp_A ~~ 0*TSO_A_SOO_P
+# careerasp_P ~~ 0*TSO_P_SOO_A
+# careerasp_A ~~ 0*TSO_A
+# careerasp_P ~~ 0*TSO_P
+# careerasp_A ~~ 0*a2pSOO_A
+# careerasp_P ~~ 0*a2pSOO_P
+# relag_A ~~ 0*TSO_A_SOO_P
+# relag_P ~~ 0*TSO_P_SOO_A
+# relag_A ~~ 0*TSO_A
+# relag_P ~~ 0*TSO_P
+# relag_A ~~ 0*a2pSOO_A
+# relag_P ~~ 0*a2pSOO_P
+# 
+# #direct partner effects
+# trigram_score_A ~~ 0*TSO_P_SOO_A
+# trigram_score_P ~~ 0*TSO_A_SOO_P
+# trigram_score_A ~~ 0*TSO_P
+# trigram_score_P ~~ 0*TSO_A
+# trigram_score_A ~~ 0*a2pSOO_P
+# trigram_score_P ~~ 0*a2pSOO_A
+# careerasp_A ~~ 0*TSO_P_SOO_A
+# careerasp_P ~~ 0*TSO_A_SOO_P
+# careerasp_A ~~ 0*TSO_P
+# careerasp_P ~~ 0*TSO_A
+# careerasp_A ~~ 0*a2pSOO_P
+# careerasp_P ~~ 0*a2pSOO_A
+# relag_A ~~ 0*TSO_P_SOO_A
+# relag_P ~~ 0*TSO_A_SOO_P
+# relag_A ~~ 0*TSO_P
+# relag_P ~~ 0*TSO_A
+# relag_A ~~ 0*a2pSOO_P
+# relag_P ~~ 0*a2pSOO_A
+# 
+# #Two to four
+# #direct actor effects
+# trigram_score_A ~~ 0*howbody_avg_A
+# trigram_score_P ~~ 0*howbody_avg_P
+# careerasp_A ~~ 0*howbody_avg_A
+# careerasp_P ~~ 0*howbody_avg_P
+# relag_A ~~ 0*howbody_avg_A
+# relag_P ~~ 0*howbody_avg_P
+# 
+# #direct partner effects
+# trigram_score_A ~~ 0*howbody_avg_P
+# trigram_score_P ~~ 0*howbody_avg_A
+# careerasp_A ~~ 0*howbody_avg_P
+# careerasp_P ~~ 0*howbody_avg_A
+# relag_A ~~ 0*howbody_avg_P
+# relag_P ~~ 0*howbody_avg_A
+# 
+# 
+# ######covariances
+# #endogenous
+# howbody_avg_A ~~ 0*howbody_avg_P
+# authenticity_A ~~ 0*authenticity_P
+# #trigram_score_A ~~ 0*trigram_score_P
+# #careerasp_A ~~ 0*careerasp_P
+# trigram_score_A ~~ 0*careerasp_A 
+# trigram_score_A ~~ 0*relag_A
+# 
+# careerasp_A ~~ 0*relag_A
+# 
+# trigram_score_P ~~ 0*careerasp_P
+# trigram_score_P ~~ 0*relag_P
+# 
+# careerasp_P ~~ 0*relag_P
+# 
+# trigram_score_A ~~ 0*careerasp_P
+# trigram_score_A ~~ 0*relag_P
+# 
+# 
+# trigram_score_P ~~ 0*careerasp_A
+# trigram_score_P ~~ 0*relag_A
+# 
+# careerasp_A ~~ 0*relag_P
+# careerasp_P ~~ 0*relag_A
+# 
+# 
+# #####variances
+# howbody_avg_A ~~ v1*howbody_avg_A
+# howbody_avg_P ~~ v1*howbody_avg_P
+# TSO_A ~~ v2*TSO_A
+# TSO_P ~~ v2*TSO_P
+# a2pSOO_A ~~ v3*a2pSOO_A
+# a2pSOO_P ~~ v3*a2pSOO_P
+# authenticity_A ~~ v4*authenticity_A
+# authenticity_P ~~ v4*authenticity_P
+# ##endogenous intercepts
+# howbody_avg_A ~ i*1
+# howbody_avg_P ~ i*1
+# authenticity_A ~ i2*1
+# authenticity_P ~ i2*1
+# trigram_score_A ~ i3*1
+# trigram_score_P ~ i4*1
+# careerasp_A ~ i5*1
+# careerasp_P ~ i5*1
+# relag_A ~ i6*1
+# relag_P ~ i6*1
+# ##exogenous means
+# TSO_A ~ m*1
+# TSO_P ~ m*1
+# a2pSOO_A ~ m2*1
+# a2pSOO_P ~ m2*1
+# TSO_P_SOO_A ~ m3*1
+# TSO_A_SOO_P ~ m3*1
+# ## exogenous covariances
+# TSO_A_SOO_P ~~ 0*TSO_A
+# TSO_P_SOO_A ~~ 0*TSO_P
+# TSO_A_SOO_P ~~ 0*a2pSOO_P
+# TSO_P_SOO_A ~~ 0*a2pSOO_A
+# TSO_A ~~ 0*a2pSOO_P
+# TSO_P ~~ 0*a2pSOO_A
+# TSO_A ~~ 0*a2pSOO_A
+# TSO_P ~~ 0*a2pSOO_P
+# TSO_A_SOO_P ~~ 0*a2pSOO_A
+# TSO_P_SOO_A ~~ 0*a2pSOO_P
+# TSO_A_SOO_P ~~ 0*TSO_P
+# TSO_P_SOO_A ~~ 0*TSO_A
+# '
+# ```
+# 
+# 
+# ```{r}
+# fit <- sem(isatmodel, data=dyad_cswomen)
+# summary(fit, standardized=TRUE)
+# 
+# fit2 <- sem(model, data=dyad_cswomen)
+# summary(fit2, standardized=TRUE)
+# 
+# fit3 <- sem(nullmodel, data=dyad_cswomen)
+# summary(fit3, standardized=TRUE)
+# ```
 
 
 

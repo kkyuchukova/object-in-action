@@ -17,12 +17,11 @@ library(devtools)
 library(psych)
 library(mosaic)
 library(tidyr)
-library(dplyr)
 library(irr)
-select <- dplyr::select
+library(dplyr)
 ```
 
-Load data
+#Load data
 ```{r}
 #clark
 clark_measures <- read_spss("Raw data/Clark College Relationships Data/College_Relationship_Measures_1.sav")
@@ -37,36 +36,47 @@ clark_sentences <- read.csv("Raw data/Clark College Relationships Data/sexist se
 trigram_check <- read.csv("Raw data/Clark College Relationships Data/trigrams/AMELIA_check_trigram_grading.csv")
 ```
 
+#Scale Scores
 
-Clark Scale Scores--creating scale scores for the Clark data.
+Creating scale scores for the Clark data.
+
 ```{r}
 #SOO -- subtract internal SOO from external SOO
-clark_measures$extSOO <- rowMeans(dplyr::select(clark_measures, otherint_1, otherint_2, otherint_5, otherint_6, otherint_10), na.rm=TRUE) #get average
+clark_measures$extSOO <- rowMeans(select(clark_measures, otherint_1, otherint_2, 
+                                         otherint_5, otherint_6, otherint_10), na.rm=TRUE) #get average
 
-clark_measures$intSOO <- rowMeans(dplyr::select(clark_measures, otherint_3, otherint_4, otherint_7, otherint_8, otherint_9, otherint_11, otherint_12), na.rm=TRUE) #get average
+clark_measures$intSOO <- rowMeans(select(clark_measures, otherint_3, otherint_4, 
+                                         otherint_7, otherint_8, otherint_9, 
+                                         otherint_11, otherint_12), na.rm=TRUE) #get average
 
 clark_measures$a2pSOO <- clark_measures$extSOO - clark_measures$intSOO #subtract internal from external
 
 #Meta SOO--subtract internal from external
-clark_measures$extmetaSOO <- rowMeans(dplyr::select(clark_measures, metaint_1, metaint_2, metaint_5, metaint_6, metaint_10), na.rm=TRUE)
+clark_measures$extmetaSOO <- rowMeans(select(clark_measures, metaint_1, metaint_2, 
+                                             metaint_5, metaint_6, metaint_10), na.rm=TRUE)
 
-clark_measures$intmetaSOO <- rowMeans(dplyr::select(clark_measures, metaint_3, metaint_4, metaint_7, metaint_8, metaint_9, metaint_11, metaint_12), na.rm=TRUE)
+clark_measures$intmetaSOO <- rowMeans(select(clark_measures, metaint_3, metaint_4, 
+                                             metaint_7, metaint_8, metaint_9, 
+                                             metaint_11, metaint_12), na.rm=TRUE)
 
 clark_measures$metaSOO <- clark_measures$extmetaSOO - clark_measures$intmetaSOO
 
 #Interaction Authenticity
-clark_measures$authenticity <- rowMeans(dplyr::select(clark_measures, inter_1, inter_3, inter_5, inter_6, inter_7, inter_9, inter_10, interaux_5, interaux_6))
+clark_measures$authenticity <- rowMeans(select(clark_measures, inter_1, inter_3, 
+                                               inter_5, inter_6, inter_7, inter_9, 
+                                               inter_10, interaux_5, interaux_6), na.rm=TRUE)
 
 #SSO--average of how body 1 and how body 2
-clark_measures <- clark_measures %>%
-  mutate(howbody_avg = (howbody_1+howbody_2)/2)
+clark_measures$howbody_avg <- rowMeans(select(clark_measures, howbody_1, howbody_2), na.rm=TRUE)
 
 #Relationship Agency
 #Reverse code relationship agency 9
 clark_measures <- clark_measures %>%
   mutate(relag_9.r=(min(relag_9, na.rm=TRUE) + max(relag_9, na.rm=TRUE) - relag_9))
 
-clark_measures$relag <- rowMeans(dplyr::select(clark_measures, relag_1, relag_2, relag_3, relag_4, relag_5, relag_6, relag_7, relag_8, relag_9.r))
+clark_measures$relag <- rowMeans(select(clark_measures, relag_1, relag_2, 
+                                        relag_3, relag_4, relag_5, relag_6, 
+                                        relag_7, relag_8, relag_9.r), na.rm=TRUE)
 
 #Career Aspirations--reverse code 4, 7, and 10 and average with the rest
 clark_measures <- clark_measures %>% #reverse code certain career aspiration variables
@@ -74,52 +84,64 @@ clark_measures <- clark_measures %>% #reverse code certain career aspiration var
          careerasp7.r = (min(careerasp_7, na.rm = TRUE) + max(careerasp_7, na.rm = TRUE) - careerasp_7),
          careerasp10.r = (min(careerasp_10, na.rm = TRUE) + max(careerasp_10, na.rm = TRUE) - careerasp_10))
 
-clark_measures$careerasp <- rowMeans(dplyr::select(clark_measures, careerasp_1, careerasp_2, careerasp_3, careerasp4.r, careerasp_5, careerasp_6, careerasp7.r, careerasp_8, careerasp_9, careerasp10.r))
+clark_measures$careerasp <- rowMeans(select(clark_measures, careerasp_1, careerasp_2, 
+                                            careerasp_3, careerasp4.r, careerasp_5, 
+                                            careerasp_6, careerasp7.r, careerasp_8, 
+                                            careerasp_9, careerasp10.r), na.rm=TRUE)
 
 #TSO--subtract internal from external, multiply by -1
-clark_measures$funcTSO <- rowMeans(dplyr::select(clark_measures,tso_1, tso_2, tso_4, tso_7, tso_9))
-clark_measures$physTSO <- rowMeans(dplyr::select(clark_measures, tso_3, tso_5, tso_6, tso_8, tso_10))
+clark_measures$funcTSO <- rowMeans(select(clark_measures,tso_1, tso_2, tso_4, tso_7, tso_9), na.rm=TRUE)
+clark_measures$physTSO <- rowMeans(select(clark_measures, tso_3, tso_5, tso_6, tso_8, tso_10), na.rm=TRUE)
 
-clark_measures$TSO <- clark_measures$physTSO - clark_measures$funcTSO
-clark_measures$TSO <- clark_measures$TSO*(-1)
+clark_measures$TSO <- (clark_measures$physTSO - clark_measures$funcTSO)*(-1)
 ```
 
+Creating scale scores for the Smith data.
 
-SMITH SCALE SCORES
 ```{r}
 smith <- smith %>%
   arrange(dyadID) %>%
-  filter(dyadID!=16, !is.na(dyadID), dyadID!=798797, dyadID!=999, dyadID!=999999, dyadID!=9999) #filter out dyads with no data
+  filter(dyadID!=16, !is.na(dyadID), dyadID!=798797, 
+         dyadID!=999, dyadID!=999999, dyadID!=9999) #filter out dyads with no data
+```
 
-
+```{r}
 #SOO
-smith$extSOO <- rowMeans(dplyr::select(smith, otherint_1, otherint_2, otherint_5, otherint_6, otherint_10), na.rm=TRUE)
+smith$extSOO <- rowMeans(select(smith, otherint_1, otherint_2, 
+                                otherint_5, otherint_6, otherint_10), na.rm=TRUE)
 
-smith$intSOO <- rowMeans(dplyr::select(smith, otherint_3, otherint_4, otherint_7, otherint_8, otherint_9, otherint_11, otherint_12), na.rm=TRUE)
+smith$intSOO <- rowMeans(select(smith, otherint_3, otherint_4, 
+                                otherint_7, otherint_8, otherint_9, 
+                                otherint_11, otherint_12), na.rm=TRUE)
 
 smith$a2pSOO <- smith$extSOO - smith$intSOO
 
 #Meta SOO
-smith$extmetaSOO <- rowMeans(dplyr::select(smith, metaint_1, metaint_2, metaint_5, metaint_6, metaint_10), na.rm=TRUE)
+smith$extmetaSOO <- rowMeans(select(smith, metaint_1, metaint_2, 
+                                    metaint_5, metaint_6, metaint_10), na.rm=TRUE)
 
-smith$intmetaSOO <- rowMeans(dplyr::select(smith, metaint_3, metaint_4, metaint_7, metaint_8, metaint_9, metaint_11, metaint_12), na.rm=TRUE)
+smith$intmetaSOO <- rowMeans(select(smith, metaint_3, metaint_4, 
+                                    metaint_7, metaint_8, metaint_9, 
+                                    metaint_11, metaint_12), na.rm=TRUE)
 
 smith$metaSOO <- smith$extmetaSOO - smith$intmetaSOO
 
 #Interaction Authenticity
-smith$authenticity <- rowMeans(dplyr::select(smith, inter_1, inter_3, inter_5, inter_6, inter_7, inter_9, inter_10, interaux_5, interaux_6))
+smith$authenticity <- rowMeans(select(smith, inter_1, inter_3, inter_5, 
+                                      inter_6, inter_7, inter_9, inter_10, 
+                                      interaux_5, interaux_6), na.rm=TRUE)
 
 #SSO
-smith <- smith %>%
-  mutate(howbody_avg = (howbody_1+howbody_2)/2)
-
+smith$howbody_avg <- rowMeans(select(smith, howbody_1, howbody_2), na.rm=TRUE)
 
 #Relationship Agency
 
 smith <- smith %>%
   mutate(relag_9.r=(min(relag_9, na.rm=TRUE) + max(relag_9, na.rm=TRUE) - relag_9))
 
-smith$relag <- rowMeans(dplyr::select(smith, relag_1, relag_2, relag_3, relag_4, relag_5, relag_6, relag_7, relag_8, relag_9.r))
+smith$relag <- rowMeans(select(smith, relag_1, relag_2, relag_3, 
+                               relag_4, relag_5, relag_6, relag_7, 
+                               relag_8, relag_9.r), na.rm=TRUE)
 
 #Career Aspirations
 smith <- smith %>%
@@ -127,23 +149,30 @@ smith <- smith %>%
          careerasp7.r = (min(careerasp_7, na.rm = TRUE) + max(careerasp_7, na.rm = TRUE) - careerasp_7),
          careerasp10.r = (min(careerasp_10, na.rm = TRUE) + max(careerasp_10, na.rm = TRUE) - careerasp_10))
 
-smith$careerasp <- rowMeans(dplyr::select(smith, careerasp_1, careerasp_2, careerasp_3, careerasp4.r, careerasp_5, careerasp_6, careerasp7.r, careerasp_8, careerasp_9, careerasp10.r))
+smith$careerasp <- rowMeans(select(smith, careerasp_1, careerasp_2, 
+                                   careerasp_3, careerasp4.r, careerasp_5, 
+                                   careerasp_6, careerasp7.r, careerasp_8, 
+                                   careerasp_9, careerasp10.r), na.rm=TRUE)
 
 #TSO
-smith$funcTSO <- rowMeans(dplyr::select(smith,tso_1, tso_2, tso_4, tso_7, tso_9))
-smith$physTSO <- rowMeans(dplyr::select(smith, tso_3, tso_5, tso_6, tso_8, tso_10))
+smith$funcTSO <- rowMeans(select(smith,tso_1, tso_2, tso_4, tso_7, tso_9), na.rm=TRUE)
+smith$physTSO <- rowMeans(select(smith, tso_3, tso_5, tso_6, tso_8, tso_10), na.rm=TRUE)
 
-smith$TSO <- smith$physTSO-smith$funcTSO
-smith$TSO <- smith$TSO*-1
+smith$TSO <- (smith$physTSO - smith$funcTSO)*(-1)
+```
 
+Step not needed...processing continues
+```{r}
 #Write out csv with created variables
-write.csv(clark_measures, "Cleaned data/clark_measures.csv")
-write.csv(smith, "Cleaned data/smith.csv")
+#write.csv(clark_measures, "Cleaned data/clark_measures.csv")
+#write.csv(smith, "Cleaned data/smith.csv")
 ```
 
 
+#Trigrams
 
-Trigrams
+Clark 
+
 ```{r}
 ###Clark
 #Eliminate unnecessary columns
@@ -157,49 +186,77 @@ trigram_check <- trigram_check %>%
 trigram_clark <- trigram_check %>%
   group_by(partID) %>%
   summarise(trigram_score = sum(trigram_correct)) %>%
-  dplyr::select(partID, trigram_score)
+  select(partID, trigram_score)
 
 #merge trigram data with big clark data file
 clark <- merge(x=clark_measures, y=trigram_clark, by="partID", all.x=TRUE)
 ```
 
+Smith
+
 ```{r}
-###SMITH
+###SMITH 
+
+#comented code here used only ONCE to grade trigrams...graded trigrams file is read in at the bottom of this chunk
+
 #select only trigram related variables
-smith_trigrams <- smith %>%
-  dplyr::select(partID, dyadID, rat1_1.0, rat2_1.0,rat3_1.0, rat4_1.0,rat5_1.0, rat6_1.0, rat7_1.0, rat8_1.0, rat9_1.0, rat10_1) %>%
-  arrange(dyadID, partID)
-
-smith_trigrams_long <- gather(smith_trigrams, trigram, response, rat1_1.0:rat10_1)
-
-#change trigram from generic name to the specific trigram
-smith_trigrams_long <- smith_trigrams_long %>%
-  mutate(trigram = ifelse(trigram=="rat1_1.0", "QUACK:POND:WADDLE",
-                          ifelse(trigram=="rat2_1.0", "ATHLETES:WEB:RABBIT",
-                                 ifelse(trigram=="rat3_1.0", "HONEY:SWARM:STING",
-                                        ifelse(trigram=="rat4_1.0", "MATCHES:SMOKE:BUSH",
-                                               ifelse(trigram=="rat5_1.0", "CHOCOLATE:FORTUNE:TIN",
-                                                      ifelse(trigram=="rat6_1.0", "CURIOSITY:NAP:WHISKERS",
-                                                             ifelse(trigram=="rat7_1.0", "STALK:TRAINER:KING",
-                                                                    ifelse(trigram=="rat8_1.0", "SURPRISE:LINE:BIRTHDAY",
-                                                                           ifelse(trigram=="rat9_1.0", "RED:GO:CAR", 
-                                                                                  ifelse(trigram=="rat10_1", "MOUSE : SHARP : BLUE", NA)))))))))))
-
-#create a correct response column
-smith_trigrams_long <- smith_trigrams_long %>%
-  mutate(correct_response=ifelse(trigram=="QUACK:POND:WADDLE", "Duck",
-                          ifelse(trigram=="ATHLETES:WEB:RABBIT", "Foot",
-                                 ifelse(trigram=="HONEY:SWARM:STING","Bee",
-                                        ifelse(trigram=="MATCHES:SMOKE:BUSH", "Fire", 
-                                               ifelse(trigram=="CHOCOLATE:FORTUNE:TIN", "Cookie",
-                                                      ifelse(trigram=="CURIOSITY:NAP:WHISKERS","Cat",
-                                                             ifelse(trigram=="STALK:TRAINER:KING","Lion",
-                                                                    ifelse(trigram=="SURPRISE:LINE:BIRTHDAY", "Party",
-                                                                           ifelse(trigram=="RED:GO:CAR", "Stop",
-                                                                                  ifelse(trigram=="MOUSE : SHARP : BLUE", "Cheese", NA))))))))))) %>%
-  arrange(partID, dyadID)
-
-smith_trigrams_long <- smith_trigrams_long[,c(1,2,3,5,4)]
+# smith_trigrams <- smith %>%
+#   select(partID, dyadID, rat1_1.0, rat2_1.0,rat3_1.0, rat4_1.0,
+#          rat5_1.0, rat6_1.0, rat7_1.0, rat8_1.0, rat9_1.0, rat10_1) %>%
+#   arrange(dyadID, partID)
+# 
+# smith_trigrams_long <- gather(smith_trigrams, trigram, response, rat1_1.0:rat10_1)
+# 
+# #change trigram from generic name to the specific trigram
+# smith_trigrams_long <- smith_trigrams_long %>%
+#   mutate(trigram = ifelse(trigram=="rat1_1.0", 
+#                           "QUACK:POND:WADDLE",
+#                           ifelse(trigram=="rat2_1.0", 
+#                                  "ATHLETES:WEB:RABBIT",
+#                                  ifelse(trigram=="rat3_1.0", 
+#                                         "HONEY:SWARM:STING",
+#                                         ifelse(trigram=="rat4_1.0", 
+#                                                "MATCHES:SMOKE:BUSH",
+#                                                ifelse(trigram=="rat5_1.0", 
+#                                                       "CHOCOLATE:FORTUNE:TIN",
+#                                                       ifelse(trigram=="rat6_1.0", 
+#                                                              "CURIOSITY:NAP:WHISKERS",
+#                                                              ifelse(trigram=="rat7_1.0", 
+#                                                                     "STALK:TRAINER:KING",
+#                                                                     ifelse(trigram=="rat8_1.0", 
+#                                                                            "SURPRISE:LINE:BIRTHDAY",
+#                                                                            ifelse(trigram=="rat9_1.0", 
+#                                                                                   "RED:GO:CAR", 
+#                                                                                   ifelse(trigram=="rat10_1", 
+#                                                                                          "MOUSE : SHARP : BLUE", 
+#                                                                                          NA)))))))))))
+# 
+# #create a correct response column
+# smith_trigrams_long <- smith_trigrams_long %>%
+#   mutate(correct_response=ifelse(trigram=="QUACK:POND:WADDLE", 
+#                                  "Duck",
+#                           ifelse(trigram=="ATHLETES:WEB:RABBIT", 
+#                                  "Foot",
+#                                  ifelse(trigram=="HONEY:SWARM:STING",
+#                                         "Bee",
+#                                         ifelse(trigram=="MATCHES:SMOKE:BUSH", 
+#                                                "Fire", 
+#                                                ifelse(trigram=="CHOCOLATE:FORTUNE:TIN", 
+#                                                       "Cookie",
+#                                                       ifelse(trigram=="CURIOSITY:NAP:WHISKERS",
+#                                                              "Cat",
+#                                                              ifelse(trigram=="STALK:TRAINER:KING",
+#                                                                     "Lion",
+#                                                                     ifelse(trigram=="SURPRISE:LINE:BIRTHDAY", 
+#                                                                            "Party",
+#                                                                            ifelse(trigram=="RED:GO:CAR", 
+#                                                                                   "Stop",
+#                                                                                   ifelse(trigram=="MOUSE : SHARP : BLUE", 
+#                                                                                          "Cheese", 
+#                                                                                          NA))))))))))) %>%
+#   arrange(partID, dyadID)
+# 
+# smith_trigrams_long <- smith_trigrams_long[,c(1,2,3,5,4)]
 
 ##Write out file to grade
 #write.csv(smith_trigrams_long, "Raw data/Smith College Relationships Data/trigrams_to_grade.csv", row.names=FALSE)
@@ -211,15 +268,16 @@ smith_trigrams_graded <- read.csv("Raw data/Smith College Relationships Data/tri
 smith_triscore <- smith_trigrams_graded %>%
   group_by(partID, dyadID) %>%
   summarise(trigram_score=sum(final_correct))%>%
-  dplyr::select(partID, dyadID, trigram_score)
+  select(partID, dyadID, trigram_score)
 
 #Merge with big smith data
 smith <- merge(x=smith, y=smith_triscore, x.all=TRUE)
 ```
 
+#Sexist Sentences
 
+Clark 
 
-sexist sentences
 ```{r}
 #Calculate ICC score to see if we can average
 clark_sentences <- clark_sentences[,1:8]
@@ -259,55 +317,66 @@ clark_sexism <- merge(x=clark, y=clark_sentence_avg, by="partID", all.x=TRUE)
 clark_final <- merge (x=clark_sexism, y=clark_logel, by="partID", all.x=TRUE)
 ```
 
+Smith 
+
 ```{r}
 #Smith
 
+#comented code here used only ONCE to code sentences...graded trigrams file is read in at the bottom of this chunk
+
 #Creating sexist sentence file
-smith$dyadID <- as.numeric(smith$dyadID)
-smith$partID <- as.numeric(smith$partID)
-smith_sentences_long <- smith %>%
-  #remove dyads with no data
-  filter(dyadID!=16, !is.na(dyadID), dyadID!=798797, dyadID!=999, dyadID!=999999, dyadID!=9999) %>%
-  #select just sexism related variables
-  select(partID, dyadID, sexismpre_1:sexismpre_8) %>%
-  arrange(dyadID)
-
-#make data long
-smith_sentences_long <- gather(smith_sentences_long, sentence, target, sexismpre_1:sexismpre_8)
-
-#create a column with the actual sentence as well as a sentence number column
-smith_sentences_long <- smith_sentences_long %>%
-  mutate(stem=ifelse(sentence=="sexismpre_1", "Linda swatted at the flies", 
-                     ifelse(sentence=="sexismpre_2", "Helen crammed for the test",
-                            ifelse(sentence=="sexismpre_3", "Shirley asked for help getting home",
-                                   ifelse(sentence=="sexismpre_4", "Sam read the newspaper",
-                                          ifelse(sentence=="sexismpre_5", "Jenny went home to cook dinner",
-                                                 ifelse(sentence=="sexismpre_6", "Katherine baby-sat the neighbor's kids",
-                                                        ifelse(sentence=="sexismpre_7", "Tom bottle fed the baby",
-                                                               ifelse(sentence=="sexismpre_8", "Bert changed the oil", NA))))))))) %>%
-    mutate(sentence=ifelse(sentence=="sexismpre_1", 1, 
-                     ifelse(sentence=="sexismpre_2", 2,
-                            ifelse(sentence=="sexismpre_3", 3,
-                                   ifelse(sentence=="sexismpre_4", 4,
-                                          ifelse(sentence=="sexismpre_5", 5,
-                                                 ifelse(sentence=="sexismpre_6", 6,
-                                                        ifelse(sentence=="sexismpre_7", 7,
-                                                               ifelse(sentence=="sexismpre_8", 8, NA)))))))))
-
-#change order of sentences
-smith_sentences_long <- smith_sentences_long[,c(1,2,3,5,4)]
-
-#remove rows with no target data
-smith_sentences_long <- smith_sentences_long %>%
-  filter(target!="") %>%
-  arrange(dyadID, partID)
+# smith$dyadID <- as.numeric(smith$dyadID)
+# smith$partID <- as.numeric(smith$partID)
+# smith_sentences_long <- smith %>%
+#   #remove dyads with no data
+#   filter(dyadID!=16, !is.na(dyadID), dyadID!=798797, dyadID!=999, dyadID!=999999, dyadID!=9999) %>%
+#   #select just sexism related variables
+#   select(partID, dyadID, sexismpre_1:sexismpre_8) %>%
+#   arrange(dyadID)
+# 
+# #make data long
+# smith_sentences_long <- gather(smith_sentences_long, sentence, target, sexismpre_1:sexismpre_8)
+# 
+# #create a column with the actual sentence as well as a sentence number column
+# smith_sentences_long <- smith_sentences_long %>%
+#   mutate(stem=ifelse(sentence=="sexismpre_1", 
+#                      "Linda swatted at the flies", 
+#                      ifelse(sentence=="sexismpre_2", 
+#                             "Helen crammed for the test",
+#                             ifelse(sentence=="sexismpre_3", 
+#                                    "Shirley asked for help getting home",
+#                                    ifelse(sentence=="sexismpre_4", 
+#                                           "Sam read the newspaper",
+#                                           ifelse(sentence=="sexismpre_5", 
+#                                                  "Jenny went home to cook dinner",
+#                                                  ifelse(sentence=="sexismpre_6", 
+#                                                         "Katherine baby-sat the neighbor's kids",
+#                                                         ifelse(sentence=="sexismpre_7", 
+#                                                                "Tom bottle fed the baby",
+#                                                                ifelse(sentence=="sexismpre_8", 
+#                                                                       "Bert changed the oil", NA))))))))) %>%
+#     mutate(sentence=ifelse(sentence=="sexismpre_1", 1, 
+#                      ifelse(sentence=="sexismpre_2", 2,
+#                             ifelse(sentence=="sexismpre_3", 3,
+#                                    ifelse(sentence=="sexismpre_4", 4,
+#                                           ifelse(sentence=="sexismpre_5", 5,
+#                                                  ifelse(sentence=="sexismpre_6", 6,
+#                                                         ifelse(sentence=="sexismpre_7", 7,
+#                                                                ifelse(sentence=="sexismpre_8", 8, NA)))))))))
+# 
+# #change order of sentences
+# smith_sentences_long <- smith_sentences_long[,c(1,2,3,5,4)]
+# 
+# #remove rows with no target data
+# smith_sentences_long <- smith_sentences_long %>%
+#   filter(target!="") %>%
+#   arrange(dyadID, partID)
 
 #Write out csv
 #write.csv(smith_sentences_long, "Raw data/Smith College Relationships Data/sexist_sentences_for_coding.csv", row.names = FALSE) 
 
 #Read in coded sentences, code correlations
 kat_codes <- read.csv("Raw data/Smith College Relationships Data/kat_recode.csv")
-
 xinyu_codes <- read.csv("Raw data/Smith College Relationships Data/xinyu_recode.csv")
 
 coded_sentences <- merge(x=kat_codes, y=xinyu_codes, all.x = TRUE)

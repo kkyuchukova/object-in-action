@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.5.23)  29 JUN 2020 15:46
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.5.23)  2 JUL 2020 13:09
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1136,23 +1136,20 @@ File: mt-eur.cfg 2006/07/31 v1.1 microtype config. file: AMS Euler Roman (RS)
 ] [2] [3] [4] [5]
 \openout3 = `Final_Manuscript.ttt'.
 
-(Final_Manuscript.ttt) [6]
-Underfull \vbox (badness 1360) has occurred while \output is active []
-
-[7] [8] [9]
+(Final_Manuscript.ttt) [6] [7] [8] [9]
 \openout4 = `Final_Manuscript.fff'.
 
 (Final_Manuscript.fff)
-Underfull \vbox (badness 10000) has occurred while \output is active []
+Underfull \vbox (badness 6559) has occurred while \output is active []
 
 [10] [11]
 
-LaTeX Warning: Reference `tab:mlm' on page 12 undefined on input line 548.
+LaTeX Warning: Reference `tab:mlm' on page 12 undefined on input line 564.
 
-[12] [13]
-Underfull \vbox (badness 10000) has occurred while \output is active []
+[12]
+Underfull \vbox (badness 4752) has occurred while \output is active []
 
-[14] [15]
+[13] [14] [15]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
 [16]
@@ -1175,7 +1172,7 @@ Overfull \vbox (81.49437pt too high) has occurred while \output is active []
 
 ] [24
 
-]) (./Final_Manuscript.fff <APIM_figure.png, id=302, 602.25pt x 280.04625pt>
+]) (./Final_Manuscript.fff <APIM_figure.png, id=306, 602.25pt x 280.04625pt>
 File: APIM_figure.png Graphic file (type png)
 <use APIM_figure.png>
 Package pdftex.def Info: APIM_figure.png used on input line 4.
@@ -1183,14 +1180,14 @@ Package pdftex.def Info: APIM_figure.png used on input line 4.
 [25
 
 
- <./APIM_figure.png>] <2016_figure.jpg, id=310, 963.6pt x 542.025pt>
+ <./APIM_figure.png>] <2016_figure.jpg, id=314, 963.6pt x 542.025pt>
 File: 2016_figure.jpg Graphic file (type jpg)
 <use 2016_figure.jpg>
 Package pdftex.def Info: 2016_figure.jpg used on input line 11.
 (pdftex.def)             Requested size: 401.48921pt x 225.83768pt.
 [26
 
- <./2016_figure.jpg>] <SEMfigure.png, id=315, 651.43375pt x 344.28625pt>
+ <./2016_figure.jpg>] <SEMfigure.png, id=319, 651.43375pt x 344.28625pt>
 File: SEMfigure.png Graphic file (type png)
 <use SEMfigure.png>
 Package pdftex.def Info: SEMfigure.png used on input line 18.
@@ -1198,22 +1195,22 @@ Package pdftex.def Info: SEMfigure.png used on input line 18.
 [27
 
  <./SEMfigure.png>])
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 954.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 954.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 974.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 974.
 (./Final_Manuscript.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 954.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 954.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 974.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 974.
 Package rerunfilecheck Info: File `Final_Manuscript.out' has not changed.
-(rerunfilecheck)             Checksum: F3176C93DE2944C3A66499CE597D8B10;3157.
+(rerunfilecheck)             Checksum: CB7970CEAD235146EC3D6AE49FE709B8;3302.
 
 LaTeX Warning: There were undefined references.
 
  ) 
 Here is how much of TeX's memory you used:
- 15525 strings out of 492995
- 228180 string characters out of 6132704
- 345416 words of memory out of 5000000
- 18633 multiletter control sequences out of 15000+600000
+ 15528 strings out of 492995
+ 228225 string characters out of 6132704
+ 343458 words of memory out of 5000000
+ 18635 multiletter control sequences out of 15000+600000
  48743 words of font info for 86 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  43i,10n,47p,803b,539s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -1224,10 +1221,10 @@ ist/fonts/type1/public/lm/lmmi12.pfb></usr/local/texlive/2017/texmf-dist/fonts/
 type1/public/lm/lmr12.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/publi
 c/lm/lmr8.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/lm/lmri12.
 pfb>
-Output written on Final_Manuscript.pdf (27 pages, 439270 bytes).
+Output written on Final_Manuscript.pdf (27 pages, 440261 bytes).
 PDF statistics:
- 368 PDF objects out of 1000 (max. 8388607)
- 325 compressed objects within 4 object streams
- 112 named destinations out of 1000 (max. 500000)
- 6320 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 372 PDF objects out of 1000 (max. 8388607)
+ 329 compressed objects within 4 object streams
+ 113 named destinations out of 1000 (max. 500000)
+ 6328 words of extra memory for PDF output out of 10000 (max. 10000000)
 
