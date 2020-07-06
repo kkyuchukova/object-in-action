@@ -86,14 +86,13 @@ There are many types of relationships people form in college. During the interac
 
 Two participants were then brought into a larger interaction room where they sat on stools prearranged to be 36 inches apart. The experimenter instructed the participants to “get to know each other” for 10 minutes and then left the room. After 10 minutes, the experimenter came back into the room and stopped the interaction. The participants then went back to their individual cubicles and completed a set of post-interaction measures. Participants were then thanked for their participation and debriefed @garcia2016objectification. The full methodology used is found in @garcia2016objectification’s study.
 
+##Combined Samples
 
 ```{r data}
 clark_final <- read.csv("Cleaned data/clark_final.csv")
 smith_final <- read.csv("Cleaned data/smith_final.csv")
 clarksmith_women <- read.csv("Cleaned data/clarksmith_women.csv")
 ```
-
-##Combined Samples
 
 ```{r}
 ns <- clarksmith_women %>%
@@ -103,6 +102,8 @@ ns <- clarksmith_women %>%
 ```
 
 Data from two different, but demographically equivalent, samples were combined to create the final analysis sample (*N =* `r nrow(clarksmith_women)`) used in this study. In the measures section that follows we refer to them as Sample 1 and Sample 2. Sample 1 (*N =* `r ns[3]`) is from a co-ed liberal arts college in the northeast US and Sample 2 (*N =* `r ns[4]`) is from a women’s liberal arts college in the northeast US. The description of the samples section below contains more detail about equivalence analyses to support the decision to combine these two samples. 
+
+##Post interaction Measures
 
 ```{r correaltions}
 #NOT SURE WHAT THIS CHUNK WAS FOR BUT ITS NOT NEEDED
@@ -193,18 +194,18 @@ colnames(descriptives) <- c("M", "SD")
 apa_table(descriptives, caption = "Descriptive Statistics for Study Variables")
 ```
 
-##Post interaction Measures
 The following measures were collected in the order they are presented following the interaction. Correlations appear in Table\ \@ref(tab:corrtable), and descriptive statistics appear in Table\ \@ref(tab:descriptives). 
 
+###Cognitive Performance
 ```{r trigram}
 #Cognitive performance - Full sample
 mean_trigram <- favstats(~trigram_score_A, data=clarksmith_women)$mean
 sd_trigram <- favstats(~trigram_score_A, data=clarksmith_women)$sd
 ```
 
-###Cognitive Performance
 Trigrams from the Remote Associates Task [@mcfarlin1984remote] were utilized to assess cognitive performance after the interaction. Ten items were selected and presented to participants. For example, the correct answer for the trigram “Quack: Pond: Waddle” would be “Duck”. Participants are limited to 30 seconds. For every correct answer, 1 point is given. The mean score was `r mean_trigram` (SD = `r sd_trigram`). Cognitive performance was measured first in order to measure potential immediate detriments to performance [@garcia2016objectification].
 
+###State Other-Objectification
 ```{r alpha_SOO}
 ##SOO
 #Clark
@@ -219,10 +220,9 @@ smith_extsoo_alpha <- psych::alpha(select(smith_final, otherint_1, otherint_2, o
 smith_intsoo_alpha <- psych::alpha(select(smith_final, otherint_3, otherint_4, otherint_7, 
                                           otherint_8, otherint_9, otherint_11, otherint_12))$total[2]
 ```
-
-###State Other-Objectification
 To measure the participant’s objectification of their partner in the interaction, participants were asked a series of questions about the frequency of thoughts in relation to  multiple characteristics of their partner @garcia2016objectification. Questions included aspects of their partner’s internal traits such as personality, friends, family, and extracurricular interests, as well as external traits such as body, appearance, clothing, and body parts. All questions were to be rated on a scale from 1 (not at all) to 7 (constantly). Objectification was measured by getting the difference between the average frequency of thought about their partner’s external traits ($\alpha$ = `r printnum(clark_extsoo_alpha)[1,1]` for Sample 1, $\alpha$ = `r printnum(smith_intsoo_alpha)[1,1]` for Sample 2) and frequency of thought about their partner’s internal traits ($\alpha$ = `r printnum(clark_extsoo_alpha)[1,1]` for Sample 1, $\alpha$ = `r printnum(smith_extsoo_alpha)[1,1]` for Sample 2). A positive score in this scale would indicate that the participant thought about their partner’s external traits more than the partner’s internal traits, and a negative score would indicate the opposite.
 
+###Interaction Authenticity
 ```{r alpha_intauth}
 ##Interaction Authenticity
 #Clark
@@ -234,10 +234,9 @@ smith_intauth_alpha <- psych::alpha(select(smith_final, inter_1, inter_3, inter_
                                            inter_7, inter_9, inter_10, interaux_5, 
                                            interaux_6))$total[2]
 ```
-
-###Interaction Authenticity
 To assess the magnitude to which individuals felt comfortable in the interaction and perceived the interaction to be authentic, we asked participants to rate the extent to which they felt comfortable, happy, friendly, warm, easygoing, sincere, and authentic on a scale ranging from 1 (not at all) to 7 (very much), much alike [@garcia2016objectification]. Participants were additionally asked to rate their interaction partner’s authenticity as well as their own: ‘‘Do you think your partner was authentic during your interaction?’’ and ‘‘Were you authentic during your interaction?’’ These questions were ranked on a scale from 1 (not authentic at all). These were combined to form the authenticity scale ($\alpha$ = `r printnum(clark_intauth_alpha)[1,1]` for Sample 1, $\alpha$ = `r printnum(smith_intauth_alpha)[1,1]` for Sample 2). 	
 
+###State Self-Objectification
 ```{r alpha_SSO}
 ##SSO
 #Clark - two items
@@ -249,10 +248,9 @@ clark_howbody3 <- psych::alpha(select(clark_final, howbody_1, howbody_2, howbody
 #Smith - three items
 smith_howbody3 <- psych::alpha(select(smith_final, howbody_1, howbody_2, howbody_3))
 ```
-
-###State Self-Objectification
 To assess state self-objectification, we used an average of two items from @saguyetal2010 that were also used in @garcia2016objectification. Participants were asked to rank how much they agreed with the following statements: “During the interaction I felt more like a body than a full self” and “I felt more like a body than as a real person in the interaction”. Originally, @saguyetal2010 used 3 items, but in both samples the reliability of the scale was higher once the third item was removed, so we chose to only use the first two for our measure of SSO, leaving us with a reliable scale ($\alpha$ = `r printnum(clark_howbody_alpha)[1,1]` for Sample 1, and $\alpha$ = `r printnum(smith_howbody_alpha)[1,1]` for Sample 2.)
 
+###Relationship Agency
 ```{r alpha_relagen}
 ##Relationship Agency
 #Clark
@@ -273,10 +271,9 @@ clark_relag_alpha <- psych::alpha(select(clark_final, relag_1, relag_2, relag_3,
 smith_relag_alpha <- psych::alpha(select(smith_final, relag_1, relag_2, relag_3, relag_4, 
                                          relag_5, relag_6, relag_7, relag_8))$total[2]
 ```
-
-###Relationship Agency
 A scale was used from @garcia2016objectification to assess how much agency an individual believes they would possess in future romantic relationships. Participants were asked how likely it was that they would do the following: ‘‘ask someone out on a date,’’ ‘‘open the door for your date,’’ ‘‘pay for a date,’’ ‘‘ask your boyfriend/girlfriend to marry you,’’ ‘‘initiate sex with your girlfriend/boyfriend,’’ ‘‘initiate condom use during sex,’’ ‘‘surprise your boyfriend/ girlfriend with a gift,’’ and ‘‘ask your girlfriend/boyfriend to move with you to a new place.’’ Responses were measured on a scale ranging from 1 (not at all likely) to 7 (extremely likely). The scale originally had 9 items, but the 9th item had low correlations with the remaining items, ranging from .02 to .30 for the first sample, and .04 to .30 for the second sample. The item was intended to be reverse coded, but correlations were still low enough to make the scale unreliable. Therefore, the ninth item was removed. As a result, the scale had moderately high reliability for both samples ($\alpha$ = `r printnum(clark_relag_alpha)[1,1]` for Sample 1, ($\alpha$ = `r printnum(smith_relag_alpha)[1,1]` for Sample 2).
 
+###Career Aspirations
 ```{r alpha_career}
 ##Career Aspirations
 #Clark
@@ -301,10 +298,9 @@ smith_careerasp_alpha <- psych::alpha(select(smith_final, careerasp_1, careerasp
                                              careerasp_6, careerasp7.r, careerasp_8, 
                                              careerasp_9, careerasp10.r))$total[2]
 ```
-
-###Career Aspirations
 To conceptualize participants’ career aspirations after the interaction, we used the 10-item adaptation of @grayobrien2007’s Career Aspiration Scale employed in @garcia2016objectification, which asked participants to consider how true 10 statements were in regard to their future careers on a scale from 0 (not at all true of me) to 4 (very true of me). Items include "I hope to become a leader in my career field" and "I hope to move up through any organization or business I work in." Items were fairly reliable ($\alpha$ = `r printnum(clark_careerasp_alpha)[1,1]` for Sample 1, $\alpha$ = `r printnum(smith_careerasp_alpha)[1,1]` for Sample 2).
 
+###Trait Self-Objectification
 ```{r alpha_TSO}
 ###TSO
 #Clark--external and internal
@@ -315,31 +311,10 @@ clark_physTSO_alpha <- psych::alpha(select(clark_final, tso_3, tso_5, tso_6, tso
 smith_funcTSO_alpha <- psych::alpha(select(smith_final, tso_1, tso_2, tso_4, tso_7, tso_9), check.keys=TRUE)$total[2]
 smith_physTSO_alpha <- psych::alpha(select(smith_final, tso_3, tso_5, tso_6, tso_8, tso_10), check.keys=TRUE)$total[2]
 ```
-
-###Trait Self-Objectification
 Trait self-objectification (TSO) was assessed using the Self-Objectification Questionnaire [@fredricksonetal1998; @nollfredrickson1998], which evaluates the extent to which individuals view their bodies in observable versus nonobservable ways. The questionnaire asked participants to rank order both appearance and functional aspects of their bodies, from 1 (least important) to 10 (most important), with respect to physical self-concepts. Of the ten body attributes, five of the items were appearance-based (weight, sex appeal, physical attractiveness, firm/sculpted muscles and body measurements), and five of the items were competence-based (strength, physical coordination, energy level, health and physical fitness). Difference scores were computed by subtracting the sum of the 5 functional aspects/competence attributes (e.g., health, strength) from the sum of the 5 physical self-concepts/appearance attributes (e.g., physical attractiveness, weight), and all measures were multiplied by -1, as was done in @garcia2016objectification, so that positive scores indicated greater TSO. 
 
 ###Description of the Samples
 Thirty-two previously unacquainted self-identifying female-sex dyads (64 total participants) from two liberal arts institutions in the Northeast of the United States participated in this study.  More specifically, twelve of the pairs, which derived from Sample 1, were students at a co-ed liberal arts college, while the remaining twenty pairs who came from Sample 2 attended a women’s liberal arts college. Initially, data was collected from same-sex and mixed-sex dyads that comprised of male and female gendered individuals. Sample 1 originally consisted of twenty-two pairs, twelve men and thirty-two women. Twenty-three pairs made up of forty-three women and one man, as well as two participants who did not identify with either gender category, formed Sample 2. For consistency, we limited participant data to same sex female pairs at the two colleges.
-
-```{r}
-##Correlations
-round(corr.test(select(filter(clarksmith_women, smith_or_clark == "Smith"), 
-                 a2pSOO_A, a2pSOO_P, TSO_A,
-                 howbody_avg_A,
-                 authenticity_A, 
-                 trigram_score_A, careerasp_A, relag_A))$r, 3)
-
-round(corr.test(select(filter(clarksmith_women, smith_or_clark == "Clark"), 
-                 a2pSOO_A, a2pSOO_P, TSO_A, 
-                 howbody_avg_A,
-                 authenticity_A, 
-                 trigram_score_A, careerasp_A, relag_A))$r, 3)
-```
-
-There were some similar correaltions bewtween study variables across samples. 
-
-Due these similarities across samples in regard to correlation patterns between significant variables within this study, the two datasets were combined. These participants were mostly first-year college students, with an average age of `r mean_age` (SD = `r sd_age`). The sample was `r percent_white`% White/European American, `r percentage_black`% Black/African-American, `r percent_asian`% Asian/Pacific Islander, `r percent_latinx`% Latinx, and `r percent_other`% mixed-race. There were `r samerace_white` White/White pairs and `r samerace_minority` same race racial minority pairs, for a total of `r samerace_white + samerace_minority` same-race pairs. The remaining `r mixedrace_white + mixedrace_minority` were mixed race pairs, of which `r mixedrace_white` were White/racial minority pairings and `r mixedrace_minority` were cross-racial minority group pairs. `r percent_straight`% of the sample identified as heterosexual, and `r percent_queer`% identified as gay, lesbian or bisexual. 
 
 ```{r demographics}
 #favstats(~TSO_A, data=clarksmith_women)
@@ -380,14 +355,17 @@ tally(~gender, data=clark_final)
 tally(~gender, data=smith_final)
 ```
 
+Due these similarities across samples in regard to correlation patterns between significant variables within this study, the two datasets were combined. These participants were mostly first-year college students, with an average age of `r mean_age` (SD = `r sd_age`). The sample was `r percent_white`% White/European American, `r percentage_black`% Black/African-American, `r percent_asian`% Asian/Pacific Islander, `r percent_latinx`% Latinx, and `r percent_other`% mixed-race. There were `r samerace_white` White/White pairs and `r samerace_minority` same race racial minority pairs, for a total of `r samerace_white + samerace_minority` same-race pairs. The remaining `r mixedrace_white + mixedrace_minority` were mixed race pairs, of which `r mixedrace_white` were White/racial minority pairings and `r mixedrace_minority` were cross-racial minority group pairs. `r percent_straight`% of the sample identified as heterosexual, and `r percent_queer`% identified as gay, lesbian or bisexual. 
+
 # Results
+## Data analysis
 ```{r create_r-references, warning=FALSE, message=FALSE}
 #cite_r(file = "references.bib")
 r_refs(file = "r-references.bib")
 ```
-## Data analysis
 We used `r cite_r("r-references.bib")` for all our analyses.
 
+## Analysis Strategy
 ```{r apim, include=TRUE, echo=FALSE, results='asis', out.width="400px", fig.cap="Basic actor-partner interdependence model (APIM) depiction."}
 include_graphics("APIM_figure.png")
 ```
@@ -395,8 +373,6 @@ include_graphics("APIM_figure.png")
 ```{r 2016figure, include=TRUE, echo=FALSE, results='asis', out.width="400px", fig.cap="Path Analysis Model from Garcia et al. (2016) study with distinguishable dyads."}
 include_graphics("2016_figure.jpg")
 ```
-
-## Analysis Strategy
 This study sought to replicate the results of @garcia2016objectification’s study, done with male-female pairs, which used a dyadic path analysis to detect whether partners’ objectification of one another affected state self-objectification (SSO). See Figure\ \@ref(fig:2016figure) for the results of the analysis from this previous study. We hope to investigate how the central effects found in the previous study relate to interactions between two women. Specifically, we are interested in testing the relationship between state-other objectification and SSO, and how SSO in turn, affecs feelings of inauthenticity during the interaction. In addition, we will also test if the effect of other-objectification in an interaction on SSO is only present for those women who are high in trait self-objectification, as in @garcia2016objectification. Further, we will investigate the realtionships between experiencing interaction inauthenticity and relationship agency, career aspirations, and cognitive performance. 
 
 While @garcia2016objectification used dyadic path analysis, we will conduct our dyadic analyses using multilevel modeling. Dyadic analyses for distingishable dyads (e.g., mixed-gender interacting pairs) is more natural in Structual Equation Modeling (SEM) than it is for indistinguishable dayds (e.g., same-gender interacting pairs) [@ledermann2017analyzing; @garcia2015moderation]. One reason for this asymmetry is that, due to the arbitrary distinctions made bewteen "partner 1" and "partner 2" in indistinguishable dyads, many estimates need to be fixed to be equal (i.e., paths, variances, covariances, endogenous intercepts, and exogenous means) for indistinguishable dyads but these equality contraints should not then be considered in the degrees of freedom calculations for fit estimations [@olsen2006structural]. Further, @olsen2006structural detail how a new independence model and the corresponding fit measure should be re-calculated for indistinguishable dyads models. The current study uses dyadic multilevel modeling (MLM) to test all relationships and mediation paterns. See @ledermann2017analyzing for a more complete discussion of the considerations for using SEM versus MLM for dyadic analysis.  
@@ -412,8 +388,95 @@ Before moving to the main analyses, we discuss statistical equivalence test that
 <!-- In order to interpret model fit, which refers to the ability of a model to reproduce the data (i.e., usually the varience-covariance matrix) we utilized both the I-SAT (saturated) model, and the Null model to ensure that all possible corresponding covariences are fixed to be equal across partners. We obtained fit estimates by subtracting the chi-square estimate for the I-SAT model from the analysis model [@olsen2006structural, @peugh2013analyzing]. -->
 
 ### Combining Samples
+```{r}
+##Correlations
+round(corr.test(select(filter(clarksmith_women, smith_or_clark == "Smith"), 
+                 a2pSOO_A, a2pSOO_P, TSO_A,
+                 howbody_avg_A,
+                 authenticity_A, 
+                 trigram_score_A, careerasp_A, relag_A))$r, 3)
 
-The correaltions between study variables is similar across samples. The realibialities for the study scales were also equivalent. (Note that the two samples were two small to conduct formal measurement equivalence tests for scales.) There are no statistically significant differences between samples in demographics including age, STATS, and ethnicity, STATS. 
+round(corr.test(select(filter(clarksmith_women, smith_or_clark == "Clark"), 
+                 a2pSOO_A, a2pSOO_P, TSO_A, 
+                 howbody_avg_A,
+                 authenticity_A, 
+                 trigram_score_A, careerasp_A, relag_A))$r, 3)
+```
+The correaltions between study variables is similar across samples. The realibialities for the study scales were also equivalent. (Note that the two samples were two small to conduct formal measurement equivalence tests for scales.) There are no statistically significant differences between samples in demographics including age, STATS, and ethnicity, STATS.
+
+##Main Results
+```{r semfigure, include=TRUE, echo=FALSE, results='asis', out.width="400px", fig.cap="Path Analysis Model with Estimates"}
+include_graphics("SEMfigure.png")
+```
+
+```{r mlm, include=TRUE, results='asis'}
+# fit_table <- xtable(parameterEstimates(fit))
+# 
+# fit_table <- fit_table %>%
+#   filter(op=="~") %>%
+#   mutate(lhs = ifelse(lhs == "howbody_avg_A", "Actor SSO",
+#                       ifelse(lhs=="authenticity_A", "Actor Authenticity",
+#                              ifelse(lhs=="howbody_avg_P", "Partner SSO",
+#                                     ifelse(lhs=="authenticity_P", "Partner Authenticity",
+#                                            ifelse(lhs=="relag_A", "Actor Rel. Agency",
+#                                                   ifelse(lhs=="relag_P", "Partner Rel. Agency",
+#                                                          ifelse(lhs=="careerasp_A", "Actor Career Aspirations",
+#                                                                 ifelse(lhs=="careerasp_P", "Partner Career Aspirations",
+#                                                                        ifelse(lhs=="trigram_score_A", "Actor Cog. Performance",
+#                                                                               ifelse(lhs=="trigram_score_P", "Partner Cog. Performance", NA)))))))))),
+#          rhs = ifelse(rhs=="TSO_A", "Actor TSO",
+#                       ifelse(rhs=="a2pSOO_A", "Actor Obj. of Partner",
+#                              ifelse(rhs=="a2pSOO_P", "Partner Obj. of Actor",
+#                                     ifelse(rhs=="TSO_A_SOO_P", "Actor TSO x Partner Obj.",
+#                                            ifelse(rhs == "howbody_avg_A", "Actor SSO",
+#                                                   ifelse(rhs=="howbody_avg_P", "Partner SSO",
+#                                                          ifelse(rhs=="TSO_P", "Partner TSO",
+#                                                                 ifelse(rhs=="TSO_P_SOO_A", "Partner TSO x Actor Obj.",
+#                                                                        ifelse(rhs=="authenticity_A", "Actor Authenticity",
+#                                                                               ifelse(rhs=="authenticity_P", "Partner Authenticity", NA))))))))))) %>%
+#   select(lhs, op, rhs, est, se, z, pvalue) %>%
+#   #taking out partner-partner estimates
+#   slice(1:5,11:13)
+# 
+# colnames(fit_table) <- c("Path", "", "", "Estimate", "SE", "z-value", "p-value")
+# 
+# apa_table(fit_table, caption = "Estimates from final Path Analysis Model", font_size = "small")
+```
+
+```{r presentation-functions}
+ pround <- function(val){
+  ifelse(val < .001,
+         return(sub("^(-?)0.", "\\1.", sprintf("%.3f", .001))),
+         return(sub("^(-?)0.", "\\1.", sprintf("%.3f", val))))
+}
+
+estround <- function(val){
+  ifelse(abs(val) < .01,
+         return(.01),
+         return(round(val, 2)))
+}
+
+#only works for merModlmerTest objects or when p-values on are in column 4, "lm" objects
+report_stats <- function(mod, est){
+
+  b <- coef(summary(mod))[,1]
+  se <- coef(summary(mod))[,2]
+  ifelse(class(mod) == "merModLmerTest",
+         p <- coef(summary(mod))[,5],
+         p <- coef(summary(mod))[,4])
+
+  paste(ifelse(abs(b[est]) < .01,"*b* < ","*b* = "), as.character(estround(b[est])),
+        ifelse(se[est] < .01, ", *SE* < ", ", *SE* = "), as.character(estround(se[est])),
+        ifelse(p[est] < .001, ", *p* < ", ", *p* = "),  as.character(pround(p[est])),
+        sep = "") %>%
+    return()
+}
+# randomeffects <- as.data.frame(VarCorr(mlm_mod1.0))
+# randomeffects2 <- as.data.frame(VarCorr(mlm_mod2.0))
+```
+
+
+All model estimates and p-values are found in Table\ \@ref(tab:mlm) and the relationships with estimates included are depicted in Figure\ \@ref(fig:semfigure). 
 
 ```{r}
 #SSO
@@ -429,6 +492,7 @@ apim1.b <- gls(howbody_avg_A ~ a2pSOO_A + a2pSOO_P + TSO_A,
 
 summary(apim1)
 ```
+The most important finding from @garcia2016objectification was the significant partner effect of other objectification and SSO (specifically men's objectification of women and women's SSO). As expected, the partner effect of other-objectification on SSO in the current all-women sample was statistically signficant, `r report_stats(apim1, 3)`, replicating @garcia2016objectification's fiding. One's own other objectification had no effect on SSO, `r report_stats(apim1, 2)`. Contrary to past finding however, there was no statistically significant interaction of partner's other objectification and the person's trait self-objectification on SSO, `r report_stats(apim1, 5)`. There was also no significant main effect of trait self-objectification on SSO `r report_stats(apim1.b, 4)`.
 
 ```{r}
 #authenticity
@@ -439,15 +503,15 @@ apim2 <- gls(authenticity_A ~ howbody_avg_A,
 
 summary(apim2)
 
-#Trying to perform analyses for each item for a footnote...will need to get to the bottom of this. 
-# inter_1, inter_3, inter_5, inter_6, 
-# inter_7, inter_9, inter_10, interaux_5, 
-# interaux_6
-# 
-# apim2 <- gls(inter_1 ~ howbody_avg_A, 
-#                  na.action=na.omit, 
-#                  correlation=corCompSymm (form=~1|dyadID),
-#                  data=clarksmith_women)
+#correlations between howbody and each authenticity item individually. 
+min_corr <- min(abs(round(corr.test(select(clarksmith_women, 
+                 howbody_avg_A, inter_1_A, inter_3_A, inter_5_A, 
+                 inter_6_A, inter_7_A, inter_9_A, inter_10_A, 
+                 interaux_5_A, interaux_6_A))$r, 3)[,1]))
+max_corr <- as.numeric(sort(abs(round(corr.test(select(clarksmith_women, 
+                 howbody_avg_A, inter_1_A, inter_3_A, inter_5_A, 
+                 inter_6_A, inter_7_A, inter_9_A, inter_10_A, 
+                 interaux_5_A, interaux_6_A))$r, 3)[,1]), decreasing = T)[2])
 
 apim2.b <- gls(authenticity_A ~ howbody_avg_A + a2pSOO_P, 
                  na.action=na.omit, 
@@ -463,6 +527,7 @@ apim2.c <- gls(authenticity_A ~a2pSOO_P,
 
 summary(apim2.c)
 ```
+Contrary to expectations, there was no significant effect of SSO on interaction authenticity, although the estimate of this effect was in the hypothesized negative direction, `r report_stats(apim2, 2)`. Because authenticity was a composite score of 9 items, two of which were interaction specific authenticity items, we also estimated the pairwise correlations bewteen SSO and all these items individually. They were all small, ranging from only `r -1*min_corr` to `r -1*max_corr`. Although we hypothesized that SSO would mediate the relationship between partner's other objectification and interaction authenticity, after finding no relationship bewteen SSO and authencity, we also tested if the partner's other objectification had a direct effect on authenticity, but this effect was not significant, `r report_stats(apim2.b, 3)` (nor was the total effect of partner's other objectification on authenticity, `r report_stats(apim2.c, 2)`).
 
 ```{r}
 #cognitive performance
@@ -535,87 +600,6 @@ apim5.c <- gls(careerasp_A ~ authenticity_A + howbody_avg_A + a2pSOO_P,
 
 summary(apim5.c)
 ```
-
-```{r semfigure, include=TRUE, echo=FALSE, results='asis', out.width="400px", fig.cap="Path Analysis Model with Estimates"}
-include_graphics("SEMfigure.png")
-```
-
-```{r mlm, include=TRUE, results='asis'}
-# fit_table <- xtable(parameterEstimates(fit))
-# 
-# fit_table <- fit_table %>%
-#   filter(op=="~") %>%
-#   mutate(lhs = ifelse(lhs == "howbody_avg_A", "Actor SSO",
-#                       ifelse(lhs=="authenticity_A", "Actor Authenticity",
-#                              ifelse(lhs=="howbody_avg_P", "Partner SSO",
-#                                     ifelse(lhs=="authenticity_P", "Partner Authenticity",
-#                                            ifelse(lhs=="relag_A", "Actor Rel. Agency",
-#                                                   ifelse(lhs=="relag_P", "Partner Rel. Agency",
-#                                                          ifelse(lhs=="careerasp_A", "Actor Career Aspirations",
-#                                                                 ifelse(lhs=="careerasp_P", "Partner Career Aspirations",
-#                                                                        ifelse(lhs=="trigram_score_A", "Actor Cog. Performance",
-#                                                                               ifelse(lhs=="trigram_score_P", "Partner Cog. Performance", NA)))))))))),
-#          rhs = ifelse(rhs=="TSO_A", "Actor TSO",
-#                       ifelse(rhs=="a2pSOO_A", "Actor Obj. of Partner",
-#                              ifelse(rhs=="a2pSOO_P", "Partner Obj. of Actor",
-#                                     ifelse(rhs=="TSO_A_SOO_P", "Actor TSO x Partner Obj.",
-#                                            ifelse(rhs == "howbody_avg_A", "Actor SSO",
-#                                                   ifelse(rhs=="howbody_avg_P", "Partner SSO",
-#                                                          ifelse(rhs=="TSO_P", "Partner TSO",
-#                                                                 ifelse(rhs=="TSO_P_SOO_A", "Partner TSO x Actor Obj.",
-#                                                                        ifelse(rhs=="authenticity_A", "Actor Authenticity",
-#                                                                               ifelse(rhs=="authenticity_P", "Partner Authenticity", NA))))))))))) %>%
-#   select(lhs, op, rhs, est, se, z, pvalue) %>%
-#   #taking out partner-partner estimates
-#   slice(1:5,11:13)
-# 
-# colnames(fit_table) <- c("Path", "", "", "Estimate", "SE", "z-value", "p-value")
-# 
-# apa_table(fit_table, caption = "Estimates from final Path Analysis Model", font_size = "small")
-```
-
-```{r presentation-functions}
- pround <- function(val){
-  ifelse(val < .001,
-         return(sub("^(-?)0.", "\\1.", sprintf("%.3f", .001))),
-         return(sub("^(-?)0.", "\\1.", sprintf("%.3f", val))))
-}
-
-estround <- function(val){
-  ifelse(abs(val) < .01,
-         return(.01),
-         return(round(val, 2)))
-}
-
-#only works for merModlmerTest objects or when p-values on are in column 4, "lm" objects
-report_stats <- function(mod, est){
-
-  b <- coef(summary(mod))[,1]
-  se <- coef(summary(mod))[,2]
-  ifelse(class(mod) == "merModLmerTest",
-         p <- coef(summary(mod))[,5],
-         p <- coef(summary(mod))[,4])
-
-  paste(ifelse(abs(b[est]) < .01,"*b* < ","*b* = "), as.character(estround(b[est])),
-        ifelse(se[est] < .01, ", *SE* < ", ", *SE* = "), as.character(estround(se[est])),
-        ifelse(p[est] < .001, ", *p* < ", ", *p* = "),  as.character(pround(p[est])),
-        sep = "") %>%
-    return()
-}
-
-report_stats(apim1, 2)
-
-# randomeffects <- as.data.frame(VarCorr(mlm_mod1.0))
-# randomeffects2 <- as.data.frame(VarCorr(mlm_mod2.0))
-```
-
-##Main Results
-All model estimates and p-values are found in Table\ \@ref(tab:mlm) and the relationships with estimates included are depicted in Figure\ \@ref(fig:semfigure). 
-
-The most important finding from @garcia2016objectification was the significant partner effect of other objectification and SSO (specifically men's objectification of women and women's SSO). As expected, the partner effect of other-objectification on SSO in the current all-women sample was statistically signficant, `r report_stats(apim1, 3)`, replicating @garcia2016objectification's fiding. One's own other objectification had no effect on SSO, `r report_stats(apim1, 2)`. Contrary to past finding however, there was no statistically significant interaction of partner's other objectification and the person's trait self-objectification on SSO, `r report_stats(apim1, 5)`. There was also no significant main effect of trait self-objectification on SSO `r report_stats(apim1.b, 4)`.
-
-Contrary to expectations, there was no significant effect of SSO on interaction authenticity, although the estimate of this effect was in the hypothesized negative direction, `r report_stats(apim2, 2)`. Because authenticity was a composite score of 9 items, two of which were interaction specific authenticity items, we also tested the effect of SSO on these items individually...ADD ANALYSIS...Although we hypothesized that SSO would mediate the relationship between partner's other objectification and interaction authenticity, after finding no relationship bewteen SSO and authencity, we also tested if the partner's other objectification had a direct effect on authenticity, but this effect was not significant, `r report_stats(apim2.b, 3)` (nor was the total effect of partner's other objectification on authenticity, `r report_stats(apim2.c, 2)`). 
-
 Lastly, althought there was no evidence that SSO was related to interaction authenticity in the current sample, we tested if interaction authenticity (composite of nine items) had effects on cognitive performace, career aspirations, and relationship agency, as it did in @garcia2016objectification. We again used MLM and thus, these efefcts were tested in three separate models. There was no significant effect of interaction authenticity on cognitive performance, `r report_stats(apim3, 2)`, but authenticity was significantly positively related to both career aspirations, `r report_stats(apim5, 2)`, and relationships agency, `r report_stats(apim4, 2)`. There was no direct effect of SSO on cognitive performance, `r report_stats(apim3.b, 3)`, and no direct effect of partner's other objectificaiton on cognifitve performance, `r report_stats(apim3.c, 4)`. There was no direct effect of SSO on career aspirations, `r report_stats(apim5.b, 3)`, and no direct effect of partner's other objectificaiton on career aspirations, `r report_stats(apim5.c, 4)`. There was no direct effect of SSO on relationship agency, `r report_stats(apim4.b, 3)`, and no direct effect of partner's other objectificaiton on relationship agency, `r report_stats(apim4.c, 4)`. 
 
 The results were similar for analyses conducted on Sample 1 and Sample 2 individually. See the online supplemental material for more detail on these analyses. 
