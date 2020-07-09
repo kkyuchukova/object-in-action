@@ -375,11 +375,11 @@ include_graphics("2016_figure.jpg")
 ```
 This study sought to replicate the results of @garcia2016objectification’s study, done with male-female pairs, which used a dyadic path analysis to detect whether partners’ objectification of one another affected state self-objectification (SSO). See Figure\ \@ref(fig:2016figure) for the results of the analysis from this previous study. We hope to investigate how the central effects found in the previous study relate to interactions between two women. Specifically, we are interested in testing the relationship between state-other objectification and SSO, and how SSO in turn, affecs feelings of inauthenticity during the interaction. In addition, we will also test if the effect of other-objectification in an interaction on SSO is only present for those women who are high in trait self-objectification, as in @garcia2016objectification. Further, we will investigate the realtionships between experiencing interaction inauthenticity and relationship agency, career aspirations, and cognitive performance. 
 
-While @garcia2016objectification used dyadic path analysis, we will conduct our dyadic analyses using multilevel modeling. Dyadic analyses for distingishable dyads (e.g., mixed-gender interacting pairs) is more natural in Structual Equation Modeling (SEM) than it is for indistinguishable dayds (e.g., same-gender interacting pairs) [@ledermann2017analyzing; @garcia2015moderation]. One reason for this asymmetry is that, due to the arbitrary distinctions made bewteen "partner 1" and "partner 2" in indistinguishable dyads, many estimates need to be fixed to be equal (i.e., paths, variances, covariances, endogenous intercepts, and exogenous means) for indistinguishable dyads but these equality contraints should not then be considered in the degrees of freedom calculations for fit estimations [@olsen2006structural]. Further, @olsen2006structural detail how a new independence model and the corresponding fit measure should be re-calculated for indistinguishable dyads models. The current study uses dyadic multilevel modeling (MLM) to test all relationships and mediation paterns. See @ledermann2017analyzing for a more complete discussion of the considerations for using SEM versus MLM for dyadic analysis.  
+While @garcia2016objectification used dyadic path analysis, we will conduct our dyadic analyses using multilevel modeling. Dyadic analyses for distingishable dyads (e.g., mixed-gender interacting pairs) is more natural in Structual Equation Modeling (SEM) than it is for indistinguishable dayds (e.g., same-gender interacting pairs) [@ledermann2017analyzing; @garcia2015moderation]. One reason for this asymmetry is that, due to the arbitrary distinctions made bewteen "partner 1" and "partner 2" in indistinguishable dyads, many estimates need to be fixed to be equal (i.e., paths, variances, covariances, endogenous intercepts, and exogenous means) for indistinguishable dyads but these equality contraints should not then be considered in the degrees of freedom calculations for fit estimations [@olsen2006structural]. Further, @olsen2006structural detail how a new independence model and the corresponding fit measure should be re-calculated for indistinguishable dyads models. The current study uses dyadic multilevel modeling (MLM) to test all relationships and mediation paterns. The online supplementary materials contains analysis using SEM. See @ledermann2017analyzing for a more complete discussion of the considerations for using SEM versus MLM for dyadic analysis.  
 
 Testing the @garcia2016objectification model on the current, same-gender, sample, involves using the Actor-Partner Independence Model (APIM) approch for each outcome variable (i.e., endogenous variable in Figure\ \@ref(fig:2016figure)). Thus, we ran five APIM's to test all the hypothesized relationships. See Figure\ \@ref(fig:apim) for a basic APIM model. The APIM includes effects due to one's own, as well as one's partner's, predictor variables ($X$'s) on the one's own outcome variable ($Y$). Unlike the original @garcia2016objectification study, our study deals with indistinguishable dyads, meaning the designation of who is designated as "actor" and who is designated as "partner" is arbitrary. Recall that the indistinguiahble nature of the dyads in the current study led us to choose the MLM approach over SEM. These analyses are considered exploratory, given the lack of prior research theorizing about these linkages.
 
-Before moving to the main analyses, we discuss statistical equivalence test that provide support for combining Sample 1 and Sample 2 in one analysis sample. The online supplemental material contains the main analyses separated by samples. 
+Before moving to the main analyses, we discuss statistical equivalence test that provide support for combining Sample 1 and Sample 2 in one analysis sample. The online supplemental material contains the main analyses separated by samples. All results presented below are from models including sample as a control variable.
 
 <!-- The model differences as a result of adopting this MLM approach include an examination of the partner effect of TSO on SSO, partner effect of SSO on authenticity, and partner effects of authenticity on congitive performance, relationship agency, and career aspirations.  -->
 
@@ -480,23 +480,24 @@ All model estimates and p-values are found in Table\ \@ref(tab:mlm) and the rela
 
 ```{r}
 #SSO
-apim1 <- gls(howbody_avg_A ~ a2pSOO_A + a2pSOO_P + TSO_A + a2pSOO_P*TSO_A, 
+apim1 <- gls(howbody_avg_A ~ a2pSOO_A + a2pSOO_P + TSO_A + a2pSOO_P*TSO_A + smith_or_clark, 
                  na.action=na.omit, 
                  correlation=corCompSymm (form=~1|dyadID),
                  data=clarksmith_women)
 
-apim1.b <- gls(howbody_avg_A ~ a2pSOO_A + a2pSOO_P + TSO_A, 
+apim1.b <- gls(howbody_avg_A ~ a2pSOO_A + a2pSOO_P + TSO_A + smith_or_clark, 
                  na.action=na.omit, 
                  correlation=corCompSymm (form=~1|dyadID),
                  data=clarksmith_women)
 
 summary(apim1)
+summary(apim1.b)
 ```
 The most important finding from @garcia2016objectification was the significant partner effect of other objectification and SSO (specifically men's objectification of women and women's SSO). As expected, the partner effect of other-objectification on SSO in the current all-women sample was statistically signficant, `r report_stats(apim1, 3)`, replicating @garcia2016objectification's fiding. One's own other objectification had no effect on SSO, `r report_stats(apim1, 2)`. Contrary to past finding however, there was no statistically significant interaction of partner's other objectification and the person's trait self-objectification on SSO, `r report_stats(apim1, 5)`. There was also no significant main effect of trait self-objectification on SSO `r report_stats(apim1.b, 4)`.
 
 ```{r}
 #authenticity
-apim2 <- gls(authenticity_A ~ howbody_avg_A, 
+apim2 <- gls(authenticity_A ~ howbody_avg_A + smith_or_clark, 
                  na.action=na.omit, 
                  correlation=corCompSymm (form=~1|dyadID),
                  data=clarksmith_women)
@@ -513,14 +514,14 @@ max_corr <- as.numeric(sort(abs(round(corr.test(select(clarksmith_women,
                  inter_6_A, inter_7_A, inter_9_A, inter_10_A, 
                  interaux_5_A, interaux_6_A))$r, 3)[,1]), decreasing = T)[2])
 
-apim2.b <- gls(authenticity_A ~ howbody_avg_A + a2pSOO_P, 
+apim2.b <- gls(authenticity_A ~ howbody_avg_A + a2pSOO_P + smith_or_clark, 
                  na.action=na.omit, 
                  correlation=corCompSymm (form=~1|dyadID),
                  data=clarksmith_women)
 
 summary(apim2.b)
 
-apim2.c <- gls(authenticity_A ~a2pSOO_P, 
+apim2.c <- gls(authenticity_A ~a2pSOO_P + smith_or_clark, 
                  na.action=na.omit, 
                  correlation=corCompSymm (form=~1|dyadID),
                  data=clarksmith_women)
@@ -531,21 +532,21 @@ Contrary to expectations, there was no significant effect of SSO on interaction 
 
 ```{r}
 #cognitive performance
-apim3 <- gls(trigram_score_A ~ authenticity_A, 
+apim3 <- gls(trigram_score_A ~ authenticity_A + smith_or_clark, 
                  na.action=na.omit, 
                  correlation=corCompSymm (form=~1|dyadID),
                  data=clarksmith_women)
 
 summary(apim3)
 
-apim3.b <- gls(trigram_score_A ~ authenticity_A + howbody_avg_A, 
+apim3.b <- gls(trigram_score_A ~ authenticity_A + howbody_avg_A + smith_or_clark, 
                  na.action=na.omit, 
                  correlation=corCompSymm (form=~1|dyadID),
                  data=clarksmith_women)
 
 summary(apim3.b)
 
-apim3.c <- gls(trigram_score_A ~ authenticity_A + howbody_avg_A + a2pSOO_P, 
+apim3.c <- gls(trigram_score_A ~ authenticity_A + howbody_avg_A + a2pSOO_P + smith_or_clark, 
                  na.action=na.omit, 
                  correlation=corCompSymm (form=~1|dyadID),
                  data=clarksmith_women)
@@ -555,21 +556,21 @@ summary(apim3.c)
 
 ```{r}
 #relationship agency
-apim4 <- gls(relag_A ~ authenticity_A, 
+apim4 <- gls(relag_A ~ authenticity_A + smith_or_clark, 
                  na.action=na.omit, 
                  correlation=corCompSymm (form=~1|dyadID),
                  data=clarksmith_women)
 
 summary(apim4)
 
-apim4.b <- gls(relag_A ~ authenticity_A + howbody_avg_A, 
+apim4.b <- gls(relag_A ~ authenticity_A + howbody_avg_A + smith_or_clark, 
                  na.action=na.omit, 
                  correlation=corCompSymm (form=~1|dyadID),
                  data=clarksmith_women)
 
 summary(apim4.b)
 
-apim4.c <- gls(relag_A ~ authenticity_A + howbody_avg_A + a2pSOO_P, 
+apim4.c <- gls(relag_A ~ authenticity_A + howbody_avg_A + a2pSOO_P + smith_or_clark, 
                  na.action=na.omit, 
                  correlation=corCompSymm (form=~1|dyadID),
                  data=clarksmith_women)
@@ -579,21 +580,21 @@ summary(apim4.c)
 
 ```{r}
 #career aspirations
-apim5 <- gls(careerasp_A ~ authenticity_A, 
+apim5 <- gls(careerasp_A ~ authenticity_A + smith_or_clark, 
                  na.action=na.omit, 
                  correlation=corCompSymm (form=~1|dyadID),
                  data=clarksmith_women)
 
 summary(apim5)
 
-apim5.b <- gls(careerasp_A ~ authenticity_A + howbody_avg_A, 
+apim5.b <- gls(careerasp_A ~ authenticity_A + howbody_avg_A + smith_or_clark, 
                  na.action=na.omit, 
                  correlation=corCompSymm (form=~1|dyadID),
                  data=clarksmith_women)
 
 summary(apim5.b)
 
-apim5.c <- gls(careerasp_A ~ authenticity_A + howbody_avg_A + a2pSOO_P, 
+apim5.c <- gls(careerasp_A ~ authenticity_A + howbody_avg_A + a2pSOO_P + smith_or_clark, 
                  na.action=na.omit, 
                  correlation=corCompSymm (form=~1|dyadID),
                  data=clarksmith_women)
