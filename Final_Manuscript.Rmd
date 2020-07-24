@@ -12,7 +12,7 @@ author:
     affiliation   : "1"
   - name          : "Asha Hinson"
     affiliation   : "1"
-  - name          : "Lanee Jung"
+  - name          : "Lanee Jung(edit)"
     affiliation   : "1"     
 
 affiliation:
