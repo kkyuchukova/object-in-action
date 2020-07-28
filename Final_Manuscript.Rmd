@@ -116,7 +116,48 @@ ns <- clarksmith_women %>%
   as.matrix() %>% as.numeric()
 ```
 
-Data from two different, but demographically equivalent, samples were combined to create the final analysis sample (*N =* `r nrow(clarksmith_women)`) used in this study. In the measures section that follows we refer to them as Sample 1 and Sample 2. Sample 1 (*N =* `r ns[3]`) is from a co-ed liberal arts college in the northeast US and Sample 2 (*N =* `r ns[4]`) is from a women’s liberal arts college in the northeast US. The description of the samples section below contains more detail about equivalence analyses to support the decision to combine these two samples. 
+Data from two different, but demographically equivalent, samples were combined to create the final analysis sample (*N =* `r nrow(clarksmith_women)`) used in this study. In the measures section that follows we refer to them as Sample 1 and Sample 2. Thirty-two previously unacquainted self-identifying female-sex dyads (64 total participants) from two liberal arts institutions in the Northeast of the United States participated in this study. Sample 1 (*N =* `r ns[3]`) is from a co-ed liberal arts college in the northeast US and Sample 2 (*N =* `r ns[4]`) is from a women’s liberal arts college in the northeast US. More specifically, twelve of the pairs, which derived from Sample 1, were students at a co-ed liberal arts college, while the remaining twenty pairs who came from Sample 2 attended a women’s liberal arts college. Initially, data was collected from same-sex and mixed-sex dyads that comprised of male and female gendered individuals. Sample 1 originally consisted of twenty-two pairs, twelve men and thirty-two women. Twenty-three pairs made up of forty-three women and one man, as well as two participants who did not identify with either gender category, formed Sample 2. For consistency, we limited participant data to same sex female pairs at the two colleges.
+
+```{r demographics}
+#favstats(~TSO_A, data=clarksmith_women)
+#favstats(~a2pSOO_A, data=clarksmith_women)
+#favstats(~howbody_avg_A, data=clarksmith_women)
+#favstats(~relag_A, data=clarksmith_women)
+#favstats(~careerasp_A, data=clarksmith_women)
+#favstats(~authenticity_A, data=clarksmith_women)
+#favstats(~trigram_score_A, data=clarksmith_women)
+
+#Mean and SD of age of sample
+mean_age <- favstats(~age_A, data = clarksmith_women)$mean
+sd_age <- favstats(~age_A, data = clarksmith_women)$sd
+tally(clarksmith_women$race_A == clarksmith_women$race_P)
+
+#Calculating race percentages
+tally(~race_A, data = clarksmith_women)  #Note that we can add "format = percentage" and not need to calculate
+percentage_black <- 6/(6+18+31+6+3)*100
+percent_asian <- 18/(6+18+31+6+3)*100
+percent_white <- 31/(6+18+31+6+3)*100
+percent_latinx <- 6/(6+18+31+6+3)*100
+percent_other <- 3/(6+18+31+6+3)*100
+tally(~sexor_A, data=clarksmith_women)
+percent_straight <-(41/64)*100
+percent_queer <- (3+8+5)/64*100
+tally(~gender_A, data=clarksmith_women)
+
+table(clarksmith_women$race_A, clarksmith_women$race_P)
+samerace_white <- 16/2 #divide by 2 since table is people, not pairs
+samerace_minority <- (6+2)/2
+mixedrace_white <- 2+10+2+1
+mixedrace_minority <- 1+2+1+1
+
+test <- clarksmith_women %>%
+  filter(race_A==3, race_A!=race_P)
+
+tally(~gender, data=clark_final)
+tally(~gender, data=smith_final)
+```
+
+Due these similarities across samples in regard to correlation patterns between significant variables within this study, the two datasets were combined. These participants were mostly first-year college students, with an average age of `r mean_age` (SD = `r sd_age`). The sample was `r percent_white`% White/European American, `r percentage_black`% Black/African-American, `r percent_asian`% Asian/Pacific Islander, `r percent_latinx`% Latinx, and `r percent_other`% mixed-race. There were `r samerace_white` White/White pairs and `r samerace_minority` same race racial minority pairs, for a total of `r samerace_white + samerace_minority` same-race pairs. The remaining `r mixedrace_white + mixedrace_minority` were mixed race pairs, of which `r mixedrace_white` were White/racial minority pairings and `r mixedrace_minority` were cross-racial minority group pairs. `r percent_straight`% of the sample identified as heterosexual, and `r percent_queer`% identified as gay, lesbian or bisexual. 
 
 ##Post interaction Measures
 
@@ -337,49 +378,6 @@ smith_physTSO_alpha <- psych::alpha(select(smith_final, tso_3, tso_5, tso_6, tso
 ```
 Trait self-objectification (TSO) was assessed using the Self-Objectification Questionnaire [@fredrickson1998swimsuit; @nollfredrickson1998], which evaluates the extent to which individuals view their bodies in observable versus non-observable ways. The questionnaire asked participants to rank order both appearance and functional aspects of their bodies, from 1 (least important) to 10 (most important), with respect to physical self-concepts. Of the ten body attributes, five of the items were appearance-based (weight, sex appeal, physical attractiveness, firm/sculpted muscles and body measurements), and five of the items were competence-based (strength, physical coordination, energy level, health and physical fitness). Difference scores were computed by subtracting the sum of the 5 functional aspects/competence attributes (e.g., health, strength) from the sum of the 5 physical self-concepts/appearance attributes (e.g., physical attractiveness, weight), and all measures were multiplied by -1, as was done in @garcia2016objectification, so that positive scores indicated greater TSO. 
 
-###Description of the Samples
-Thirty-two previously unacquainted self-identifying female-sex dyads (64 total participants) from two liberal arts institutions in the Northeast of the United States participated in this study.  More specifically, twelve of the pairs, which derived from Sample 1, were students at a co-ed liberal arts college, while the remaining twenty pairs who came from Sample 2 attended a women’s liberal arts college. Initially, data was collected from same-sex and mixed-sex dyads that comprised of male and female gendered individuals. Sample 1 originally consisted of twenty-two pairs, twelve men and thirty-two women. Twenty-three pairs made up of forty-three women and one man, as well as two participants who did not identify with either gender category, formed Sample 2. For consistency, we limited participant data to same sex female pairs at the two colleges.
-
-```{r demographics}
-#favstats(~TSO_A, data=clarksmith_women)
-#favstats(~a2pSOO_A, data=clarksmith_women)
-#favstats(~howbody_avg_A, data=clarksmith_women)
-#favstats(~relag_A, data=clarksmith_women)
-#favstats(~careerasp_A, data=clarksmith_women)
-#favstats(~authenticity_A, data=clarksmith_women)
-#favstats(~trigram_score_A, data=clarksmith_women)
-
-#Mean and SD of age of sample
-mean_age <- favstats(~age_A, data = clarksmith_women)$mean
-sd_age <- favstats(~age_A, data = clarksmith_women)$sd
-tally(clarksmith_women$race_A == clarksmith_women$race_P)
-
-#Calculating race percentages
-tally(~race_A, data = clarksmith_women)  #Note that we can add "format = percentage" and not need to calculate
-percentage_black <- 6/(6+18+31+6+3)*100
-percent_asian <- 18/(6+18+31+6+3)*100
-percent_white <- 31/(6+18+31+6+3)*100
-percent_latinx <- 6/(6+18+31+6+3)*100
-percent_other <- 3/(6+18+31+6+3)*100
-tally(~sexor_A, data=clarksmith_women)
-percent_straight <-(41/64)*100
-percent_queer <- (3+8+5)/64*100
-tally(~gender_A, data=clarksmith_women)
-
-table(clarksmith_women$race_A, clarksmith_women$race_P)
-samerace_white <- 16/2 #divide by 2 since table is people, not pairs
-samerace_minority <- (6+2)/2
-mixedrace_white <- 2+10+2+1
-mixedrace_minority <- 1+2+1+1
-
-test <- clarksmith_women %>%
-  filter(race_A==3, race_A!=race_P)
-
-tally(~gender, data=clark_final)
-tally(~gender, data=smith_final)
-```
-
-Due these similarities across samples in regard to correlation patterns between significant variables within this study, the two datasets were combined. These participants were mostly first-year college students, with an average age of `r mean_age` (SD = `r sd_age`). The sample was `r percent_white`% White/European American, `r percentage_black`% Black/African-American, `r percent_asian`% Asian/Pacific Islander, `r percent_latinx`% Latinx, and `r percent_other`% mixed-race. There were `r samerace_white` White/White pairs and `r samerace_minority` same race racial minority pairs, for a total of `r samerace_white + samerace_minority` same-race pairs. The remaining `r mixedrace_white + mixedrace_minority` were mixed race pairs, of which `r mixedrace_white` were White/racial minority pairings and `r mixedrace_minority` were cross-racial minority group pairs. `r percent_straight`% of the sample identified as heterosexual, and `r percent_queer`% identified as gay, lesbian or bisexual. 
 
 # Results
 ## Data analysis
@@ -636,6 +634,11 @@ Lastly, although there was no evidence that SSO was related to interaction authe
 The results were similar for analyses conducted on Sample 1 and Sample 2 individually. See the online supplemental material for more detail on these analyses. 
 
 #Discussion
+The current study tested whether the model of interpersonal objectification and state self-objectification (SSO) used in @garcia2016objectification replicates in a same-gender dyadic sample of women only. Although past reserach has found that women do objectify other women [@puvia2013being; @loughnan2015exploring; @harsey2020men], this is the first study to test if this other-objectification by women is related to self-objectification in women. As hypothesized, the current study did find a significant relationship bewteen a woman's partner's report of having objectified her and her own post-interaction feelings of self-objectification. 
+
+Where the results of the current study diverge most notably from the results of studies testing interpersonal objectification among mixed-gender dyads is the lack of evidence for relationships between SSO and felt inauthenticity [@garcia2016objectification]. In addition, we found to evidence of *direct* or *indirect* relationships between SSO and cognitive functioning, relationship agency, and career aspirations. Nor was there evidence of *direct* or *indirect* relationships between other-objectification and any of these outcomes. This is somewhat suprising given the extant research on interpersonal other-ojectification and cognitive functioning [CITE that logel study], and the plentiful evidence linking SSO and cognitive functioning [@fredrickson1998swimsuit; CITE; CITE; CITE]. This lack of evidence could potentially signal diverging processs between women's experiences with interpersonal objectification from men and interpersonal objectification from women. There is quite a bit of evidence suggesting that the male gaze is particularly detrimental [CITE; CITE; CITE], and perhaps the self-objectification experienced within an interaction with a women is not as detrimental as the self-objectificatoin experienced within an interaction with a man. This lack of evidence could also be due to the relatively small sample size. 
+
+What we did find, however, 
 
 As stated previously, we did not find a significant effect between actor SSO and actor authenticity, which suggests that there is not sufficient evidence to support the claim that partner objectification is the cause for the diverse range of negative effects related to relationship inauthenticity. However, we did observe a significant partner effect of objectification on actor self-objectification, which does align with our hypothesis that theorized objectification from other women can also cause women to self-objectify just as they do within interactions between male-female pairs. 
 
