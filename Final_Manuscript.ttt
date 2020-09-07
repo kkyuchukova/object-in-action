@@ -19,6 +19,8 @@ Actor's cognitive performance & 5.03 & 2.29 & .08 & .11 & .11 & .02 & .07\\
 \end{threeparttable}
 \end{center}
 \end{table*}
+\efloatseparator
+ 
 \begin{table*}[hbt]
 \ifnextchar[{\eatarg}{}
 [tbp]
@@ -40,3 +42,5 @@ Actor's cognitive performance & 5.03 & 2.29\\
 \end{threeparttable}
 \end{center}
 \end{table*}
+\efloatseparator
+ 
