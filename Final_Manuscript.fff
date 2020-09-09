@@ -8,7 +8,7 @@
 \begin{figure*}[hbt]
 \ifnextchar[{\eatarg}{}
 
-\includegraphics[width=400px]{2016_figure} \caption{Path Analysis Model from Garcia et al. (2016) study with distinguishable dyads.}\label{fig:2016figure}
+\includegraphics[width=400px]{theor_figure} \caption{Path Analysis Model from Garcia et al. (2016) study with distinguishable dyads.}\label{fig:theorfigure}
 \end{figure*}
 \efloatseparator
  

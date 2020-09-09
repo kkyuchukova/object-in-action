@@ -483,7 +483,6 @@ report_stats <- function(mod, est){
 # randomeffects2 <- as.data.frame(VarCorr(mlm_mod2.0))
 ```
 
-
 All model estimates and p-values are found in Table\ \@ref(tab:mlm) and the relationships with estimates included are depicted in Figure\ \@ref(fig:semfigure). 
 
 ```{r}
@@ -616,8 +615,6 @@ apim5.c <- gls(careerasp_A ~ authenticity_A + howbody_avg_A + a2pSOO_P + smith_o
 summary(apim5.c)
 ```
 Lastly, although there was no evidence that SSO was related to interaction authenticity in the current sample, we tested if interaction authenticity (composite of nine items) had effects on cognitive performance, career aspirations, and relationship agency, as it did in @garcia2016objectification. We again used MLM and thus, these effects were tested in three separate models. There was no significant effect of interaction authenticity on cognitive performance, `r report_stats(apim3, 2)`, but authenticity was significantly positively related to both career aspirations, `r report_stats(apim5, 2)`, and relationship agency, `r report_stats(apim4, 2)`. There was no direct effect of SSO on cognitive performance, `r report_stats(apim3.b, 3)`, and no direct effect of partner's other objectification on cognitive performance, `r report_stats(apim3.c, 4)`. There was no direct effect of SSO on career aspirations, `r report_stats(apim5.b, 3)`, and no direct effect of partner's other objectification on career aspirations, `r report_stats(apim5.c, 4)`. There was no direct effect of SSO on relationship agency, `r report_stats(apim4.b, 3)`, and no direct effect of partner's other objectification on relationship agency, `r report_stats(apim4.c, 4)`. 
-
-The results were similar for analyses conducted on Sample 1 and Sample 2 individually. See the online supplemental material for more detail on these analyses. 
 
 #Discussion
 The current study tested whether the model of interpersonal objectification and state self-objectification (SSO) used in @garcia2016objectification replicates in a same-gender dyadic sample of women only. Although past research has found that women do objectify other women [@puvia2013being; @loughnan2015exploring; @harsey2020men], this is the first study to test if *interpersonal* other-objectification by women is related to state self-objectification in their woman-identified interaction partners. As hypothesized, the current study did find a significant relationship between a woman's interaction partner's report of having objectified her and her own post-interaction feelings of self-objectification. That is, there was a significant partner effect of other-objectification on SSO. This effect extends the equivalent relationship found in mixed-gender interactions to the context of same-gender interactions between women. Thus, evidence suggests that it is not only the male gaze, and male other-objectification that is related to women's state self-objectification, but being objectified by another woman can also result in SSO, at least in the context of a scenario where they know they are being evaluated as a potential dating partner. [Asha:Or … thus evidence provides support for the claim that women being objectified by another woman result in sso in ways that are not uniquely dissimilar from that of xyz]
