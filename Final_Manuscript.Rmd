@@ -223,18 +223,17 @@ glrstab<- function(x, export=FALSE) {
  
 }
 
-corr_cswomen <- clarksmith_women %>%
-  select(TSO_A, authenticity_A, a2pSOO_A, howbody_avg_A, relag_A, trigram_score_A)
+corr_cswomen <-clarksmith_women %>%
+  select(TSO_A, a2pSOO_A, a2pSOO_P, howbody_avg_A, authenticity_A, relag_A, trigram_score_A, careerasp_A)
 
 corr.table <- glrstab(corr_cswomen)
-rownames(corr.table) <- c("Actor's trait self objectification (TSO)", "Actor's authenticity of interaction", "Actor's objectification of partner", "Actor's state self-objectification", "Actor's future relationship agency", "Actor's cognitive performance")
-colnames(corr.table)   <- c("$M$", "$SD$", "1", "2", "3", "4", "5")
+rownames(corr.table) <- c("1. Actor's trait self objectification (TSO)", "2. Actor's objectification of partner", "3. Partner's objectification of the actor", "4. Actor's state self-objectification", "5. Actor's authenticity of interaction", "6. Actor's future relationship agency", "7. Actor's cognitive performance", "8. Actor's career aspirations")
+colnames(corr.table)   <- c("$M$", "$SD$", "1.", "2.", "3.", "4.", "5.", "6.")
 
-apa_table(corr.table, caption="Correlations among study variables.", escape=FALSE)
+apa_table(corr.table, caption="Correlations and Descriptive Statistics among Study Variables", escape=FALSE)
 ```
 
-```{r descriptives, include=TRUE, echo=FALSE, results='asis'}
-#table 2
+```{r descriptives}
 descriptives_cswomen <- clarksmith_women %>%
   select(TSO_A, authenticity_A, a2pSOO_A, howbody_avg_A, relag_A, trigram_score_A)
 descriptives <- describe(descriptives_cswomen)
@@ -242,19 +241,19 @@ descriptives <- describe(descriptives_cswomen)
 descriptives <- descriptives %>%
   select(mean, sd)
 
-rownames(descriptives) <- c("Actor's trait self objectification (TSO)", 
-                            "Actor's authenticity of interaction", 
-                            "Actor's objectification of partner", 
-                            "Actor's state self-objectification", 
-                            "Actor's future relationship agency", 
-                            "Actor's cognitive performance")
+# rownames(descriptives) <- c("Actor's trait self objectification (TSO)", 
+#                             "Actor's authenticity of interaction", 
+#                             "Actor's objectification of partner", 
+#                             "Actor's state self-objectification", 
+#                             "Actor's future relationship agency", 
+#                             "Actor's cognitive performance")
+# 
+# colnames(descriptives) <- c("M", "SD")
 
-colnames(descriptives) <- c("M", "SD")
-
-apa_table(descriptives, caption = "Descriptive Statistics for Study Variables")
+#apa_table(descriptives, caption = "Descriptive Statistics for Study Variables")
 ```
 
-The following measures were collected in the order they are presented following the interaction. Correlations appear in Table\ \@ref(tab:corrtable), and descriptive statistics appear in Table\ \@ref(tab:descriptives). 
+The following measures were collected in the order they are presented following the interaction. Correlations and descriptive statistics appear in Table\ \@ref(tab:corrtable). 
 
 ###Cognitive Performance
 ```{r trigram}
@@ -289,7 +288,7 @@ soo_diff <- t.test(a2pSOO_A ~ (sexor_A == 1), data = clarksmith_women)
 ```
 To measure the participant’s objectification of their partner in the interaction, participants were asked a series of questions about the frequency of thoughts in relation to  multiple characteristics of their partner [@garcia2016objectification]. Questions included aspects of their partner’s internal traits such as personality, friends, family, and extracurricular interests, as well as external traits such as body, appearance, clothing, and body parts. All questions were rated on a scale from 1 (not at all) to 7 (constantly). Objectification was measured by taking the difference between the average frequency of thought about their partner’s external traits ($\alpha$ = `r printnum(clark_extsoo_alpha)[1,1]` for Sample 1, $\alpha$ = `r printnum(smith_intsoo_alpha)[1,1]` for Sample 2) and frequency of thought about their partner’s internal traits ($\alpha$ = `r printnum(clark_extsoo_alpha)[1,1]` for Sample 1, $\alpha$ = `r printnum(smith_extsoo_alpha)[1,1]` for Sample 2). A positive score in this scale would indicate that the participant thought about their partner’s external traits more than the partner’s internal traits, and a negative score would indicate the opposite. 
 
-As can be seen in Table\ \@ref(tab:descriptives), the mean other-objectification of women by women was *M =* `r descriptives[3,1]` (*SD =* `r descriptives[3,2]`). This corresponds to women objectifying other women to a *greater* extent than women's objectification of men reported in @garcia2016objectification (*M =* -1.68, *SD =* 1.52). Further, in the current sample the difference in other-objectification between heterosexual (*M =* `r round(as.numeric(descsplit[2,2]),2)`, *SD =* `r round(as.numeric(descsplit[2,3]),2)`) and non-heterosexual women (*M =* `r round(as.numeric(descsplit[1,2]),2)`, *SD =* `r round(as.numeric(descsplit[1,3]),2)`) was not statistically significant, *t*(`r round(soo_diff$parameter,2)`) = `r round(soo_diff$statistic, 2)`, *p =* `r round(soo_diff$p.value,3)`. 
+As can be seen in Table\ \@ref(tab:corrtable), the mean other-objectification of women by women was *M =* `r descriptives[3,1]` (*SD =* `r descriptives[3,2]`). This corresponds to women objectifying other women to a *greater* extent than women's objectification of men reported in @garcia2016objectification (*M =* -1.68, *SD =* 1.52). Further, in the current sample the difference in other-objectification between heterosexual (*M =* `r round(as.numeric(descsplit[2,2]),2)`, *SD =* `r round(as.numeric(descsplit[2,3]),2)`) and non-heterosexual women (*M =* `r round(as.numeric(descsplit[1,2]),2)`, *SD =* `r round(as.numeric(descsplit[1,3]),2)`) was not statistically significant, *t*(`r round(soo_diff$parameter,2)`) = `r round(soo_diff$statistic, 2)`, *p =* `r round(soo_diff$p.value,3)`. 
 
 ###Interaction Authenticity
 ```{r alpha_intauth}
@@ -396,8 +395,8 @@ We used R [Version 3.5.2; @R-base] and the R-packages *tidyverse* [Version 1.2.1
 include_graphics("APIM_figure.png")
 ```
 
-```{r theorfigure, include=TRUE, echo=FALSE, results='asis', out.width="400px", fig.cap="Path Analysis Model from Garcia et al. (2016) study with distinguishable dyads."}
-include_graphics("theor_figure.jpg")
+```{r theorfigure, include=TRUE, echo=FALSE, results='asis', out.width="400px", fig.cap="Theoretical Model from Garcia et al. (2016)."}
+include_graphics("theor_figure.png")
 ```
 
 This study sought to detect whether partners’ objectification of one another affected state self-objectification (SSO). Specifically, we were interested in testing the relationship between state-other objectification and SSO, and how SSO in turn, affects feelings of inauthenticity during the interaction. In addition, we also tested if the effect of other-objectification in an interaction on SSO is only present for those women who are high in trait self-objectification. Further, we investigated the relationships between experiencing interaction inauthenticity and relationship agency, career aspirations, and cognitive performance. 

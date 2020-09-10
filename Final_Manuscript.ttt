@@ -3,40 +3,19 @@
 [tbp]
 \begin{center}
 \begin{threeparttable}
-\caption{\label{tab:corrtable}Correlations among study variables.}
-\begin{tabular}{llllllll}
+\caption{\label{tab:corrtable}Correlations and Descriptive Statistics among Study Variables}
+\begin{tabular}{llllllllll}
 \toprule
- & \multicolumn{1}{c}{$M$} & \multicolumn{1}{c}{$SD$} & \multicolumn{1}{c}{1} & \multicolumn{1}{c}{2} & \multicolumn{1}{c}{3} & \multicolumn{1}{c}{4} & \multicolumn{1}{c}{5}\\
+ & \multicolumn{1}{c}{$M$} & \multicolumn{1}{c}{$SD$} & \multicolumn{1}{c}{1.} & \multicolumn{1}{c}{2.} & \multicolumn{1}{c}{3.} & \multicolumn{1}{c}{4.} & \multicolumn{1}{c}{5.} & \multicolumn{1}{c}{6.} & \multicolumn{1}{c}{NA}\\
 \midrule
-Actor's trait self objectification (TSO) & -0.35 & 2.64 &  &  &  &  & \\
-Actor's authenticity of interaction & 5.23 & 1.02 & -.02 &  &  &  & \\
-Actor's objectification of partner & -1.58 & 1.21 & .20 & -.07 &  &  & \\
-Actor's state self-objectification & 1.92 & 1.13 & .13 & -.10 & -.09 &  & \\
-Actor's future relationship agency & 4.69 & 0.96 & .04 & .23+ & .09 & -.09 & \\
-Actor's cognitive performance & 5.03 & 2.29 & .08 & .11 & .11 & .02 & .07\\
-\bottomrule
-\end{tabular}
-\end{threeparttable}
-\end{center}
-\end{table*}
-\efloatseparator
- 
-\begin{table*}[hbt]
-\ifnextchar[{\eatarg}{}
-[tbp]
-\begin{center}
-\begin{threeparttable}
-\caption{\label{tab:descriptives}Descriptive Statistics for Study Variables}
-\begin{tabular}{lll}
-\toprule
- & \multicolumn{1}{c}{M} & \multicolumn{1}{c}{SD}\\
-\midrule
-Actor's trait self objectification (TSO) & -0.35 & 2.64\\
-Actor's authenticity of interaction & 5.23 & 1.02\\
-Actor's objectification of partner & -1.58 & 1.21\\
-Actor's state self-objectification & 1.92 & 1.13\\
-Actor's future relationship agency & 4.69 & 0.96\\
-Actor's cognitive performance & 5.03 & 2.29\\
+1. Actor's trait self objectification (TSO) & -0.35 & 2.64 &  &  &  &  &  &  & \\
+2. Actor's objectification of partner & -1.58 & 1.21 & .20 &  &  &  &  &  & \\
+3. Partner's objectification of the actor & -1.58 & 1.21 & .09 & .14 &  &  &  &  & \\
+4. Actor's state self-objectification & 1.92 & 1.13 & .13 & -.09 & .30* &  &  &  & \\
+5. Actor's authenticity of interaction & 5.23 & 1.02 & -.02 & -.07 & .03 & -.10 &  &  & \\
+6. Actor's future relationship agency & 4.69 & 0.96 & .04 & .09 & -.10 & -.09 & .23+ &  & \\
+7. Actor's cognitive performance & 5.03 & 2.29 & .08 & .11 & .06 & .02 & .11 & .07 & \\
+8. Actor's career aspirations & 3.88 & 0.61 & .05 & -.14 & -.08 & .01 & .33** & .26* & -.07\\
 \bottomrule
 \end{tabular}
 \end{threeparttable}
