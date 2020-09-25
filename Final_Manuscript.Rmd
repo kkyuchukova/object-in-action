@@ -38,7 +38,7 @@ draft             : no
 
 documentclass     : "apa6"
 classoption       : "man"
-output            : papaja::apa6_word
+output            : papaja::apa6_pdf
 ---
 
 ```{r setup, analysis-preferences}
@@ -67,14 +67,14 @@ library(xtable)
 library(rmarkdown)
 ```
     
-@robertsfredrickson Objectification Theory, suggests that, in addition to being steeped in a culture that objectifies women, women are objectified in actual interpersonal encounters. The negative effects of this interpersonal objectification for women are theorized be the strongest when it is a man doing the objectifying [@calogero2004test; @gervais2011you; @gay2010my], but what are the consequences when a woman objectifies another woman in an interaction? Psychological researchers studying the sexual objectification of women, have in recent years explored the interpersonal process of the objectification, finding evidence for *self*-objectification in the target as a proximal consequence of being objectified [@garcia2016objectification; @strelan2018birds; @riemer2020self]. In a recent review, @gervais2020social organized the extant literature on interpersonal self-objectification and proposed a theoretical model called the Social Interaction Model of Objectification (SIMO). The SIMO is useful for studying mixed-gender interactions, but what about interactions among women? Although there is evidence that women objectify other women [@loughnan205exploring; @puvia2013being], studies investigating the process of interpersonal objectification in interactions between women is scarce. 
+@robertsfredrickson Objectification Theory, suggests that, in addition to being steeped in a culture that objectifies women, women are objectified in actual interpersonal encounters. The negative effects of this interpersonal objectification for women are theorized be the strongest when it is a man doing the objectifying [@calogero2004test; @gervais2011you; @gay2010my], but what are the consequences when a woman objectifies another woman in an interaction? Psychological researchers studying the sexual objectification of women, have in recent years explored the interpersonal process of the objectification, finding evidence for *self*-objectification in the target as a proximal consequence of being objectified [@garcia2016objectification; @strelan2018birds; @riemer2020self]. In a recent review, @gervais2020social organized the extant literature on interpersonal self-objectification and proposed a theoretical model called the Social Interaction Model of Objectification (SIMO). The SIMO is useful for studying mixed-gender interactions, but what about interactions among women? Although there is evidence that women objectify other women [@loughnan2015exploring; @puvia2013being], studies investigating the process of interpersonal objectification in interactions between women is scarce. 
 
 Is objectification by a female interaction partner related to an increases in self-objectification for the woman being objectified? Further, does objectification by a woman have the same downstream negative consequences for women as being objectified by a male interaction partner? The current study begins to address these questions by investigating interpersonal objectification among interacting pairs where both partners identify as women. 
 
 ##Self-Objectification
 Self-objectification is a psychological process that provides that translates the experiences of interpersonal objectification [@loughnan2015exploring; @gervais2020social into negative mental health outcomes (e.g., interaction inauthenticity, anxiety, self-esteem, and cognitive performance) [@calogero2011; @moradi2008]. @calogero2011 proposes that self-objectification can be conceptualized as a learned trait, or *trait* self-objectification (TSO), whereby one abopts a habitual third-person perspective on one's own appearance. Furthermore, self-objectification can also be elicited momentarily, for example, when viewing sexualized images in movies and magazines [@morry2001magazine], when trying on sexualizing clothing [@fredrickson1998swimsuit], or during video chat when you believe your interaction partner can only see your body [not face; @saguyetal2010]. This momentary self-objectification is referred to as *state* self-objectification [SSO; @bernard2018bodies; @calogero2011; @moradi2008] and is characterized by feeling like a body rather than a full self within a particular moment, instance, or context. 
 
-There is evidence that being objectified by another person during an interaction elicits SSO. For example, in a face-to-face mixed-gender dyadic study, @garcia2016objectification found that men’s reported objectification of their female interaction partner was associated with increased self-objectification as reported by their female partner. Further, this negative effect of the men's objectification on women's SSO was strongest for women higher in TSO. The current study uses this same dyadic paradigm to study same-gender, woman-woman interacting pairs. 
+There is evidence that being objectified by another person during an interaction elicits SSO. For example, @loughnan2017internalizing found that for women, imagining a time when they were objectified by another person cause reductions in human traits attributed to the self, and further, the gender of the person doing the objectification was not a moderating factor. In addition, in a face-to-face mixed-gender dyadic study, @garcia2016objectification found that men’s reported objectification of their female interaction partner was associated with increased self-objectification as reported by their female partner. Further, this negative effect of the men's objectification on women's SSO was strongest for women higher in TSO. The current study uses this same dyadic paradigm to study same-gender, woman-woman interacting pairs. 
 
 ##Women Objectifying Women
 Past research investigating women objectifying other women has focused on the psychological conditions that led women to objectify women. @harsey2020men found that self-objectification was related to the objectification of women to a similar degree for male and female participants. Along the same lines, @strelan2005women found that the more women self-objectify, the more they objectify other women. Could the process work in the other direction as well, that is, could objectification by a woman produce self-objectification, in a similar manner to objectification by a man? @hill2008examining assessed women’s experiences of objectification from men independently from women’s experiences of objectification from other women. They found that women may be socialized not only to see themselves as objects, but perhaps to see other women as objects as well. This process, however, was not comfirmed to occur during an actual interpersonal interaction. @loughnan2015exploring found that women objectify other women to a greater extent than they objectify men. Women have also been found to objectify (dehumanized) sexualized targets presented as images [@puvia2013being], but very little is known about interpersonal sexual objectification among women and what the proximal effects of this objectification might be. We do know that objectification has more adverse consequences for women than men [@gervais2011you; @moradi2008; @saguyetal2010], however, if women objectify other women, perhaps even to a stronger degree than they objectify men, this woman to woman objectification might have detrimental outcomes.
@@ -160,7 +160,7 @@ tally(~gender, data=clark_final)
 tally(~gender, data=smith_final)
 ```
 
-The participants were mostly first-year college students, with an average age of `r mean_age` (SD = `r sd_age`). The sample was `r percent_white`% White/European American, `r percentage_black`% Black/African-American, `r percent_asian`% Asian/Pacific Islander, `r percent_latinx`% Latinx, and `r percent_other`% mixed-race. There were `r samerace_white` White/White pairs and `r samerace_minority` same race racial minority pairs, for a total of `r samerace_white + samerace_minority` same-race pairs. The remaining `r mixedrace_white + mixedrace_minority` were mixed race pairs, of which `r mixedrace_white` were White/racial minority pairings and `r mixedrace_minority` were cross-racial minority group pairs. `r percent_straight`% of the sample identified as heterosexual, and `r percent_queer`% identified as gay, lesbian or bisexual. 
+The participants were mostly first-year college students, with an average age of `r mean_age` (SD = `r sd_age`). The sample was `r percent_white`% White/European American, `r percentage_black`% Black/African-American, `r percent_asian`% Asian/Pacific Islander, `r percent_latinx`% Latinx, and `r percent_other`% mixed-race. There were `r samerace_white` White/White pairs and `r samerace_minority` same race racial minority pairs, for a total of `r samerace_white + samerace_minority` same-race pairs. The remaining `r mixedrace_white + mixedrace_minority` were mixed race pairs, of which `r mixedrace_white` were White/racial minority pairings and `r mixedrace_minority` were cross-racial minority group pairs. `r percent_straight`% of the sample identified as heterosexual, and `r percent_queer`% identified as gay, lesbian or bisexual. See the analysis of differences between heteroseuxal and non-heterosexual women in levels of other-objectification of their female partners in the measures section below. 
 
 ##Post interaction Measures
 
@@ -365,7 +365,7 @@ smith_careerasp_alpha <- psych::alpha(select(smith_final, careerasp_1, careerasp
                                              careerasp_6, careerasp7.r, careerasp_8, 
                                              careerasp_9, careerasp10.r))$total[2]
 ```
-To conceptualize participants’ career aspirations after the interaction, we used the 10-item adaptation of @grayobrien2007’s Career Aspiration Scale employed in @garcia2016objectification, which asked participants to consider how true 10 statements were in regard to their future careers on a scale from 0 (not at all true of me) to 4 (very true of me). Items include "I hope to become a leader in my career field" and "I hope to move up through any organization or business I work in." Items were fairly reliable ($\alpha$ = `r printnum(clark_careerasp_alpha)[1,1]` for Sample 1, $\alpha$ = `r printnum(smith_careerasp_alpha)[1,1]` for Sample 2).
+To conceptualize participants’ career aspirations after the interaction, we used the 10-item adaptation of @grayobrien2007’s Career Aspiration Scale which asked participants to consider how true 10 statements were in regard to their future careers on a scale from 0 (not at all true of me) to 4 (very true of me). Items include "I hope to become a leader in my career field" and "I hope to move up through any organization or business I work in." Items were fairly reliable ($\alpha$ = `r printnum(clark_careerasp_alpha)[1,1]` for Sample 1, $\alpha$ = `r printnum(smith_careerasp_alpha)[1,1]` for Sample 2).
 
 ###Trait Self-Objectification
 ```{r alpha_TSO}
@@ -378,30 +378,28 @@ clark_physTSO_alpha <- psych::alpha(select(clark_final, tso_3, tso_5, tso_6, tso
 smith_funcTSO_alpha <- psych::alpha(select(smith_final, tso_1, tso_2, tso_4, tso_7, tso_9), check.keys=TRUE)$total[2]
 smith_physTSO_alpha <- psych::alpha(select(smith_final, tso_3, tso_5, tso_6, tso_8, tso_10), check.keys=TRUE)$total[2]
 ```
-Trait self-objectification (TSO) was assessed using the Self-Objectification Questionnaire [@fredrickson1998swimsuit; @nollfredrickson1998], which evaluates the extent to which individuals view their bodies in observable versus non-observable ways. The questionnaire asked participants to rank order both appearance and functional aspects of their bodies, from 1 (least important) to 10 (most important), with respect to physical self-concepts. Of the ten body attributes, five of the items were appearance-based (weight, sex appeal, physical attractiveness, firm/sculpted muscles and body measurements), and five of the items were competence-based (strength, physical coordination, energy level, health and physical fitness). Difference scores were computed by subtracting the sum of the 5 functional aspects/competence attributes (e.g., health, strength) from the sum of the 5 physical self-concepts/appearance attributes (e.g., physical attractiveness, weight), and all measures were multiplied by -1, as was done in @garcia2016objectification, so that positive scores indicated greater TSO. 
+Trait self-objectification (TSO) was assessed using the Self-Objectification Questionnaire [@fredrickson1998swimsuit; @nollfredrickson1998], which evaluates the extent to which individuals view their bodies in observable versus non-observable ways. The questionnaire asked participants to rank order both appearance and functional aspects of their bodies, from 1 (least important) to 10 (most important), with respect to physical self-concepts. Of the ten body attributes, five of the items were appearance-based (weight, sex appeal, physical attractiveness, firm/sculpted muscles and body measurements), and five of the items were competence-based (strength, physical coordination, energy level, health and physical fitness). Difference scores were computed by subtracting the sum of the 5 functional aspects/competence attributes (e.g., health, strength) from the sum of the 5 physical self-concepts/appearance attributes (e.g., physical attractiveness, weight), and all measures were multiplied by -1 so that positive scores indicated greater TSO. 
 
 # Results
-## Analysis Strategy
 ```{r create_r-references, warning=FALSE, message=FALSE}
 r_refs(file = "r-references.bib")
 
 #cite_r("r-references.bib") #There are other packages loaded as well, not sure which ones we use and which ones we dont. Consider putting all loaded packages in supplement.  
 ```
-We used R [Version 3.5.2; @R-base] and the R-packages *tidyverse* [Version 1.2.1; @R-tidyverse], *psych* [Version 1.8.4; @R-psych], *nlme* [Version 3.1.137; @R-nlme] for our analyses. Further, we used the R-packages *papaja* [Version 0.1.0.9842; @R-papaja], *apaTables* [Version 2.0.5; @R-apaTables], with *knitr* [Version 1.25; @R-knitr] to create a fully reproducible manuscript in *rmarkdown* [Version 1.15; @R-rmarkdown].
+We used R [Version 3.5.2; @R-base] and the R-packages *tidyverse* [Version 1.2.1; @R-tidyverse], *psych* [Version 1.8.4; @R-psych], *nlme* [Version 3.1.137; @R-nlme] for our analyses. Further, we used the R-packages *papaja* [Version 0.1.0.9842; @R-papaja], *apaTables* [Version 2.0.5; @R-apaTables], with *knitr* [Version 1.25; @R-knitr] to create a fully reproducible manuscript in *rmarkdown* [Version 1.15; @R-rmarkdown]. 
 
+The R-package *papaja* [Version 0.1.0.9842; @R-papaja] was used to create a fully reproducible research document containing the analysis code and manuscript text integrated into one source file. The benefit of this integration is that the numbers reported throughout this document are softcoded into the text, ensuring that no errors were made during a workflow marked by a copy-and-paste from statistical software to word processing software. Note that here we are using the term reproducibility to mean getting the same results when running analyses again using the same data, not to be confused with replicability meaning collecting a new dataset using the same methods and obtaining the same results [@patil2016statistical]. The source code for this manuscript along with survey materials and experimenter scripts for the study protocol are all avaliable at https://github.com/kkyuchukova/object-in-action. The data unfortunutely cannot be made publically avaliable given the dyadic nature of the observations. For example, with dyadic data, if a person who participated in the study found their own scores, using the dyad identification number, they could then see their partner's scores and thus confidentiality would be broken.
+
+## Analysis Strategy
 ```{r apim, include=TRUE, echo=FALSE, results='asis', out.width="400px", fig.cap="Basic actor-partner interdependence model (APIM) depiction."}
 include_graphics("APIM_figure.png")
 ```
 
-```{r theorfigure, include=TRUE, echo=FALSE, results='asis', out.width="400px", fig.cap="Theoretical Model from Garcia et al. (2016)."}
-include_graphics("theor_figure.png")
-```
+This study sought to detect whether partners’ objectification of one another affected state self-objectification (SSO). Specifically, we were interested in testing the relationship between state-other objectification and SSO, and how SSO in turn, may or may not affects feelings of inauthenticity during the interaction. In addition, we also tested if the effect of other-objectification in an interaction on SSO is only present for those women who are high in trait self-objectification (moderation effect). Further, we investigated the relationships between experiencing interaction inauthenticity and relationship agency, career aspirations, and cognitive performance.
 
-This study sought to detect whether partners’ objectification of one another affected state self-objectification (SSO). Specifically, we were interested in testing the relationship between state-other objectification and SSO, and how SSO in turn, affects feelings of inauthenticity during the interaction. In addition, we also tested if the effect of other-objectification in an interaction on SSO is only present for those women who are high in trait self-objectification. Further, we investigated the relationships between experiencing interaction inauthenticity and relationship agency, career aspirations, and cognitive performance.
+While past studies investigating objectification in interactions used dyadic path analysis [@garcia2016objectification], the current study used multilevel modeling proceedures. Dyadic analyses for distinguishable dyads (e.g., mixed-gender interacting pairs) is more natural in Structural Equation Modeling (SEM) than it is for indistinguishable dyads (e.g., same-gender interacting pairs), as we had in the current study [@ledermann2017analyzing; @garcia2015moderation]. One reason for this asymmetry is that, due to the arbitrary distinctions made between "partner 1" and "partner 2" in indistinguishable dyads, many estimates need to be fixed to be equal (i.e., paths, variances, covariances, endogenous intercepts, and exogenous means), but these equality constraints should not then be considered in the degrees of freedom calculations for fit estimations [@olsen2006structural]. Further, @olsen2006structural details how a new independence model and the corresponding fit measure should be re-calculated for indistinguishable dyads models. The current study used dyadic multilevel modeling (MLM) to test all relationships, moderation, and mediation patterns. The online supplementary materials found at https://github.com/kkyuchukova/object-in-action contain model estimates obtained with SEM. See @ledermann2017analyzing for a more complete discussion of the considerations for using SEM versus MLM for dyadic analysis.  
 
-While past studies investigating objectification in interactions used dyadic path analysis [@garcia2016objectification], the current study used multilevel modeling proceedures. Dyadic analyses for distinguishable dyads (e.g., mixed-gender interacting pairs) is more natural in Structural Equation Modeling (SEM) than it is for indistinguishable dyads (e.g., same-gender interacting pairs), as we have here [@ledermann2017analyzing; @garcia2015moderation]. One reason for this asymmetry is that, due to the arbitrary distinctions made between "partner 1" and "partner 2" in indistinguishable dyads, many estimates need to be fixed to be equal (i.e., paths, variances, covariances, endogenous intercepts, and exogenous means), but these equality constraints should not then be considered in the degrees of freedom calculations for fit estimations [@olsen2006structural]. Further, @olsen2006structural details how a new independence model and the corresponding fit measure should be re-calculated for indistinguishable dyads models. The current study uses dyadic multilevel modeling (MLM) to test all relationships and mediation patterns. The online supplementary materials contains analysis using SEM. See @ledermann2017analyzing for a more complete discussion of the considerations for using SEM versus MLM for dyadic analysis.  
-
-Testing our hypotheses in the current, same-gender, sample, involves using the Actor-Partner Independence Model (APIM) approach for each outcome variable (i.e., endogenous variable in Figure\ \@ref(fig:theorfigure)). Thus, we ran five APIM's to test all the hypothesized relationships. See Figure\ \@ref(fig:apim) for a basic APIM model. The APIM includes effects due to one's own, as well as one's partner's, predictor variables ($X$'s) on the one's own outcome variable ($Y$). The current study deals with indistinguishable dyads, meaning the designation of who is designated as "actor" and who is designated as "partner" is arbitrary. These analyses are considered exploratory, given the lack of prior research theorizing about these linkages.
+Testing hypotheses and exploring relationships in the current sample of indistinguishable dyads involved using the Actor-Partner Independence Model (APIM) approach for each outcome variable. The current study deals with indistinguishable dyads, meaning the designation of who is designated as "actor" and who is designated as "partner" is arbitrary. Thus, we ran five APIM's to test all the relationships (i.e., for SSO, inauthenticity, career aspirations, relationship agency, and cognitive performance as outcome variables). See Figure\ \@ref(fig:apim) for a basic APIM model. The APIM includes effects due to one's own, as well as one's partner's, predictor variables ($X$'s) on the one's own outcome variable ($Y$). The analysis of the relationship between SSO and inauthenticity in this same-gender sample are considered exploratory, given that prior research points to mixed possibilities.
 
 <!-- The model differences as a result of adopting this MLM approach include an examination of the partner effect of TSO on SSO, partner effect of SSO on authenticity, and partner effects of authenticity on congitive performance, relationship agency, and career aspirations.  -->
 
@@ -410,42 +408,8 @@ Testing our hypotheses in the current, same-gender, sample, involves using the A
 <!-- In order to interpret model fit, which refers to the ability of a model to reproduce the data (i.e., usually the varience-covariance matrix) we utilized both the I-SAT (saturated) model, and the Null model to ensure that all possible corresponding covariences are fixed to be equal across partners. We obtained fit estimates by subtracting the chi-square estimate for the I-SAT model from the analysis model [@olsen2006structural, @peugh2013analyzing]. -->
 
 ## Main Results
-```{r semfigure, include=TRUE, echo=FALSE, results='asis', out.width="400px", fig.cap="Path Analysis Model with Estimates"}
+```{r semfigure, include=TRUE, echo=FALSE, results='asis', out.width="400px", fig.cap="This figure depicts the relationships tested bewteen study variables. The light gray variables represent redundant variables and are shown to emphasize the dyadic nature of the data. The estimates were from obtained from separate MLMs. Sample was controlled for in all models. The effects of TSO, actor other-objectification, and partner other-objectification are from a model where the interaction of TSO and partner other-objectification had been trimmed. *p < .05, dashed lines represent non-significant relationships."}
 include_graphics("SEMfigure.png")
-```
-
-```{r mlm, include=TRUE, results='asis'}
-# fit_table <- xtable(parameterEstimates(fit))
-# 
-# fit_table <- fit_table %>%
-#   filter(op=="~") %>%
-#   mutate(lhs = ifelse(lhs == "howbody_avg_A", "Actor SSO",
-#                       ifelse(lhs=="authenticity_A", "Actor Authenticity",
-#                              ifelse(lhs=="howbody_avg_P", "Partner SSO",
-#                                     ifelse(lhs=="authenticity_P", "Partner Authenticity",
-#                                            ifelse(lhs=="relag_A", "Actor Rel. Agency",
-#                                                   ifelse(lhs=="relag_P", "Partner Rel. Agency",
-#                                                          ifelse(lhs=="careerasp_A", "Actor Career Aspirations",
-#                                                                 ifelse(lhs=="careerasp_P", "Partner Career Aspirations",
-#                                                                        ifelse(lhs=="trigram_score_A", "Actor Cog. Performance",
-#                                                                               ifelse(lhs=="trigram_score_P", "Partner Cog. Performance", NA)))))))))),
-#          rhs = ifelse(rhs=="TSO_A", "Actor TSO",
-#                       ifelse(rhs=="a2pSOO_A", "Actor Obj. of Partner",
-#                              ifelse(rhs=="a2pSOO_P", "Partner Obj. of Actor",
-#                                     ifelse(rhs=="TSO_A_SOO_P", "Actor TSO x Partner Obj.",
-#                                            ifelse(rhs == "howbody_avg_A", "Actor SSO",
-#                                                   ifelse(rhs=="howbody_avg_P", "Partner SSO",
-#                                                          ifelse(rhs=="TSO_P", "Partner TSO",
-#                                                                 ifelse(rhs=="TSO_P_SOO_A", "Partner TSO x Actor Obj.",
-#                                                                        ifelse(rhs=="authenticity_A", "Actor Authenticity",
-#                                                                               ifelse(rhs=="authenticity_P", "Partner Authenticity", NA))))))))))) %>%
-#   select(lhs, op, rhs, est, se, z, pvalue) %>%
-#   #taking out partner-partner estimates
-#   slice(1:5,11:13)
-# 
-# colnames(fit_table) <- c("Path", "", "", "Estimate", "SE", "z-value", "p-value")
-# 
-# apa_table(fit_table, caption = "Estimates from final Path Analysis Model", font_size = "small")
 ```
 
 ```{r presentation-functions}
@@ -480,8 +444,6 @@ report_stats <- function(mod, est){
 # randomeffects2 <- as.data.frame(VarCorr(mlm_mod2.0))
 ```
 
-All model estimates and p-values are found in Table\ \@ref(tab:mlm) and the relationships with estimates included are depicted in Figure\ \@ref(fig:semfigure). 
-
 ```{r}
 # apim0 <- gls(a2pSOO_A ~ TSO_A, 
 #                  na.action=na.omit, 
@@ -501,9 +463,10 @@ apim1.b <- gls(howbody_avg_A ~ a2pSOO_A + a2pSOO_P + TSO_A + smith_or_clark,
                  data=clarksmith_women)
 
 summary(apim1)
+
 summary(apim1.b)
+
 ```
-The most important finding from @garcia2016objectification was the significant partner effect of other objectification and SSO (specifically men's objectification of women and women's SSO). As expected, the partner effect of other-objectification on SSO in the current all-women sample was statistically significant, `r report_stats(apim1, 3)`. One's own other objectification had no effect on SSO, `r report_stats(apim1, 2)`. Inconsistent with past findings however, there was no statistically significant interaction of partner's other objectification and the person's trait self-objectification on SSO, `r report_stats(apim1, 5)`. There was also no significant main effect of trait self-objectification on SSO `r report_stats(apim1.b, 4)`.
 
 ```{r}
 #authenticity
@@ -538,7 +501,6 @@ apim2.c <- gls(authenticity_A ~a2pSOO_P + smith_or_clark,
 
 summary(apim2.c)
 ```
-There was no significant effect of SSO on interaction authenticity, although the estimate of this effect was in the hypothesized negative direction, `r report_stats(apim2, 2)`. Because authenticity was a composite score of 9 items, two of which were interaction specific authenticity items, we also estimated the pairwise correlations between SSO and all these items individually. They were all small, ranging from only `r -1*min_corr` to `r -1*max_corr`. Although we hypothesized that SSO would mediate the relationship between partner's other objectification and interaction authenticity, after finding no relationship between SSO and authenticity, we also tested if the partner's other objectification had a direct effect on authenticity, but this effect was not significant, `r report_stats(apim2.b, 3)` (nor was the total effect of partner's other objectification on authenticity, `r report_stats(apim2.c, 2)`).
 
 ```{r}
 #cognitive performance
@@ -611,6 +573,22 @@ apim5.c <- gls(careerasp_A ~ authenticity_A + howbody_avg_A + a2pSOO_P + smith_o
 
 summary(apim5.c)
 ```
+
+```{r mlm, include=TRUE, results='asis'}
+# fit_table <- bind_rows(xtable(summary(apim1)$tTable))
+# 
+# 
+# colnames(fit_table) <- c("Estimate", "SE", "z-value", "p-value")
+# 
+# apa_table(fit_table, caption = "Estimates from Multilevel Models", font_size = "small")
+```
+
+All relationships between study variables and the MLM estimates are depicted in Figure\ \@ref(fig:semfigure). 
+
+The most important finding from @garcia2016objectification was the significant partner effect of other objectification and SSO (specifically men's objectification of women and women's SSO). As expected, the partner effect of other-objectification on SSO in the current all-women sample was statistically significant, `r report_stats(apim1, 3)`. One's own other objectification had no effect on SSO, `r report_stats(apim1, 2)`. Inconsistent with past findings however, there was no statistically significant interaction of partner's other objectification and the person's trait self-objectification on SSO, `r report_stats(apim1, 5)`. There was also no significant main effect of trait self-objectification on SSO `r report_stats(apim1.b, 4)`. 
+
+There was no significant effect of SSO on interaction authenticity, although the estimate of this effect was in the hypothesized negative direction, `r report_stats(apim2, 2)`. Because authenticity was a composite score of 9 items, two of which were interaction specific authenticity items, we also estimated the pairwise correlations between SSO and all these items individually. They were all small, ranging from only `r -1*min_corr` to `r -1*max_corr`. Although we hypothesized that SSO would mediate the relationship between partner's other objectification and interaction authenticity, after finding no relationship between SSO and authenticity, we also tested if the partner's other objectification had a direct effect on authenticity, but this effect was not significant, `r report_stats(apim2.b, 3)` (nor was the total effect of partner's other objectification on authenticity, `r report_stats(apim2.c, 2)`).
+
 Lastly, although there was no evidence that SSO was related to interaction authenticity in the current sample, we tested if interaction authenticity (composite of nine items) had effects on cognitive performance, career aspirations, and relationship agency, as it did in @garcia2016objectification. We again used MLM and thus, these effects were tested in three separate models. There was no significant effect of interaction authenticity on cognitive performance, `r report_stats(apim3, 2)`, but authenticity was significantly positively related to both career aspirations, `r report_stats(apim5, 2)`, and relationship agency, `r report_stats(apim4, 2)`. There was no direct effect of SSO on cognitive performance, `r report_stats(apim3.b, 3)`, and no direct effect of partner's other objectification on cognitive performance, `r report_stats(apim3.c, 4)`. There was no direct effect of SSO on career aspirations, `r report_stats(apim5.b, 3)`, and no direct effect of partner's other objectification on career aspirations, `r report_stats(apim5.c, 4)`. There was no direct effect of SSO on relationship agency, `r report_stats(apim4.b, 3)`, and no direct effect of partner's other objectification on relationship agency, `r report_stats(apim4.c, 4)`. 
 
 # Discussion
