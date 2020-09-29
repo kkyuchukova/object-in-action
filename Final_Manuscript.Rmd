@@ -107,9 +107,9 @@ After recieving the "College Relationships" prompt, the two participants were th
 ##Participants
 
 ```{r data}
-clark_final <- read.csv("Cleaned data/clark_final.csv")
-smith_final <- read.csv("Cleaned data/smith_final.csv")
-clarksmith_women <- read.csv("Cleaned data/clarksmith_women.csv")
+clark_final <- read.csv("Cleaned-data/clark_final.csv")
+smith_final <- read.csv("Cleaned-data/smith_final.csv")
+clarksmith_women <- read.csv("Cleaned-data/clarksmith_women.csv")
 ```
 
 ```{r}
@@ -392,7 +392,7 @@ The R-package *papaja* [Version 0.1.0.9842; @R-papaja] was used to create a full
 
 ## Analysis Strategy
 ```{r apim, include=TRUE, echo=FALSE, results='asis', out.width="400px", fig.cap="Basic actor-partner interdependence model (APIM) depiction."}
-include_graphics("APIM_figure.png")
+include_graphics("figures/APIM_figure.png")
 ```
 
 This study sought to detect whether partners’ objectification of one another affected state self-objectification (SSO). Specifically, we were interested in testing the relationship between state-other objectification and SSO, and how SSO in turn, may or may not affects feelings of inauthenticity during the interaction. In addition, we also tested if the effect of other-objectification in an interaction on SSO is only present for those women who are high in trait self-objectification (moderation effect). Further, we investigated the relationships between experiencing interaction inauthenticity and relationship agency, career aspirations, and cognitive performance.
@@ -409,7 +409,7 @@ Testing hypotheses and exploring relationships in the current sample of indistin
 
 ## Main Results
 ```{r semfigure, include=TRUE, echo=FALSE, results='asis', out.width="400px", fig.cap="This figure depicts the relationships tested bewteen study variables. The light gray variables represent redundant variables and are shown to emphasize the dyadic nature of the data. The estimates were from obtained from separate MLMs. Sample was controlled for in all models. The effects of TSO, actor other-objectification, and partner other-objectification are from a model where the interaction of TSO and partner other-objectification had been trimmed. *p < .05, dashed lines represent non-significant relationships."}
-include_graphics("SEMfigure.png")
+include_graphics("figrues/SEMfigure.png")
 ```
 
 ```{r presentation-functions}

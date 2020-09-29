@@ -18,10 +18,10 @@ library(irr)
 library(dplyr)
 ```
 
-#Read in cleaned data
+#Read in Cleaned-data
 ```{r}
-smith_final <- read.csv("Cleaned data/smith_final.csv")
-clark_final <- read.csv("Cleaned data/clark_final.csv")
+smith_final <- read.csv("Cleaned-data/smith_final.csv")
+clark_final <- read.csv("Cleaned-data/clark_final.csv")
 ```
 
 #Restructuring data
@@ -204,7 +204,7 @@ summary(apim_women_clark)
 
 #Writing a csv of clarksmith_women data
 ```{r}
-write.csv(clarksmith_women, "Cleaned data/clarksmith_women.csv")
+write.csv(clarksmith_women, "Cleaned-data/clarksmith_women.csv")
 ```
 
 ##Descriptive stats

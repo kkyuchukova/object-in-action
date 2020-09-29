@@ -24,16 +24,16 @@ library(dplyr)
 #Load data
 ```{r}
 #clark
-clark_measures <- read_spss("Raw data/Clark College Relationships Data/College_Relationship_Measures_1.sav")
-clark_pairwise <- read_spss("Raw data/Clark College Relationships Data/College_Relationship_Pairwise_1.sav")
+clark_measures <- read_spss("Raw-data/Clark College Relationships Data/College_Relationship_Measures_1.sav")
+clark_pairwise <- read_spss("Raw-data/Clark College Relationships Data/College_Relationship_Pairwise_1.sav")
 
 #smith
-smith <- read_spss("Raw data/Smith College Relationships Data/College_Relationship_Dyadic_September_14_2018_12_17.sav")
+smith <- read_spss("Raw-data/Smith College Relationships Data/College_Relationship_Dyadic_September_14_2018_12_17.sav")
 
-clark_sentences <- read.csv("Raw data/Clark College Relationships Data/sexist sentences/coded_sentences.csv")
+clark_sentences <- read.csv("Raw-data/Clark College Relationships Data/sexist sentences/coded_sentences.csv")
 
 #trigrams
-trigram_check <- read.csv("Raw data/Clark College Relationships Data/trigrams/AMELIA_check_trigram_grading.csv")
+trigram_check <- read.csv("Raw-data/Clark College Relationships Data/trigrams/AMELIA_check_trigram_grading.csv")
 ```
 
 #Scale Scores
@@ -164,8 +164,8 @@ smith$TSO <- (smith$physTSO - smith$funcTSO)*(-1)
 Step not needed...processing continues
 ```{r}
 #Write out csv with created variables
-#write.csv(clark_measures, "Cleaned data/clark_measures.csv")
-#write.csv(smith, "Cleaned data/smith.csv")
+#write.csv(clark_measures, "Cleaned-data/clark_measures.csv")
+#write.csv(smith, "Cleaned-data/smith.csv")
 ```
 
 
@@ -259,10 +259,10 @@ Smith
 # smith_trigrams_long <- smith_trigrams_long[,c(1,2,3,5,4)]
 
 ##Write out file to grade
-#write.csv(smith_trigrams_long, "Raw data/Smith College Relationships Data/trigrams_to_grade.csv", row.names=FALSE)
+#write.csv(smith_trigrams_long, "Raw-data/Smith College Relationships Data/trigrams_to_grade.csv", row.names=FALSE)
   
 #Read in graded trigram file
-smith_trigrams_graded <- read.csv("Raw data/Smith College Relationships Data/trigrams_graded.csv")
+smith_trigrams_graded <- read.csv("Raw-data/Smith College Relationships Data/trigrams_graded.csv")
 
 #Summarize a final correct trigram
 smith_triscore <- smith_trigrams_graded %>%
@@ -373,11 +373,11 @@ Smith
 #   arrange(dyadID, partID)
 
 #Write out csv
-#write.csv(smith_sentences_long, "Raw data/Smith College Relationships Data/sexist_sentences_for_coding.csv", row.names = FALSE) 
+#write.csv(smith_sentences_long, "Raw-data/Smith College Relationships Data/sexist_sentences_for_coding.csv", row.names = FALSE) 
 
 #Read in coded sentences, code correlations
-kat_codes <- read.csv("Raw data/Smith College Relationships Data/kat_recode.csv")
-xinyu_codes <- read.csv("Raw data/Smith College Relationships Data/xinyu_recode.csv")
+kat_codes <- read.csv("Raw-data/Smith College Relationships Data/kat_recode.csv")
+xinyu_codes <- read.csv("Raw-data/Smith College Relationships Data/xinyu_recode.csv")
 
 coded_sentences <- merge(x=kat_codes, y=xinyu_codes, all.x = TRUE)
 
@@ -409,9 +409,9 @@ smith_sexism <- merge(x=smith, y=smith_sentence_avg, by="partID", all.x=TRUE)
 smith_final <- merge (x=smith_sexism, y=smith_logel, by="partID", all.x=TRUE)
 ```
 
-Write out cleaned data!
+Write out Cleaned-data!
 ```{r}
-write.csv(smith_final, "Cleaned data/smith_final.csv" )
-write.csv(clark_final, "Cleaned data/clark_final.csv")
+write.csv(smith_final, "Cleaned-data/smith_final.csv" )
+write.csv(clark_final, "Cleaned-data/clark_final.csv")
 ```
 
