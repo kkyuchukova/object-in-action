@@ -452,6 +452,11 @@ report_stats <- function(mod, est){
 # summary(apim0)
 
 #SSO
+apim1_empty <- gls(howbody_avg_A ~ 1, 
+                 na.action=na.omit, 
+                 correlation=corCompSymm (form=~1|dyadID),
+                 data=clarksmith_women)
+
 apim1 <- gls(howbody_avg_A ~ a2pSOO_A + a2pSOO_P + TSO_A + a2pSOO_P*TSO_A + smith_or_clark, 
                  na.action=na.omit, 
                  correlation=corCompSymm (form=~1|dyadID),
@@ -465,17 +470,25 @@ apim1.b <- gls(howbody_avg_A ~ a2pSOO_A + a2pSOO_P + TSO_A + smith_or_clark,
 summary(apim1)
 
 summary(apim1.b)
+summary(apim1_empty)
 
+apim1_r2 <- 1 - (1.094517/1.128858)
 ```
 
 ```{r}
 #authenticity
+apim2_empty <- gls(authenticity_A ~ 1, 
+                 na.action=na.omit, 
+                 correlation=corCompSymm (form=~1|dyadID),
+                 data=clarksmith_women)
 apim2 <- gls(authenticity_A ~ howbody_avg_A + smith_or_clark, 
                  na.action=na.omit, 
                  correlation=corCompSymm (form=~1|dyadID),
                  data=clarksmith_women)
 
 summary(apim2)
+summary(apim2_empty)
+apim2_r2 <- 1 - (1.029834/1.019483) 
 
 #correlations between howbody and each authenticity item individually. 
 min_corr <- min(abs(round(corr.test(select(clarksmith_women, 
@@ -504,12 +517,18 @@ summary(apim2.c)
 
 ```{r}
 #cognitive performance
+apim3_empty <- gls(trigram_score_A ~ 1, 
+                 na.action=na.omit, 
+                 correlation=corCompSymm (form=~1|dyadID),
+                 data=clarksmith_women)
 apim3 <- gls(trigram_score_A ~ authenticity_A + smith_or_clark, 
                  na.action=na.omit, 
                  correlation=corCompSymm (form=~1|dyadID),
                  data=clarksmith_women)
 
 summary(apim3)
+summary(apim3_empty)
+apim3_r2 <- 1 - (2.320106/2.295617) 
 
 apim3.b <- gls(trigram_score_A ~ authenticity_A + howbody_avg_A + smith_or_clark, 
                  na.action=na.omit, 
@@ -528,12 +547,18 @@ summary(apim3.c)
 
 ```{r}
 #relationship agency
+apim4_empty <- gls(relag_A ~ 1, 
+                 na.action=na.omit, 
+                 correlation=corCompSymm (form=~1|dyadID),
+                 data=clarksmith_women)
 apim4 <- gls(relag_A ~ authenticity_A + smith_or_clark, 
                  na.action=na.omit, 
                  correlation=corCompSymm (form=~1|dyadID),
                  data=clarksmith_women)
 
 summary(apim4)
+summary(apim4_empty)
+apim4_r2 <- 1 - (0.9420959/0.9556186)
 
 apim4.b <- gls(relag_A ~ authenticity_A + howbody_avg_A + smith_or_clark, 
                  na.action=na.omit, 
@@ -552,12 +577,18 @@ summary(apim4.c)
 
 ```{r}
 #career aspirations
+apim5_empty <- gls(careerasp_A ~ 1, 
+                 na.action=na.omit, 
+                 correlation=corCompSymm (form=~1|dyadID),
+                 data=clarksmith_women)
 apim5 <- gls(careerasp_A ~ authenticity_A + smith_or_clark, 
                  na.action=na.omit, 
                  correlation=corCompSymm (form=~1|dyadID),
                  data=clarksmith_women)
 
 summary(apim5)
+summary(apim5_empty)
+apim5_r2 <- 1 - (0.5816273/0.6068203)
 
 apim5.b <- gls(careerasp_A ~ authenticity_A + howbody_avg_A + smith_or_clark, 
                  na.action=na.omit, 
