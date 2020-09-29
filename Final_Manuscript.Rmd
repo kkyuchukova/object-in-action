@@ -9,11 +9,11 @@ author:
     address       : "415 Bass Hall, Smith College, Northampton, MA 01060"
     email         : "rgarcia@smith.edu"
   - name          : "Kat Kyuchukova"
-    affiliation   : "1"
+    affiliation   : "1, 2"
   - name          : "Asha Hinson"
     affiliation   : "1"
   - name          : "Laneé Jung"
-    affiliation   : "1"     
+    affiliation   : "2"     
 
 affiliation:
   - id            : "1"
@@ -38,7 +38,7 @@ draft             : no
 
 documentclass     : "apa6"
 classoption       : "man"
-output            : papaja::apa6_pdf
+output            : papaja::apa6_word
 ---
 
 ```{r setup, analysis-preferences}
@@ -409,7 +409,7 @@ Testing hypotheses and exploring relationships in the current sample of indistin
 
 ## Main Results
 ```{r semfigure, include=TRUE, echo=FALSE, results='asis', out.width="400px", fig.cap="This figure depicts the relationships tested bewteen study variables. The light gray variables represent redundant variables and are shown to emphasize the dyadic nature of the data. The estimates were from obtained from separate MLMs. Sample was controlled for in all models. The effects of TSO, actor other-objectification, and partner other-objectification are from a model where the interaction of TSO and partner other-objectification had been trimmed. *p < .05, dashed lines represent non-significant relationships."}
-include_graphics("figrues/SEMfigure.png")
+include_graphics("figures/SEMfigure.png")
 ```
 
 ```{r presentation-functions}

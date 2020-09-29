@@ -1,0 +1,14 @@
+\begin{figure*}[hbt]
+\ifnextchar[{\eatarg}{}
+
+\includegraphics[width=400px]{../figures/APIM_figure} \caption{Basic actor-partner interdependence model (APIM) depiction.}\label{fig:apim}
+\end{figure*}
+\efloatseparator
+ 
+\begin{figure*}[hbt]
+\ifnextchar[{\eatarg}{}
+
+\includegraphics[width=400px]{../figures/SEMfigure} \caption{Path Analysis Model with Estimates}\label{fig:semfigure}
+\end{figure*}
+\efloatseparator
+ 
