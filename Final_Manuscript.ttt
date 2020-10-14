@@ -6,7 +6,7 @@
 \caption{\label{tab:corrtable}Correlations and Descriptive Statistics among Study Variables}
 \begin{tabular}{llllllllll}
 \toprule
- & \multicolumn{1}{c}{$M$} & \multicolumn{1}{c}{$SD$} & \multicolumn{1}{c}{1.} & \multicolumn{1}{c}{2.} & \multicolumn{1}{c}{3.} & \multicolumn{1}{c}{4.} & \multicolumn{1}{c}{5.} & \multicolumn{1}{c}{6.} & \multicolumn{1}{c}{NA}\\
+ & \multicolumn{1}{c}{$M$} & \multicolumn{1}{c}{$SD$} & \multicolumn{1}{c}{1.} & \multicolumn{1}{c}{2.} & \multicolumn{1}{c}{3.} & \multicolumn{1}{c}{4.} & \multicolumn{1}{c}{5.} & \multicolumn{1}{c}{6.} & \multicolumn{1}{c}{7.}\\
 \midrule
 1. Actor's trait self objectification (TSO) & -0.35 & 2.64 &  &  &  &  &  &  & \\
 2. Actor's objectification of partner & -1.58 & 1.21 & .20 &  &  &  &  &  & \\
