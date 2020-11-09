@@ -164,7 +164,7 @@ tally(~gender, data=smith_final)
 
 The participants were mostly first-year college students, with an average age of `r mean_age` (SD = `r sd_age`). The sample was `r percent_white`% White/European American, `r percentage_black`% Black/African-American, `r percent_asian`% Asian/Pacific Islander, `r percent_latinx`% Latinx, and `r percent_other`% mixed-race. There were `r samerace_white` White/White pairs and `r samerace_minority` same race racial minority pairs, for a total of `r samerace_white + samerace_minority` same-race pairs. The remaining `r mixedrace_white + mixedrace_minority` were mixed race pairs, of which `r mixedrace_white` were White/racial minority pairings and `r mixedrace_minority` were different racial minority group pairs. `r percent_straight`% of the sample identified as heterosexual, and `r percent_queer`% identified as gay, lesbian or bisexual. See the analysis of differences between heterosexual and non-heterosexual women in levels of other-objectification of their female partners in the measures section below. 
 
-##Post interaction Measures
+## Measures
 
 ```{r correaltions}
 #NOT SURE WHAT THIS CHUNK WAS FOR BUT ITS NOT NEEDED
@@ -254,19 +254,11 @@ descriptives <- descriptives %>%
 #apa_table(descriptives, caption = "Descriptive Statistics for Study Variables")
 ```
 
-The following measures were collected in the order they are presented following the interaction. Correlations and descriptive statistics of all study variables appear in Table\ \@ref(tab:corrtable). 
-
-###Cognitive Performance
-```{r trigram}
+```{r measures, include=TRUE, echo=FALSE, results='asis'}
 #Cognitive performance - Full sample
 mean_trigram <- favstats(~trigram_score_A, data=clarksmith_women)$mean
 sd_trigram <- favstats(~trigram_score_A, data=clarksmith_women)$sd
-```
 
-Trigrams from the Remote Associates Task [@mcfarlin1984remote] were utilized to assess cognitive performance after the interaction. Ten items were selected and presented to participants. For example, the correct answer for the trigram "Quack: Pond: Waddle" would be "Duck". Participants are limited to 30 seconds to provide their answers. For every correct answer, 1 point is given. The mean score was `r mean_trigram` (SD = `r sd_trigram`). Cognitive performance was measured first directly after the interaction in order to measure potential immediate detriments to performance [@garcia2016objectification].
-
-###State Other-Objectification
-```{r alpha_SOO}
 ##SOO
 #Clark
 clark_extsoo_alpha <- psych::alpha(select(clark_final, otherint_1, otherint_2, 
@@ -286,13 +278,8 @@ descsplit <- clarksmith_women %>%
             sd_soo = sd(a2pSOO_A, na.rm = TRUE))
 
 soo_diff <- t.test(a2pSOO_A ~ (sexor_A == 1), data = clarksmith_women)
-```
-To measure the participant’s objectification of their partner in the interaction, participants were asked a series of questions about the frequency of thoughts during the interaction in relation to multiple characteristics of their partner [@garcia2016objectification]. Questions included aspects of their partner’s internal traits such as personality, friends, family, and extracurricular interests, as well as external traits such as body, appearance, clothing, and body parts. All questions were rated on a scale from 1 (not at all) to 7 (constantly). Objectification was measured by taking the difference between the average frequency of thought about their partner’s external traits ($\alpha$ = `r printnum(clark_extsoo_alpha)[1,1]` for Sample 1, $\alpha$ = `r printnum(smith_intsoo_alpha)[1,1]` for Sample 2) and frequency of thought about their partner’s internal traits ($\alpha$ = `r printnum(clark_extsoo_alpha)[1,1]` for Sample 1, $\alpha$ = `r printnum(smith_extsoo_alpha)[1,1]` for Sample 2). A positive score in this scale would indicate that the participant thought about their partner’s external traits more than the partner’s internal traits, and a negative score would indicate the opposite. 
 
-As can be seen in Table\ \@ref(tab:corrtable), the mean other-objectification of women by women was *M =* `r descriptives[3,1]` (*SD =* `r descriptives[3,2]`). This corresponds to women objectifying other women to a *greater* extent than women's objectification of men reported in @garcia2016objectification (*M =* -1.68, *SD =* 1.52). Further, in the current sample the difference in other-objectification between heterosexual (*M =* `r round(as.numeric(descsplit[2,2]),2)`, *SD =* `r round(as.numeric(descsplit[2,3]),2)`) and non-heterosexual women (*M =* `r round(as.numeric(descsplit[1,2]),2)`, *SD =* `r round(as.numeric(descsplit[1,3]),2)`) was not statistically significant, *t*(`r round(soo_diff$parameter,2)`) = `r round(soo_diff$statistic, 2)`, *p =* `r round(soo_diff$p.value,3)`. 
 
-###Interaction Authenticity
-```{r alpha_intauth}
 ##Interaction Authenticity
 #Clark
 clark_intauth_alpha <- psych::alpha(select(clark_final, inter_1, inter_3, inter_5, 
@@ -302,11 +289,9 @@ clark_intauth_alpha <- psych::alpha(select(clark_final, inter_1, inter_3, inter_
 smith_intauth_alpha <- psych::alpha(select(smith_final, inter_1, inter_3, inter_5, inter_6, 
                                            inter_7, inter_9, inter_10, interaux_5, 
                                            interaux_6))$total[2]
-```
-To assess the magnitude to which individuals felt comfortable in the interaction and perceived the interaction to be authentic, we asked participants to rate the extent to which they felt comfortable, happy, friendly, warm, easygoing, sincere, and authentic on a scale ranging from 1 (not at all) to 7 (very much), much like [@garcia2016objectification]. Participants were additionally asked to rate their interaction partner’s authenticity as well as their own: "Do you think your partner was authentic during your interaction?" and "Were you authentic during your interaction?" These questions were ranked on a scale from 1 (not at all) to 7 (very much). These were combined to form the authenticity scale ($\alpha$ = `r printnum(clark_intauth_alpha)[1,1]` for Sample 1, $\alpha$ = `r printnum(smith_intauth_alpha)[1,1]` for Sample 2). 	
 
-###State Self-Objectification
-```{r alpha_SSO}
+
+
 ##SSO
 #Clark - two items
 clark_howbody_alpha<- psych::alpha(select(clark_final, howbody_1, howbody_2))$total[2]
@@ -316,11 +301,9 @@ smith_howbody_alpha <- psych::alpha(select(smith_final,  howbody_1, howbody_2))$
 clark_howbody3 <- psych::alpha(select(clark_final, howbody_1, howbody_2, howbody_3))
 #Smith - three items
 smith_howbody3 <- psych::alpha(select(smith_final, howbody_1, howbody_2, howbody_3))
-```
-To assess state self-objectification, we used an average of two items from @saguyetal2010 that were also used in @garcia2016objectification. Participants were asked to rank how much they agreed with the following statements: "During the interaction I felt more like a body than a full self" and "I felt more like a body than as a real person in the interaction". Originally, @saguyetal2010 used 3 items, but in both samples the reliability of the scale was higher once the third item was removed, so we chose to only use the first two for our measure of SSO, leaving us with a reliable scale ($\alpha$ = `r printnum(clark_howbody_alpha)[1,1]` for Sample 1, and $\alpha$ = `r printnum(smith_howbody_alpha)[1,1]` for Sample 2.)
 
-###Relationship Agency
-```{r alpha_relagen}
+
+
 ##Relationship Agency
 #Clark
 clark_relag_alpha <- psych::alpha(select(clark_final, relag_1, relag_2, relag_3, 
@@ -339,11 +322,7 @@ clark_relag_alpha <- psych::alpha(select(clark_final, relag_1, relag_2, relag_3,
 
 smith_relag_alpha <- psych::alpha(select(smith_final, relag_1, relag_2, relag_3, relag_4, 
                                          relag_5, relag_6, relag_7, relag_8))$total[2]
-```
-A scale was used from @garcia2016objectification to assess how much agency an individual believes they would possess in future romantic relationships. Participants were asked how likely it was that they would do the following: "ask someone out on a date," "open the door for your date," "pay for a date," "ask your boyfriend/girlfriend to marry you," "initiate sex with your girlfriend/boyfriend," "initiate condom use during sex," "surprise your boyfriend/ girlfriend with a gift," and "ask your girlfriend/boyfriend to move with you to a new place." Responses were measured on a scale ranging from 1 (not at all likely) to 7 (extremely likely). The scale originally had 9 items, but the 9th item had low correlations with the remaining items, ranging from .02 to .30 for the first sample, and .04 to .30 for the second sample. Therefore, this item was removed. As a result, the 8-item scale had moderately high reliability for both samples ($\alpha$ = `r printnum(clark_relag_alpha)[1,1]` for Sample 1, ($\alpha$ = `r printnum(smith_relag_alpha)[1,1]` for Sample 2).
 
-###Career Aspirations
-```{r alpha_career}
 ##Career Aspirations
 #Clark
 clark_final <- clark_final %>% #reverse code certain career aspiration variables
@@ -365,12 +344,9 @@ smith_final <- smith_final %>% #reverse code certain career aspiration variables
 smith_careerasp_alpha <- psych::alpha(select(smith_final, careerasp_1, careerasp_2, 
                                              careerasp_3, careerasp4.r, careerasp_5, 
                                              careerasp_6, careerasp7.r, careerasp_8, 
-                                             careerasp_9, careerasp10.r))$total[2]
-```
-To conceptualize participants’ career aspirations after the interaction, we used the 10-item adaptation of @grayobrien2007’s Career Aspiration Scale which asked participants to consider how true 10 statements were in regard to their future careers on a scale from 0 (not at all true of me) to 4 (very true of me). Items include "I hope to become a leader in my career field" and "I hope to move up through any organization or business I work in." Items were fairly reliable ($\alpha$ = `r printnum(clark_careerasp_alpha)[1,1]` for Sample 1, $\alpha$ = `r printnum(smith_careerasp_alpha)[1,1]` for Sample 2).
+                                             careerasp_9, careerasp10.r))$total[2]   
 
-###Trait Self-Objectification
-```{r alpha_TSO}
+ 
 ###TSO
 #Clark--external and internal
 clark_funcTSO_alpha <- psych::alpha(select(clark_final, tso_1, tso_2, tso_4, tso_7, tso_9), check.keys=TRUE)$total[2]
@@ -378,9 +354,54 @@ clark_physTSO_alpha <- psych::alpha(select(clark_final, tso_3, tso_5, tso_6, tso
 
 #Smith--external and internal
 smith_funcTSO_alpha <- psych::alpha(select(smith_final, tso_1, tso_2, tso_4, tso_7, tso_9), check.keys=TRUE)$total[2]
-smith_physTSO_alpha <- psych::alpha(select(smith_final, tso_3, tso_5, tso_6, tso_8, tso_10), check.keys=TRUE)$total[2]
+smith_physTSO_alpha <- psych::alpha(select(smith_final, tso_3, tso_5, tso_6, tso_8, tso_10), check.keys=TRUE)$total[2] 
+
+
+
+
+source <- c("@mcfarlin1984remote", 
+            "@garcia2016objectification", 
+            "@garcia2016objectification", 
+            "@garcia2016objectification", 
+            "@garcia2016objectification", 
+            "@grayobrien2007", 
+            "@nollfredrickson1998")
+
+ex_item <- c("he correct answer for the trigram "Quack: Pond: Waddle" would be "Duck"",
+             "Questions included aspects of their partner’s internal traits such as personality, friends, family, and extracurricular interests, as well as external traits such as body, appearance, clothing, and body parts. All questions were rated on a scale from 1 (not at all) to 7 (constantly). A positive score in this scale would indicate that the participant thought about their partner’s external traits more than the partner’s internal traits, and a negative score would indicate the opposite",
+             " we asked participants to rate the extent to which they felt comfortable, happy, friendly, warm, easygoing, sincere, and authentic on a scale ranging from 1 (not at all) to 7 (very much)
+These were combined to form the authenticity scale ($\alpha$ = `r printnum(clark_intauth_alpha)[1,1]` for Sample 1, $\alpha$ = `r printnum(smith_intauth_alpha)[1,1]` for Sample 2). 	",
+"Participants were asked to rank how much they agreed with the following statements: "During the interaction I felt more like a body than a full self" and "I felt more like a body than as a real person in the interaction". Originally, @saguyetal2010 used 3 items, but in both samples the reliability of the scale was higher once the third item was removed, so we chose to only use the first two for our measure of SSO, leaving us with a reliable scale ($\alpha$ = `r printnum(clark_howbody_alpha)[1,1]` for Sample 1, and $\alpha$ = `r printnum(smith_howbody_alpha)[1,1]` for Sample 2.)",
+""ask someone out on a date," "open the door for your date," "pay for a date," "ask your boyfriend/girlfriend to marry you," "initiate sex with your girlfriend/boyfriend," "initiate condom use during sex," "surprise your boyfriend/ girlfriend with a gift," and "ask your girlfriend/boyfriend to move with you to a new place." Responses were measured on a scale ranging from 1 (not at all likely) to 7 (extremely likely).",
+"a scale from 0 (not at all true of me) to 4 (very true of me). 
+Items include "I hope to become a leader in my career field" and "I hope to move up through any organization or business I work in." Items were fairly reliable ($\alpha$ = `r printnum(clark_careerasp_alpha)[1,1]` for Sample 1, $\alpha$ = `r printnum(smith_careerasp_alpha)[1,1]` for Sample 2).",
+"The questionnaire asked participants to rank order both appearance and functional aspects of their bodies, from 1 (least important) to 10 (most important), with respect to physical self-concepts. Of the ten body attributes, five of the items were appearance-based (weight, sex appeal, physical attractiveness, firm/sculpted muscles and body measurements), and five of the items were competence-based (strength, physical coordination, energy level, health and physical fitness). Difference scores were computed by subtracting the sum of the 5 functional aspects/competence attributes (e.g., health, strength) from the sum of the 5 physical self-concepts/appearance attributes (e.g., physical attractiveness, weight), and all measures were multiplied by -1 so that positive scores indicated greater TSO. ")
+
+alpha_s1 <- c()
+alpha_s2 <- c()
+
+data.frame(source, ex_item, alpha_s1, alpha_s2)
+
+rownames(corr.table) <- c("Cognitive performance", 
+                          "Objectification of partner", 
+                          "Authenticity of interaction", 
+                          "State self-objectification", 
+                          "Relationship agency", 
+                          "Career aspirations", 
+                          "Trait self objectification (TSO)")
+                          
+colnames(corr.table)   <- c("Original Source", "Example Item", "Reliability ($\alpha$) Sample 1", "Reliability ($\alpha$) Sample 2")
+
+apa_table(corr.table, caption="Correlations and Descriptive Statistics among Study Variables", escape=FALSE)
 ```
-Trait self-objectification (TSO) was assessed using the Self-Objectification Questionnaire [@fredrickson1998swimsuit; @nollfredrickson1998], which evaluates the extent to which individuals view their bodies in observable versus non-observable ways. The questionnaire asked participants to rank order both appearance and functional aspects of their bodies, from 1 (least important) to 10 (most important), with respect to physical self-concepts. Of the ten body attributes, five of the items were appearance-based (weight, sex appeal, physical attractiveness, firm/sculpted muscles and body measurements), and five of the items were competence-based (strength, physical coordination, energy level, health and physical fitness). Difference scores were computed by subtracting the sum of the 5 functional aspects/competence attributes (e.g., health, strength) from the sum of the 5 physical self-concepts/appearance attributes (e.g., physical attractiveness, weight), and all measures were multiplied by -1 so that positive scores indicated greater TSO. 
+
+The same set of measures given in @garcia2016objectification were given to participants in the current study. For more details about each of these measures please see that previous paper. To summarize, the list of measures in the order given to participants appears in Table\ \@ref(tab:measures) along side the orginal source for the scale, an example item, and the reliability in the current sample. Correlations and descriptive statistics of all study variables appear in Table\ \@ref(tab:corrtable). 
+
+Cognitive performance with the Remote Associates Task's trigrams [@mcfarlin1984remote] was given first, to capture any attentional changes that may have been affected by the interaction. Next participants were given a set of measure about their thoughts and feelings during the interaction that included State-Other Objectification, Interaction Authenticity, and State Self-Objectification. Following these measures participants completed the Relationship Agency Scale and the Career Aspirations Scale. Lastly, as was the case in @garcia2016objectification, Trait Self-Objectification was given last, as not to arouse suspicious at the start of the study that we were actually focusing on objectification and to give enough time that immediate effects of the interaction would have worn off. 
+
+As can be seen in Table\ \@ref(tab:corrtable), the mean other-objectification of women by women was *M =* `r descriptives[3,1]` (*SD =* `r descriptives[3,2]`). This corresponds to women objectifying other women to a *greater* extent than women's objectification of men reported in @garcia2016objectification (*M =* -1.68, *SD =* 1.52). Further, in the current sample the difference in other-objectification between heterosexual (*M =* `r round(as.numeric(descsplit[2,2]),2)`, *SD =* `r round(as.numeric(descsplit[2,3]),2)`) and non-heterosexual women (*M =* `r round(as.numeric(descsplit[1,2]),2)`, *SD =* `r round(as.numeric(descsplit[1,3]),2)`) was not statistically significant, *t*(`r round(soo_diff$parameter,2)`) = `r round(soo_diff$statistic, 2)`, *p =* `r round(soo_diff$p.value,3)`. 
+
+Relationship agency The scale originally had 9 items, but the 9th item had low correlations with the remaining items, ranging from .02 to .30 for the first sample, and .04 to .30 for the second sample. Therefore, this item was removed. As a result, the 8-item scale had moderately high reliability for both samples ($\alpha$ = `r printnum(clark_relag_alpha)[1,1]` for Sample 1, ($\alpha$ = `r printnum(smith_relag_alpha)[1,1]` for Sample 2).
 
 # Results
 ```{r create_r-references, warning=FALSE, message=FALSE}
@@ -649,22 +670,22 @@ Although the current study did not find a connection between SSO and authenticit
 ##Limitations and Future Directions
 
 ###Sample Characteristics
-In addition to being relatively small and combined across two institutions, another limitation of the current study sample is that the it was comprised of Western women only. Being that self-objectification has been found to be most prevalent in Western culture [@loughnan2015exploring] research on objectification conducted outside of Western or Westernized countries has been scarce [@moradi2008], although more recent work has examined objectification from a cross-cultural framework [@loughnan2015exploring, @wollast2020cultural]. Since “bodies exist within social and cultural contexts, and hence are also constructed through sociocultural practices and discourses” [@robertsfredrickson, p.174], it is important to consider how diverse social identities within unique cultural contexts may inform sexual objectification phenomenon to test the cross-cultural applicability of theoretical frameworks [@loughnan2015exploring].
+In addition to being relatively small and combined across two institutions, another limitation of the current study sample is that the it was comprised of Western women only. Being that self-objectification has been found to be most prevalent in Western culture [@loughnan2015exploring] research on objectification [[[conducted outside of Western or Westernized countries]]] has been scarce [@moradi2008], although more recent work has examined objectification from a cross-cultural framework [@loughnan2015exploring, @wollast2020cultural]. [[[Since “bodies exist within social and cultural contexts, and hence are also constructed through sociocultural practices and discourses”]]] [@robertsfredrickson, p.174], it is important to consider how diverse social identities within unique cultural contexts may inform sexual objectification phenomenon [[[to test the cross-cultural applicability of theoretical frameworks]]] [@loughnan2015exploring].
 
-Further, sexualizing experiences and self-objectification are thought to begin a very young age, and thus, researchers have only recently begun to examine such experiences among children [e.g., @holland2016; @jongenelis2014]. Considering the fact that the average mean age of the investigated participants of this current study was `r mean_age` years, research among younger and older individuals is needed, especially because the processes of self-objectification may change over time [@robertsfredrickson]. It may be valuable to question the extent to which children, adolescents, or emerging adults of different races or ethnicities are exposed to varied amounts of sexualizing content. Further, more longitudinal studies investigating the developmental experience of interpersonal objectification and self-objectification are needed. 
+Further, sexualizing experiences and self-objectification are thought to begin a very young age, and thus, researchers have only recently begun to examine such experiences among children [e.g., @holland2016; @jongenelis2014]. [[Considering the fact that the average mean age of the investigated participants of this current study was `r mean_age` years, research among younger and older individuals is needed]]], especially because the processes of self-objectification may change over time [@robertsfredrickson]. [[[It may be valuable to question the extent to which children, adolescents, or emerging adults of different races or ethnicities are exposed to varied amounts of sexualizing content.]]] Further, more longitudinal studies investigating the developmental experience of interpersonal objectification and self-objectification are needed. 
 
 ###Interpersonal Sexual Objectification, Gender, and Sexual Attraction
-The current sample contained a mixture of heterosexual and non-heterosexual women, but all participants were asked to think about and evaluate their partner as a potential dating/romantic partner. We think that heterosexual women are able to do this with other women as their target---and there is evidence that they might do this readily [@strelan2005women; @puvia2013being]---perhaps they may be even more apt to activate social comparison processes [@festinger1954theory] than women who are sexually attracted to other women (non-heterosexual women). Since both men and women are socialized in a culture that sexually objectifies women, both men and women may come to internalize this socialization and sexually objectify women. Indeed, recent research has found that the more women self-objectify, the more they objectify other women [@loughnan2015exploring; @puvia2013being], although not to the degree exhibited by men; that is, men were found to objectify women significantly more than women objectify other women [@strelan2005women]. This differential psychological process between women with differing sexualities might have served to dampen our ability to detect relationships. 
+The current sample contained a mixture of heterosexual and non-heterosexual women, but all participants were asked to think about and evaluate their partner as a potential dating/romantic partner. We think that heterosexual women are able to do this with other women as their target---and there is evidence that they might do this readily [@strelan2005women; @puvia2013being]---perhaps they may be even more apt to activate social comparison processes [@festinger1954theory] than women who are sexually attracted to other women (non-heterosexual women). [[[Indeed, recent research has found that the more women self-objectify, the more they objectify other women]]] [@loughnan2015exploring; @puvia2013being], [[[although not to the degree exhibited by men; that is, men were found to objectify women significantly more than women objectify other women]]] [@strelan2005women]. This differential psychological process between women with differing sexualities might have served to dampen our ability to detect relationships.
 
-Previous research has found that when compared to heterosexual women, lesbian women report less concern with physical appearance [@siever1994sexual; @strong2000eating], lower body surveillance [@hill2008examining], and lower self-objectification [@noffsinger2004objectification]. However none of these studies examined the relationship between self-objectification and experiences of sexual objectification. Thus, it is unclear whether lesbian women indeed experience similar levels of cultural sexual objectification but internalize them less than heterosexual women do. Consistent with previous research, @hill2008examining determined that lesbians exhibited less physical appearance concerns compared to heterosexual women, however there was no evidence found that lesbian women self-objectify less than heterosexual women and they did not find that sexual orientation moderates the relationship between sexual objectification and self-objectification. This evidence sits in contrast to older theoretical literature that suggests that lesbians internalize cultural sexual objectification less than do heterosexual women [@brown1987lesbians; @pitman1999body; @rothblum1994lesbians; @siever1994sexual]. 
+<!-- Previous research has found that when compared to heterosexual women, lesbian women report less concern with physical appearance [@siever1994sexual; @strong2000eating], lower body surveillance [@hill2008examining], and lower self-objectification [@noffsinger2004objectification]. However none of these studies examined the relationship between self-objectification and experiences of sexual objectification. Thus, it is unclear whether lesbian women indeed experience similar levels of cultural sexual objectification but internalize them less than heterosexual women do. Consistent with previous research, @hill2008examining determined that lesbians exhibited less physical appearance concerns compared to heterosexual women, however there was no evidence found that lesbian women self-objectify less than heterosexual women and they did not find that sexual orientation moderates the relationship between sexual objectification and self-objectification. This evidence sits in contrast to older theoretical literature that suggests that lesbians internalize cultural sexual objectification less than do heterosexual women [@brown1987lesbians; @pitman1999body; @rothblum1994lesbians; @siever1994sexual].  -->
 
 <!-- Interpersonal sexual objectification has been studied in both romantic and platonic contexts. Among heterosexual male and female college students, self-objectification has been found to be positively associated with the extent to which they objectify their romantic partners [@zurbriggen2011self]. Evidence is mixed, suggesting that women can sometimes have positive outcomes from appearance valuation within the context of an established romantic relationship. There is also evidence that they experience less SSO after appearance comments within established romantic relationships [@meltzer2020women], but less is known about first dates. An important caveat to this literature is that it is only about heterosexual relationships. Objectification might also occur among platonic friends: Perhaps women could be amplifying each others' state self-objectification *before* the theoretical encounters with men organized in the SIMO occur. In this way, women's rituals of getting ready together before socializing in co-ed groups might place even women with low TSO in a higher SSO group.  -->
 
-<!-- ###Sexism and Sexual Discrimination -->
-<!-- Sexism has been found to be related to the objectification of women, but not men [@cikara2011agents; @harsey2020men], and in addition, TSO has been found to be associated with less negative attitudes towards sexual harassment [@bernard2018bodies]. Both of these effects are present for both men and women. Empirical evidence illustrates how women continue to be objects of interpersonal discrimination and experience daily sexist hassles [@swimetal]. One form of interpersonal discrimination women face is the process by which their whole being is viewed as a collection of sexualized body parts valued predominantly for commodification, a phenomena termed sexual objectification [@Bartky]. Sexual objectification of women has also been linked to trauma [@miles2015stop]. Sexual objectification occurs in a myriad of ways in women's lives and is modified by unique combinations of race, ethnicity, sexuality, age, and class [@robertsfredrickson]. Amid such heterogeneity though, “having a reproductively mature female body” proposed by @robertsfredrickson is likely to create a shared vulnerability to sexual objectification and a variety of shared negative experiences as a result.  -->
+###Sexism and Sexual Discrimination
+Sexism has been found to be related to the objectification of women, but not men [@cikara2011agents; @harsey2020men], and in addition, TSO has been found to be associated with less negative attitudes towards sexual harassment [@bernard2018bodies]. Both of these effects are present for both men and women. Empirical evidence illustrates how women continue to be objects of interpersonal discrimination and experience daily sexist hassles [@swimetal]. One form of interpersonal discrimination women face is the process by which their whole being is viewed as a collection of sexualized body parts valued predominantly for commodification, a phenomena termed sexual objectification [@Bartky]. Sexual objectification of women has also been linked to trauma [@miles2015stop]. Sexual objectification occurs in a myriad of ways in women's lives and is modified by unique combinations of race, ethnicity, sexuality, age, and class [@robertsfredrickson]. Amid such heterogeneity though, “having a reproductively mature female body” proposed by @robertsfredrickson is likely to create a shared vulnerability to sexual objectification and a variety of shared negative experiences as a result.
 
 #Conclusion
-The results of this study demonstrate the complex and ambivalent nature of sexual objectification and additionally highlight the psychological and social consequences of such objectification processes on women’s social relationships and well-being. These results are quite useful for promoting mental health, the creation and maintenance of early action programs for girls and young women, and for scholars and practitioners to work intentionally to provide the tools necessary to circumvent or mitigate negative effects on self-objectification to combat such experiences.
+The results of this study ... and additionally highlight the psychological and social consequences of such objectification processes on women’s social relationships and well-being. These results are quite useful for promoting mental health, the creation and maintenance of early action programs for girls and young women, and for scholars and practitioners to work intentionally to provide the tools necessary to circumvent or mitigate negative effects on self-objectification to combat such experiences.
 
 \newpage
 
