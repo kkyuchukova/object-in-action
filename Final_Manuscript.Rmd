@@ -43,7 +43,7 @@ draft             : no
 
 documentclass     : "apa6"
 classoption       : "man"
-output            : papaja::apa6_word
+output            : papaja::apa6_pdf
 ---
 ```{r setup, analysis-preferences}
 # Seed for random number generation
@@ -254,7 +254,9 @@ descriptives <- descriptives %>%
 #apa_table(descriptives, caption = "Descriptive Statistics for Study Variables")
 ```
 
-```{r measures, include=TRUE, echo=FALSE, results='asis'}
+```{r}
+#Reliabilities and some descriptives
+
 #Cognitive performance - Full sample
 mean_trigram <- favstats(~trigram_score_A, data=clarksmith_women)$mean
 sd_trigram <- favstats(~trigram_score_A, data=clarksmith_women)$sd
@@ -271,14 +273,12 @@ smith_extsoo_alpha <- psych::alpha(select(smith_final, otherint_1, otherint_2, o
                                           otherint_6, otherint_10))$total[2]
 smith_intsoo_alpha <- psych::alpha(select(smith_final, otherint_3, otherint_4, otherint_7, 
                                           otherint_8, otherint_9, otherint_11, otherint_12))$total[2]
-
 descsplit <- clarksmith_women %>%
   group_by(sexor_A == 1) %>%
   summarize(mean_soo = mean(a2pSOO_A, na.rm = TRUE),
             sd_soo = sd(a2pSOO_A, na.rm = TRUE))
 
 soo_diff <- t.test(a2pSOO_A ~ (sexor_A == 1), data = clarksmith_women)
-
 
 ##Interaction Authenticity
 #Clark
@@ -290,8 +290,6 @@ smith_intauth_alpha <- psych::alpha(select(smith_final, inter_1, inter_3, inter_
                                            inter_7, inter_9, inter_10, interaux_5, 
                                            interaux_6))$total[2]
 
-
-
 ##SSO
 #Clark - two items
 clark_howbody_alpha<- psych::alpha(select(clark_final, howbody_1, howbody_2))$total[2]
@@ -301,8 +299,6 @@ smith_howbody_alpha <- psych::alpha(select(smith_final,  howbody_1, howbody_2))$
 clark_howbody3 <- psych::alpha(select(clark_final, howbody_1, howbody_2, howbody_3))
 #Smith - three items
 smith_howbody3 <- psych::alpha(select(smith_final, howbody_1, howbody_2, howbody_3))
-
-
 
 ##Relationship Agency
 #Clark
@@ -334,7 +330,6 @@ clark_careerasp_alpha <- psych::alpha(select(clark_final, careerasp_1, careerasp
                                              careerasp_3, careerasp4.r, careerasp_5, 
                                              careerasp_6, careerasp7.r, careerasp_8, 
                                              careerasp_9, careerasp10.r))$total[2]
-
 #Smith
 smith_final <- smith_final %>% #reverse code certain career aspiration variables
   mutate(careerasp4.r = (min(careerasp_4, na.rm = TRUE) + max(careerasp_4, na.rm = TRUE) - careerasp_4),
@@ -346,7 +341,6 @@ smith_careerasp_alpha <- psych::alpha(select(smith_final, careerasp_1, careerasp
                                              careerasp_6, careerasp7.r, careerasp_8, 
                                              careerasp_9, careerasp10.r))$total[2]   
 
- 
 ###TSO
 #Clark--external and internal
 clark_funcTSO_alpha <- psych::alpha(select(clark_final, tso_1, tso_2, tso_4, tso_7, tso_9), check.keys=TRUE)$total[2]
@@ -355,34 +349,47 @@ clark_physTSO_alpha <- psych::alpha(select(clark_final, tso_3, tso_5, tso_6, tso
 #Smith--external and internal
 smith_funcTSO_alpha <- psych::alpha(select(smith_final, tso_1, tso_2, tso_4, tso_7, tso_9), check.keys=TRUE)$total[2]
 smith_physTSO_alpha <- psych::alpha(select(smith_final, tso_3, tso_5, tso_6, tso_8, tso_10), check.keys=TRUE)$total[2] 
+```
 
 
-
+```{r measures, include=TRUE, echo=FALSE, results='asis'}
+############### TABLE MAKING ###################
 
 source <- c("@mcfarlin1984remote", 
             "@garcia2016objectification", 
             "@garcia2016objectification", 
-            "@garcia2016objectification", 
+            "@saguyetal2010", 
             "@garcia2016objectification", 
             "@grayobrien2007", 
             "@nollfredrickson1998")
 
-ex_item <- c("he correct answer for the trigram "Quack: Pond: Waddle" would be "Duck"",
-             "Questions included aspects of their partner’s internal traits such as personality, friends, family, and extracurricular interests, as well as external traits such as body, appearance, clothing, and body parts. All questions were rated on a scale from 1 (not at all) to 7 (constantly). A positive score in this scale would indicate that the participant thought about their partner’s external traits more than the partner’s internal traits, and a negative score would indicate the opposite",
-             " we asked participants to rate the extent to which they felt comfortable, happy, friendly, warm, easygoing, sincere, and authentic on a scale ranging from 1 (not at all) to 7 (very much)
-These were combined to form the authenticity scale ($\alpha$ = `r printnum(clark_intauth_alpha)[1,1]` for Sample 1, $\alpha$ = `r printnum(smith_intauth_alpha)[1,1]` for Sample 2). 	",
-"Participants were asked to rank how much they agreed with the following statements: "During the interaction I felt more like a body than a full self" and "I felt more like a body than as a real person in the interaction". Originally, @saguyetal2010 used 3 items, but in both samples the reliability of the scale was higher once the third item was removed, so we chose to only use the first two for our measure of SSO, leaving us with a reliable scale ($\alpha$ = `r printnum(clark_howbody_alpha)[1,1]` for Sample 1, and $\alpha$ = `r printnum(smith_howbody_alpha)[1,1]` for Sample 2.)",
-""ask someone out on a date," "open the door for your date," "pay for a date," "ask your boyfriend/girlfriend to marry you," "initiate sex with your girlfriend/boyfriend," "initiate condom use during sex," "surprise your boyfriend/ girlfriend with a gift," and "ask your girlfriend/boyfriend to move with you to a new place." Responses were measured on a scale ranging from 1 (not at all likely) to 7 (extremely likely).",
-"a scale from 0 (not at all true of me) to 4 (very true of me). 
-Items include "I hope to become a leader in my career field" and "I hope to move up through any organization or business I work in." Items were fairly reliable ($\alpha$ = `r printnum(clark_careerasp_alpha)[1,1]` for Sample 1, $\alpha$ = `r printnum(smith_careerasp_alpha)[1,1]` for Sample 2).",
-"The questionnaire asked participants to rank order both appearance and functional aspects of their bodies, from 1 (least important) to 10 (most important), with respect to physical self-concepts. Of the ten body attributes, five of the items were appearance-based (weight, sex appeal, physical attractiveness, firm/sculpted muscles and body measurements), and five of the items were competence-based (strength, physical coordination, energy level, health and physical fitness). Difference scores were computed by subtracting the sum of the 5 functional aspects/competence attributes (e.g., health, strength) from the sum of the 5 physical self-concepts/appearance attributes (e.g., physical attractiveness, weight), and all measures were multiplied by -1 so that positive scores indicated greater TSO. ")
+ex_item <- c("The correct answer for the trigram \"Quack: Pond: Waddle\" would be \"Duck\"",
+             "\"During the interaction, how often did you think about your partner’s personality?\" (...friends, family, and extracurricular interests, body, appearance, clothing, and body parts) on a scale from 1 (not at all) to 7 (constantly). A difference between the average internal and exxternal traits is taken",
+             "\"During the interaction, to what extent did you feel comfortable?\" (...happy, friendly, warm, easygoing, sincere, and authentic) on a scale ranging from 1 (not at all) to 7 (very much)",
+             "\"During the interaction I felt more like a body than a full self\"",
+             "\"ask someone out on a date\" Responses were measured on a scale ranging from 1 (not at all likely) to 7 (extremely likely)",
+             "\"I hope to become a leader in my career field\"",
+             "Participants rank order aspects of their bodies from 1 (least important) to 10 (most important): weight, sex appeal, physical attractiveness, firm/sculpted muscles and body measurements, strength, physical coordination, energy level, health and physical fitness. Difference scores were computed by subtracting the sum of the 5 functional aspects/competence attributes (e.g., health, strength) from the sum of the 5 physical self-concepts/appearance attributes (e.g., physical attractiveness, weight), and all measures were multiplied by -1 so that positive scores indicated greater TSO.")
 
-alpha_s1 <- c()
-alpha_s2 <- c()
+alpha_s1 <- c("Not avaliable",
+paste("external: ", printnum(clark_extsoo_alpha)[1,1], "; internal: ", printnum(clark_intsoo_alpha)[1,1]),
+printnum(clark_intauth_alpha)[1,1],
+printnum(clark_howbody_alpha)[1,1],
+printnum(clark_relag_alpha)[1,1],
+printnum(clark_careerasp_alpha)[1,1],
+paste("appearance: ", printnum(clark_physTSO_alpha)[1,1], "; competence: ", printnum(clark_funcTSO_alpha)[1,1]))
 
-data.frame(source, ex_item, alpha_s1, alpha_s2)
+alpha_s2 <- c("Not avaliable",
+paste("external: ", printnum(smith_extsoo_alpha)[1,1], "; internal: ", printnum(smith_intsoo_alpha)[1,1]),
+printnum(smith_intauth_alpha)[1,1],
+printnum(smith_howbody_alpha)[1,1],
+printnum(smith_relag_alpha)[1,1],
+printnum(smith_careerasp_alpha)[1,1],
+paste("appearance: ", printnum(smith_physTSO_alpha)[1,1], "; competence: ", printnum(smith_funcTSO_alpha)[1,1]))
 
-rownames(corr.table) <- c("Cognitive performance", 
+meas_table <- data.frame(source, ex_item, alpha_s1, alpha_s2)
+
+rownames(meas_table) <- c("Cognitive performance", 
                           "Objectification of partner", 
                           "Authenticity of interaction", 
                           "State self-objectification", 
@@ -390,9 +397,9 @@ rownames(corr.table) <- c("Cognitive performance",
                           "Career aspirations", 
                           "Trait self objectification (TSO)")
                           
-colnames(corr.table)   <- c("Original Source", "Example Item", "Reliability ($\alpha$) Sample 1", "Reliability ($\alpha$) Sample 2")
+colnames(meas_table)   <- c("Original Source", "Example Item", "Reliability ($\alpha$) Sample 1", "Reliability ($\alpha$) Sample 2")
 
-apa_table(corr.table, caption="Correlations and Descriptive Statistics among Study Variables", escape=FALSE)
+apa_table(meas_table, caption="Measures", escape=FALSE)
 ```
 
 The same set of measures given in @garcia2016objectification were given to participants in the current study. For more details about each of these measures please see that previous paper. To summarize, the list of measures in the order given to participants appears in Table\ \@ref(tab:measures) along side the orginal source for the scale, an example item, and the reliability in the current sample. Correlations and descriptive statistics of all study variables appear in Table\ \@ref(tab:corrtable). 
@@ -401,7 +408,9 @@ Cognitive performance with the Remote Associates Task's trigrams [@mcfarlin1984r
 
 As can be seen in Table\ \@ref(tab:corrtable), the mean other-objectification of women by women was *M =* `r descriptives[3,1]` (*SD =* `r descriptives[3,2]`). This corresponds to women objectifying other women to a *greater* extent than women's objectification of men reported in @garcia2016objectification (*M =* -1.68, *SD =* 1.52). Further, in the current sample the difference in other-objectification between heterosexual (*M =* `r round(as.numeric(descsplit[2,2]),2)`, *SD =* `r round(as.numeric(descsplit[2,3]),2)`) and non-heterosexual women (*M =* `r round(as.numeric(descsplit[1,2]),2)`, *SD =* `r round(as.numeric(descsplit[1,3]),2)`) was not statistically significant, *t*(`r round(soo_diff$parameter,2)`) = `r round(soo_diff$statistic, 2)`, *p =* `r round(soo_diff$p.value,3)`. 
 
-Relationship agency The scale originally had 9 items, but the 9th item had low correlations with the remaining items, ranging from .02 to .30 for the first sample, and .04 to .30 for the second sample. Therefore, this item was removed. As a result, the 8-item scale had moderately high reliability for both samples ($\alpha$ = `r printnum(clark_relag_alpha)[1,1]` for Sample 1, ($\alpha$ = `r printnum(smith_relag_alpha)[1,1]` for Sample 2).
+Howbody used 3 items, but in both samples the reliability of the scale was higher once the third item was removed, so we chose to only use the first two for our measure of SSO, leaving us with a reliable scale (see Table\ \@ref(tab:measures)).
+
+Relationship agency The scale originally had 9 items, but the 9th item had low correlations with the remaining items, ranging from .02 to .30 for the first sample, and .04 to .30 for the second sample. Therefore, this item was removed. As a result, the 8-item scale had moderately high reliability for both samples (see Table\ \@ref(tab:measures)).
 
 # Results
 ```{r create_r-references, warning=FALSE, message=FALSE}
