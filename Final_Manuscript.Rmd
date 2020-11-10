@@ -397,7 +397,9 @@ rownames(meas_table) <- c("Cognitive performance",
                           "Career aspirations", 
                           "Trait self objectification (TSO)")
                           
-colnames(meas_table)   <- c("Original Source", "Example Item", "Reliability ($\alpha$) Sample 1", "Reliability ($\alpha$) Sample 2")
+colnames(meas_table)   <- c("Original Source", "Example Item", "Reliability Sample 1", "Reliability Sample 2")
+
+meas_table <- xtable(meas_table)
 
 apa_table(meas_table, caption="Measures", escape=FALSE)
 ```

@@ -23,3 +23,27 @@
 \end{table*}
 \efloatseparator
  
+\begin{table*}[hbt]
+\ifnextchar[{\eatarg}{}
+[tbp]
+\begin{center}
+\begin{threeparttable}
+\caption{\label{tab:measures}Measures}
+\begin{tabular}{lllll}
+\toprule
+ & \multicolumn{1}{c}{Original Source} & \multicolumn{1}{c}{Example Item} & \multicolumn{1}{c}{Reliability Sample 1} & \multicolumn{1}{c}{Reliability Sample 2}\\
+\midrule
+Cognitive performance & @mcfarlin1984remote & The correct answer for the trigram "Quack: Pond: Waddle" would be "Duck" & Not avaliable & Not avaliable\\
+Objectification of partner & @garcia2016objectification & "During the interaction, how often did you think about your partner\IeC {\textquoteright }s personality?" (...friends, family, and extracurricular interests, body, appearance, clothing, and body parts) on a scale from 1 (not at all) to 7 (constantly). A difference between the average internal and exxternal traits is taken & external:  0.79 ; internal:  0.71 & external:  0.76 ; internal:  0.79\\
+Authenticity of interaction & @garcia2016objectification & "During the interaction, to what extent did you feel comfortable?" (...happy, friendly, warm, easygoing, sincere, and authentic) on a scale ranging from 1 (not at all) to 7 (very much) & 0.91 & 0.91\\
+State self-objectification & @saguyetal2010 & "During the interaction I felt more like a body than a full self" & 0.84 & 0.85\\
+Relationship agency & @garcia2016objectification & "ask someone out on a date" Responses were measured on a scale ranging from 1 (not at all likely) to 7 (extremely likely) & 0.72 & 0.74\\
+Career aspirations & @grayobrien2007 & "I hope to become a leader in my career field" & 0.73 & 0.80\\
+Trait self objectification (TSO) & @nollfredrickson1998 & Participants rank order aspects of their bodies from 1 (least important) to 10 (most important): weight, sex appeal, physical attractiveness, firm/sculpted muscles and body measurements, strength, physical coordination, energy level, health and physical fitness. Difference scores were computed by subtracting the sum of the 5 functional aspects/competence attributes (e.g., health, strength) from the sum of the 5 physical self-concepts/appearance attributes (e.g., physical attractiveness, weight), and all measures were multiplied by -1 so that positive scores indicated greater TSO. & appearance:  0.44 ; competence:  0.43 & appearance:  0.51 ; competence:  0.30\\
+\bottomrule
+\end{tabular}
+\end{threeparttable}
+\end{center}
+\end{table*}
+\efloatseparator
+ 
