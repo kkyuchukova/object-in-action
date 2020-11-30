@@ -17,19 +17,22 @@
 7. Actor's cognitive performance & 5.03 & 2.29 & .08 & .11 & .06 & .02 & .11 & .07 & \\
 8. Actor's career aspirations & 3.88 & 0.61 & .05 & -.14 & -.08 & .01 & .33** & .26* & -.07\\
 \bottomrule
+\addlinespace
 \end{tabular}
+\begin{tablenotes}[para]
+\normalsize{\textit{Note.} * p < .05. ** p < .01.}
+\end{tablenotes}
 \end{threeparttable}
 \end{center}
 \end{table*}
 \efloatseparator
  
-\begin{table*}[hbt]
-\ifnextchar[{\eatarg}{}
-[tbp]
-\begin{center}
-\begin{threeparttable}
-\caption{\label{tab:measures}Measures}
-\begin{tabular}{lllll}
+\begin{lltable}
+
+
+\small{
+\begin{longtable}{lllll}\noalign{\getlongtablewidth\global\LTcapwidth=\longtablewidth}
+\caption{\label{tab:measures}Measures}\\
 \toprule
  & \multicolumn{1}{c}{Original Source} & \multicolumn{1}{c}{Example Item} & \multicolumn{1}{c}{Reliability Sample 1} & \multicolumn{1}{c}{Reliability Sample 2}\\
 \midrule
@@ -41,9 +44,8 @@ Relationship agency & @garcia2016objectification & "ask someone out on a date" R
 Career aspirations & @grayobrien2007 & "I hope to become a leader in my career field" & 0.73 & 0.80\\
 Trait self objectification (TSO) & @nollfredrickson1998 & Participants rank order aspects of their bodies from 1 (least important) to 10 (most important): weight, sex appeal, physical attractiveness, firm/sculpted muscles and body measurements, strength, physical coordination, energy level, health and physical fitness. Difference scores were computed by subtracting the sum of the 5 functional aspects/competence attributes (e.g., health, strength) from the sum of the 5 physical self-concepts/appearance attributes (e.g., physical attractiveness, weight), and all measures were multiplied by -1 so that positive scores indicated greater TSO. & appearance:  0.44 ; competence:  0.43 & appearance:  0.51 ; competence:  0.30\\
 \bottomrule
-\end{tabular}
-\end{threeparttable}
-\end{center}
-\end{table*}
+\end{longtable}
+}
+\end{lltable}
 \efloatseparator
  
